@@ -1,0 +1,38 @@
+== Welcome to InfoDebate
+
+This project intends to manage Forum for third sites.
+
+== Modules
+
+=== Admin Module
+
+1. Forum configuration. Example: automatic or not comments.
+
+2. Threads moderation: approve comments, close threads and etc.
+
+3. User block. User black and white list.
+
+4. Dashboard. Views the users activity on the site.
+
+2. User Manager.
+
+=== Commenter Module
+
+1. Manage own comments.
+
+2. Follow/Unfollow others commenters.
+
+3. See replies.
+
+4. See following's comments.
+
+
+===  Site Module
+
+1. Rich Rest API to manage Site, Forums, Threads, Comments and Commenters configurations.
+
+2. Javascript client to append on site.
+
+3. Outh2 Auth provider
+
+4. Third-party Auth capacity: Twitter and Facebook.
