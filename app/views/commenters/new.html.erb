@@ -1,0 +1,11 @@
+<%= render 'shared/admin_title_options', :title => "New commenter",
+ 				:options => [ {:label => "Back", :path => commenters_path, :type => "info"} ] %>
+
+<%= form_for(@commenter, :html => {:class => "form-horizontal"}) do |f| %>
+	<%= render 'fields', :f => f %>
+	<%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password %>
+	<%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password_confirmation %>
+	<div class="controls"> 
+	    <%= f.submit "Save", :class => "btn btn-primary btn-large" %>
+	</div>
+<% end %>

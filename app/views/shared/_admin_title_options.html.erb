@@ -1,0 +1,12 @@
+<section class="container">
+	<h1 class="left"><%= title %></h1>
+	<div class="btn-toolbar-right">
+		<div class="btn-group1">
+			<% options ||= [] %>
+			<% options.each do |option| %>
+	    		<%= link_to option[:label], option[:path], :class => "btn btn-#{option[:type]}" %>
+			<% end %>
+	  	</div>
+	</div>
+</section>
+<hr class="bs-docs-separator">

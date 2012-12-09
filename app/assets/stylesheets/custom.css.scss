@@ -1,0 +1,43 @@
+@import "bootstrap";
+
+.left {
+	float: left;
+}
+
+.nav-header-options {
+	padding-top: 30px;
+}
+
+.btn-toolbar-right {
+	@extend .btn-toolbar;
+	float: right; 
+	padding-top: 10px;
+}
+
+.bs-docs-separator {
+	margin: 0 0 20px 0;
+}
+
+div.controls label {
+	padding-top: 5px;
+}
+
+#logo {
+	text-indent: -9999px;
+	width: 277px;
+	height: 88px;
+	background: {
+		image: url(infodebate-logo.png);
+		position-x: 0px;
+		position-y: 0px;
+	}
+	float: left;
+	position: relative;
+	overflow: hidden;
+	margin: 1px 1px 1px 1px;
+	display: inline;
+}
+
+.controls .field_with_errors {
+	display: inline;
+}

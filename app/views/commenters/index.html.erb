@@ -1,0 +1,33 @@
+<%= render 'shared/admin_title_options', :title => "Listing commenters",
+ 				:options => [ {:label => "New Commenter", :path => new_commenter_path, :type => "info"} ] %>
+
+<%= form_tag commenters_path, :method => 'get' do %>
+	<%= text_field_tag :q, params[:q], :class => "input-medium search-query" %>
+	<%= submit_tag "Search", :class => "btn" %>
+<% end %>
+
+<%= will_paginate %>
+
+<table class="table table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th></th>
+  </tr>
+
+<% @commenters.each do |commenter| %>
+  <tr>
+    <td><%= commenter.name %></td>
+    <td><%= commenter.username %></td>
+    <td><%= commenter.email %></td>
+    <td>
+		<%= render 'shared/table_action', :action => "show", :path => commenter_path(commenter) %>
+       	<%= render 'shared/table_action', :action => "edit", :path => edit_commenter_path(commenter) %>
+		<%= render 'shared/table_action', :action => "delete", :path => commenter_path(commenter) %>
+	</td>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate %>

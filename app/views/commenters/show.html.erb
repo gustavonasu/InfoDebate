@@ -1,0 +1,11 @@
+<%= render 'shared/admin_title_options', :title => "Show commenter",
+ 				:options => [ {:label => "Edit", :path => edit_commenter_path(@commenter), :type => "info"},
+	 						  {:label => "Back", :path => commenters_path, :type => "info"} ] %>
+
+<%= render 'shared/success_message' %>
+
+<div class="form-horizontal">
+	<%= render 'shared/field_show', :label => "Name", :value => @commenter.name %>
+	<%= render 'shared/field_show', :label => "Username", :value => @commenter.username %>
+	<%= render 'shared/field_show', :label => "Email", :value => @commenter.email %>
+</div>

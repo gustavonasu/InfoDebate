@@ -1,0 +1,13 @@
+<div class="control-group <%= f.object.errors[field_name].empty? ? '' : 'error' %>">
+	<%= f.label field_name, :class => "control-label" %>
+	<div class="controls">
+		<% field_type ||= "text_field" %>
+		<% disabled ||= false %>
+		<%= f.send field_type, field_name, :disabled => disabled %>
+		<div class="help-inline">
+			<% f.object.errors[field_name].each do |msg| %>
+				<span class="help-block"><%= msg %></span>
+			<% end %>
+		</div>
+	</div>
+</div>
