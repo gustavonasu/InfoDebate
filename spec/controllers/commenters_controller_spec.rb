@@ -54,13 +54,13 @@ describe CommentersController do
         
     it "should limit commenters length" do
       get :index, {}, valid_session
-      assigns(:commenters).length.should eq(30)
+      assigns(:commenters).length.should eq(PER_PAGE)
     end
     
     it "should have pagination information" do
       get :index, {}, valid_session
       response.should have_selector("div.pagination")
-      response.should have_selector("span.disabled", :content => "Previous")
+      response.should have_selector("li.disabled", :content => "Previous")
       response.should have_selector("a", :href => commenters_path(:page => 2),
                                          :content => "2")
       response.should have_selector("a", :href => commenters_path(:page => 2),
