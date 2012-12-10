@@ -1,5 +1,8 @@
 InfoDebate::Application.routes.draw do
-  resources :commenters
+
+  namespace :admin do
+    resources :commenters
+  end
 
   root :to => 'pages#home'
   

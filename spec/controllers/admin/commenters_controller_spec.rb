@@ -18,7 +18,7 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe CommentersController do
+describe Admin::CommentersController do
   render_views
   
   # This should return the minimal set of attributes required to create a valid
@@ -61,9 +61,9 @@ describe CommentersController do
       get :index, {}, valid_session
       response.should have_selector("div.pagination")
       response.should have_selector("li.disabled", :content => "Previous")
-      response.should have_selector("a", :href => commenters_path(:page => 2),
+      response.should have_selector("a", :href => admin_commenters_path(:page => 2),
                                          :content => "2")
-      response.should have_selector("a", :href => commenters_path(:page => 2),
+      response.should have_selector("a", :href => admin_commenters_path(:page => 2),
                                          :content => "Next")
     end
   end
@@ -108,7 +108,7 @@ describe CommentersController do
 
       it "redirects to the created commenter" do
         post :create, {:commenter => valid_attributes}, valid_session
-        response.should redirect_to(Commenter.last)
+        response.should redirect_to([:admin, Commenter.last])
       end
     end
 
@@ -156,7 +156,7 @@ describe CommentersController do
       it "redirects to the commenter" do
         commenter = Commenter.create! valid_attributes
         put :update, {:id => commenter.to_param, :commenter => @valid_update_attrs}, valid_session
-        response.should redirect_to(commenter)
+        response.should redirect_to([:admin, commenter])
       end
     end
 
@@ -190,7 +190,7 @@ describe CommentersController do
     it "redirects to the commenters list" do
       commenter = Commenter.create! valid_attributes
       delete :destroy, {:id => commenter.to_param}, valid_session
-      response.should redirect_to(commenters_url)
+      response.should redirect_to(admin_commenters_url)
     end
   end
 
