@@ -11,27 +11,18 @@
 <%= will_paginate %>
 
 <table class="table table-hover">
-  <tr>
-	<th>Id</th>
-    <th>Name</th>
-    <th>Username</th>
-    <th>Email</th>
-    <th></th>
-  </tr>
-
-<% @commenters.each do |commenter| %>
-  <tr>
-	<td><%= commenter.id %></td>
-    <td><%= commenter.name %></td>
-    <td><%= commenter.username %></td>
-    <td><%= commenter.email %></td>
-    <td>
-		<%= render 'shared/table_action', :action => "show", :path => admin_commenter_path(commenter) %>
-       	<%= render 'shared/table_action', :action => "edit", :path => edit_admin_commenter_path(commenter) %>
-		<%= render 'shared/table_action', :action => "delete", :path => admin_commenter_path(commenter, :page => params[:page]) %>
-	</td>
-  </tr>
-<% end %>
+	<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Username</th>
+		<th>Email</th>
+		<th></th>
+	</tr>
+	<% if @commenters.empty? %>
+		<tr><td colspan="5">No commenter found</td></tr>
+	<% else %>
+		<%= render @commenters %>
+	<% end %>
 </table>
 
 <%= will_paginate %>

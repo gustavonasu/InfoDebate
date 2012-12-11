@@ -1,0 +1,11 @@
+<tr>
+  <td><%= commenter.id %></td>
+  <td><%= commenter.name %></td>
+  <td><%= commenter.username %></td>
+  <td><%= commenter.email %></td>
+  <td>
+		<%= render 'shared/table_action', :action => "show", :path => admin_commenter_path(commenter) %>
+     	<%= render 'shared/table_action', :action => "edit", :path => edit_admin_commenter_path(commenter) %>
+		<%= render 'shared/table_action', :action => "delete", :path => admin_commenter_path(commenter, :page => params[:page]) %>
+	</td>
+</tr>
