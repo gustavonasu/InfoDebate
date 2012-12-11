@@ -1,5 +1,7 @@
 <%= render 'shared/admin_title_options', :title => "Editing commenter",
  				:options => [ {:label => "Show", :path => admin_commenter_path(@commenter), :type => "info"},
+							  {:label => "Delete", :path => admin_commenter_path(@commenter), :type => "danger", 
+								:method => "delete", :confirmation_msg => "Are you sure to proceed?"},
 	 						  {:label => "Back", :path => admin_commenter_path, :type => "info"} ] %>
 
 <%= form_for([:admin, @commenter], :html => {:class => "form-horizontal"}) do |f| %>

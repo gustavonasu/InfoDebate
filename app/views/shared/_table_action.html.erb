@@ -9,7 +9,7 @@
 	<% if action != "delete" %>
 		<a href="<%=path%>"><i class="<%=icon_type%>"></i></a>
 	<% else %>
-		<% confirmation_msg ||= "Are you sure?" %>
+		<% confirmation_msg ||= "Are you sure to proceed?" %>
 	   	<a href="<%=path%>" data-confirm="<%=confirmation_msg%>" data-method="delete" rel="nofollow">
 			<i class="<%=icon_type%>"></i>
 		</a>

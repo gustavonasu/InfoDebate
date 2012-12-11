@@ -66,6 +66,28 @@ describe Admin::CommentersController do
       response.should have_selector("a", :href => admin_commenters_path(:page => 2),
                                          :content => "Next")
     end
+    
+    context "search" do
+      it "should find commenter by name" do
+        get :index, {:q => @commenter.name}
+        response.should have_selector("td", :content => @commenter.id.to_s)
+      end
+      
+      it "should find commenter by username" do
+        get :index, {:q => @commenter.username}
+        response.should have_selector("td", :content => @commenter.id.to_s)
+      end
+      
+      it "should find commenter by email" do
+        get :index, {:q => @commenter.email}
+        response.should have_selector("td", :content => @commenter.id.to_s)
+      end
+      
+      it "should not find commenter by wrong name" do
+        get :index, {:q => "wrong"}
+        response.should_not have_selector("td", :content => @commenter.id.to_s)
+      end
+    end
   end
 
 

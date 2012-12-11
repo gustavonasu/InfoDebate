@@ -4,7 +4,8 @@
 		<div class="btn-group1">
 			<% options ||= [] %>
 			<% options.each do |option| %>
-	    		<%= link_to option[:label], option[:path], :class => "btn btn-#{option[:type]}" %>
+	    		<%= link_to option[:label], option[:path], :class => "btn btn-#{option[:type]}",
+	 						:method => option[:method], :confirm => option[:confirmation_msg] %>
 			<% end %>
 	  	</div>
 	</div>

@@ -45,6 +45,12 @@ class Commenter < ActiveRecord::Base
     self.encrypted_password == encrypt(submitted_password)
   end
   
+  def self.search(search, page)
+    s = "%#{search}%"
+    paginate :per_page => PER_PAGE, :page => page,
+             :conditions => ['name like ? or username like ? or email like ?', s, s, s]
+  end
+  
   private
     
     def validate_password?

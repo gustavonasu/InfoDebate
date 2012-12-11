@@ -2,7 +2,11 @@
 class Admin::CommentersController < ApplicationController
   # GET /commenters
   def index
-    @commenters = Commenter.paginate(:page => params[:page], :per_page => PER_PAGE)
+    unless params[:q].blank?
+      @commenters = Commenter.search(params[:q], params[:page])
+    else
+      @commenters = Commenter.paginate(:page => params[:page], :per_page => PER_PAGE)
+    end
   end
 
   # GET /commenters/1
@@ -44,7 +48,6 @@ class Admin::CommentersController < ApplicationController
   def destroy
     @commenter = Commenter.find(params[:id])
     @commenter.destroy
-    redirect_path = request.env["HTTP_REFERER"] || admin_commenters_path
-    redirect_to redirect_path, notice: 'Commenter was successfully deleted.'
+    redirect_to admin_commenters_path(:page => params[:page]), :notice => 'Commenter was successfully deleted.'
   end
 end

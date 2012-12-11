@@ -1,5 +1,7 @@
 <%= render 'shared/admin_title_options', :title => "Show commenter",
  				:options => [ {:label => "Edit", :path => edit_admin_commenter_path(@commenter), :type => "info"},
+							  {:label => "Delete", :path => admin_commenter_path(@commenter), :type => "danger", 
+								:method => "delete", :confirmation_msg => "Are you sure to proceed?"},
 	 						  {:label => "Back", :path => admin_commenters_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
