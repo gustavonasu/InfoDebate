@@ -12,7 +12,6 @@
 #  updated_at         :datetime         not null
 #
 
-
 class Commenter < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
