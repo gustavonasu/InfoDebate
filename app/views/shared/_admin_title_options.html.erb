@@ -5,7 +5,7 @@
 			<% options ||= [] %>
 			<% options.each do |option| %>
 	    		<%= link_to option[:label], option[:path], :class => "btn btn-#{option[:type]}",
-	 						:method => option[:method], :confirm => option[:confirmation_msg] %>
+	 						:method => option[:method], :data => { :confirm => option[:confirmation_msg] } %>
 			<% end %>
 	  	</div>
 	</div>

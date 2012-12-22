@@ -78,6 +78,15 @@ describe Commenter do
       commenter.should_not be_valid
       commenter.errors["username"].size.should > 0
     end
+    
+    it "username should be readonly" do
+      commenter = Commenter.create!(@attrs)
+      old_username = commenter.username
+      commenter.username = "new_username"
+      commenter.save
+      commenter.reload
+      commenter.username.should eq(old_username)
+    end
   end
   
   

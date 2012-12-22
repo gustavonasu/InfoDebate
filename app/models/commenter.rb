@@ -15,6 +15,7 @@
 class Commenter < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
+  attr_readonly :username
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :username, :presence => true, :length => { :in => 3..30 },
@@ -26,14 +27,6 @@ class Commenter < ActiveRecord::Base
                        :confirmation => true, :if => :validate_password?
   
   before_validation :encrypt_password
-  
-  def username=(value)
-    if new_record?
-      self[:username] = value
-    else
-      raise "You can't change login"
-    end
-  end
   
   def self.authenticate(username, submitted_password)
     commenter = first(:conditions => {:username => username})
