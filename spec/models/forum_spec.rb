@@ -13,7 +13,7 @@ describe Forum do
     forum = Forum.new(@attrs)
     forum.should be_valid
     forum.valid?
-    forum.actived?.should be_true
+    forum.active?.should be_true
   end
   
   it "should not create a valid new instance with blank name" do
@@ -34,23 +34,31 @@ describe Forum do
     
     it "should inactive a forum instance" do
       @forum.inactive
-      @forum.inactived?.should be_true
-      @forum.actived?.should be_false
+      @forum.inactive?.should be_true
+      @forum.active?.should be_false
       @forum.deleted?.should be_false
     end
     
     it "should active a forum instance" do
       @forum.active
-      @forum.actived?.should be_true
-      @forum.inactived?.should be_false
+      @forum.active?.should be_true
+      @forum.inactive?.should be_false
       @forum.deleted?.should be_false
     end
     
-    it "should active a forum instance" do
+    it "should delete a forum instance" do
       @forum.delete
       @forum.deleted?.should be_true
-      @forum.actived?.should be_false
-      @forum.inactived?.should be_false
+      @forum.active?.should be_false
+      @forum.inactive?.should be_false
+    end
+    
+    it "should not banned a forum instance" do
+      expect { @forum.ban }.to raise_error(Infodebate::InvalidStatus)
+    end
+    
+    it "should not pending a forum instance" do
+      expect { @forum.pending }.to raise_error(Infodebate::InvalidStatus)
     end
   end
 end
