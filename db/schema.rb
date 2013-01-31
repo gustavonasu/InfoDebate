@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129215627) do
+ActiveRecord::Schema.define(:version => 20130130225807) do
 
   create_table "commenters", :force => true do |t|
     t.string   "name",               :limit => 100, :null => false
@@ -28,11 +28,11 @@ ActiveRecord::Schema.define(:version => 20130129215627) do
   add_index "commenters", ["username"], :name => "index_commenters_on_username"
 
   create_table "forums", :force => true do |t|
-    t.string   "name"
+    t.string   "name",        :limit => 100, :null => false
     t.string   "description"
-    t.integer  "status"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "status",                     :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
 end
