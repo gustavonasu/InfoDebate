@@ -7,13 +7,12 @@ class Forum < ActiveRecord::Base
   validates :description, :length => { :maximum => 255 }
   validates :status, :presence => true
   
-  def self.valid_status
-    [:active, :inactive, :deleted]
-  end
-  
-  def initialize(attributes = {})
-    super(attributes)
+  after_initialize do
     self.active # default status is active
   end
   
+  def self.valid_status
+    [:active, :inactive, :deleted]
+  end
+
 end

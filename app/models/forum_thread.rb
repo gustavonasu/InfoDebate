@@ -8,13 +8,12 @@ class ForumThread < ActiveRecord::Base
   validates :status, :presence => true
   validates :url, :length => { :maximum => 500 }
   
+  after_initialize do
+    self.active # default status is active
+  end
+  
   def self.valid_status
     [:active, :inactive, :deleted]
-  end
-    
-  def initialize(attributes = {})
-    super(attributes)
-    self.active # default status is active
   end
   
 end
