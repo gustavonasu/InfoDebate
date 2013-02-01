@@ -12,7 +12,6 @@ describe Forum do
   it "should create a valid new instance given right attributes" do
     forum = Forum.new(@attrs)
     forum.should be_valid
-    forum.valid?
     forum.active?.should be_true
   end
   
