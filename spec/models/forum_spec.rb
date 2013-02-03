@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: forums
+#
+#  id          :integer          not null, primary key
+#  name        :string(100)      not null
+#  description :string(255)
+#  status      :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 require 'spec_helper'
 
 describe Forum do
@@ -58,6 +70,52 @@ describe Forum do
     
     it "should not pending a forum instance" do
       expect { @forum.pending }.to raise_error(Infodebate::InvalidStatus)
+    end
+  end
+  
+  context "threads relationship" do
+    before do
+      @forum = Forum.create!(@attrs)
+      @threds_attrs = { :name => "Sample Thread",
+                        :description => "Thread Description",
+                        :url => "http://infodebate.com/article/1",
+                        :content_id => 2}
+    end
+    
+    it "should create thread instance" do
+      thread = @forum.threads.create(@threds_attrs)
+      thread.id.should_not be_nil
+      thread.active?.should be_true
+      thread.forum.should eq(@forum)
+    end
+    
+    context "thread searches" do
+      before do
+        @threads = []
+        10.times do |n|
+          @threads << FactoryGirl.create( :forum_thread,
+                                          :forum => @forum,
+                                          :content_id => n,
+                                          :url => FactoryGirl.generate(:content_url))
+        end
+        @thread = @threads[-1]
+      end
+      
+      it "should return all threads" do
+        @forum.threads.all.should eq(@threads)
+      end
+      
+      it "should search by forum_id" do
+        @forum.threads.find_all_by_forum_id(@forum).should eq(@threads)
+      end
+      
+      it "should search by content_id" do
+        @forum.threads.find_by_content_id(@thread.content_id).should eq(@thread)
+      end
+      
+      it "should search by url" do
+        @forum.threads.find_by_url(@thread.url).should eq(@thread)
+      end
     end
   end
 end

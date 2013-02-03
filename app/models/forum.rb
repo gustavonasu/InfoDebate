@@ -1,7 +1,21 @@
+# == Schema Information
+#
+# Table name: forums
+#
+#  id          :integer          not null, primary key
+#  name        :string(100)      not null
+#  description :string(255)
+#  status      :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class Forum < ActiveRecord::Base
   include Infodebate::Status
   
   attr_accessible :description, :name
+
+  has_many :threads, :class_name => "ForumThread"
 
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :description, :length => { :maximum => 255 }

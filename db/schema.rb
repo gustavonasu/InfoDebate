@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130131235214) do
+ActiveRecord::Schema.define(:version => 20130201014024) do
 
   create_table "commenters", :force => true do |t|
     t.string   "name",               :limit => 100, :null => false
@@ -35,7 +35,10 @@ ActiveRecord::Schema.define(:version => 20130131235214) do
     t.integer  "content_id"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+    t.integer  "forum_id",                   :null => false
   end
+
+  add_index "forum_threads", ["forum_id"], :name => "index_forum_threads_on_forum_id"
 
   create_table "forums", :force => true do |t|
     t.string   "name",        :limit => 100, :null => false
