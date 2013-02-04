@@ -39,10 +39,14 @@ describe Forum do
   end
   
   describe "status validation" do
+    before do
+      @forum = Forum.create(@attrs)
+    end
+    
     context "valid status" do
       Forum.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
-          subject { Forum.create(@attrs) }
+          subject { @forum }
         end
       end
     end
@@ -50,7 +54,7 @@ describe Forum do
     context "invalid status" do
       (ModelHelper.all_status - Forum.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
-          subject { Forum.create(@attrs) }
+          subject { @forum }
         end
       end
     end

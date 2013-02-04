@@ -16,6 +16,8 @@
 require 'spec_helper'
 
 describe ForumThread do
+  include ModelHelper
+  
   before do
     @attrs = { 
       :name => "Sample Thread",
@@ -51,47 +53,26 @@ describe ForumThread do
     thread.should be_valid
   end
   
-  context "state change" do
-    
+  describe "status validation" do
     before do
       @thread = ForumThread.new(@attrs)
+      @thread.forum = FactoryGirl.create(:forum)
     end
     
-    it "should inactive a forum instance" do
-      @thread.inactive
-      @thread.inactive?.should be_true
-      @thread.active?.should be_false
-      @thread.deleted?.should be_false
+    context "valid status" do
+      ForumThread.valid_status.each do |status|
+        it_should_behave_like "valid #{status} status validation" do
+          subject { @thread }
+        end
+      end
     end
     
-    it "should active a forum instance" do
-      @thread.active
-      @thread.active?.should be_true
-      @thread.inactive?.should be_false
-      @thread.deleted?.should be_false
-    end
-    
-    it "should delete a forum instance" do
-      @thread.delete
-      @thread.deleted?.should be_true
-      @thread.active?.should be_false
-      @thread.inactive?.should be_false
-    end
-    
-    it "should not banned a forum instance" do
-      expect { @thread.ban }.to raise_error(Infodebate::InvalidStatus)
-    end
-    
-    it "should not pending a forum instance" do
-      expect { @thread.pending }.to raise_error(Infodebate::InvalidStatus)
-    end
-    
-    it "should not banned a thread instance" do
-      expect { @thread.ban }.to raise_error(Infodebate::InvalidStatus)
-    end
-    
-    it "should not pending a forum instance" do
-      expect { @thread.pending }.to raise_error(Infodebate::InvalidStatus)
+    context "invalid status" do
+      (ModelHelper.all_status - ForumThread.valid_status).each do |status|
+        it_should_behave_like "invalid #{status} status validation" do
+          subject { @thread }
+        end
+      end
     end
   end
   
