@@ -1,6 +1,24 @@
 module Infodebate::Status
   
-    STATUS = { active: 1, inactive: 2, banned: 3, pending: 4, deleted: 5 }
+    STATUS = { :active => 1,
+               :inactive => 2,
+               :banned => 3,
+               :pending => 4,
+               :deleted => 5 }
+    
+    STATUS_ACTION_MAP = { :active => :active,
+                          :inactive => :inactive,
+                          :banned => :ban,
+                          :pending => :pending,
+                          :deleted => :delete }
+    
+    def self.all_status
+      STATUS_ACTION_MAP.keys
+    end
+    
+    def self.find_action(status)
+      STATUS_ACTION_MAP[status]
+    end
     
     def active
       send(:status=, :active)

@@ -13,7 +13,8 @@
 require 'spec_helper'
 
 describe Forum do
-
+  include ModelHelper
+  
   before do
     @attrs = { 
       :name => "Sample Forum",
@@ -37,43 +38,25 @@ describe Forum do
     forum.should be_valid
   end
   
-  context "state change" do
-    
-    before do
-      @forum = Forum.new(@attrs)
+  describe "status validation" do
+    context "valid status" do
+      Forum.valid_status.each do |status|
+        it_should_behave_like "valid #{status} status validation" do
+          subject { Forum.create(@attrs) }
+        end
+      end
     end
     
-    it "should inactive a forum instance" do
-      @forum.inactive
-      @forum.inactive?.should be_true
-      @forum.active?.should be_false
-      @forum.deleted?.should be_false
-    end
-    
-    it "should active a forum instance" do
-      @forum.active
-      @forum.active?.should be_true
-      @forum.inactive?.should be_false
-      @forum.deleted?.should be_false
-    end
-    
-    it "should delete a forum instance" do
-      @forum.delete
-      @forum.deleted?.should be_true
-      @forum.active?.should be_false
-      @forum.inactive?.should be_false
-    end
-    
-    it "should not banned a forum instance" do
-      expect { @forum.ban }.to raise_error(Infodebate::InvalidStatus)
-    end
-    
-    it "should not pending a forum instance" do
-      expect { @forum.pending }.to raise_error(Infodebate::InvalidStatus)
+    context "invalid status" do
+      (ModelHelper.all_status - Forum.valid_status).each do |status|
+        it_should_behave_like "invalid #{status} status validation" do
+          subject { Forum.create(@attrs) }
+        end
+      end
     end
   end
   
-  context "threads relationship" do
+  describe "threads relationship" do
     before do
       @forum = Forum.create!(@attrs)
       @threds_attrs = { :name => "Sample Thread",
@@ -81,7 +64,7 @@ describe Forum do
                         :url => "http://infodebate.com/article/1",
                         :content_id => 2}
     end
-    
+
     it "should create thread instance" do
       thread = @forum.threads.create(@threds_attrs)
       thread.id.should_not be_nil
