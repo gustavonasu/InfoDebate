@@ -27,41 +27,54 @@ describe ForumThread do
     }
   end
   
-  describe "ForumThread creation" do
+  describe "Object creation" do
     it "should create a valid new instance given right attributes" do
-      thread = ForumThread.new(@attrs)
+      thread = create_thread(@attrs)
       thread.should be_valid
       thread.active?.should be_true
     end
   
-    it "should not create a new instance with blank name" do
-      thread = ForumThread.new(@attrs.merge(:name => ""))
+    it "should not create a valid new instance with blank name" do
+      thread = create_thread(@attrs.merge(:name => ""))
       thread.should_not be_valid
+      thread.errors[:name].should cannot_be_blank
     end
   
-    it "should create a new instance with blank description" do
-      thread = ForumThread.new(@attrs.merge(:description => ""))
+    it "should create a valid new instance with blank description" do
+      thread = create_thread(@attrs.merge(:description => ""))
       thread.should be_valid
     end
   
-    it "should create a new instance with blank url" do
-      thread = ForumThread.new(@attrs.merge(:url => ""))
+    it "should create a valid new instance with blank url" do
+      thread = create_thread(@attrs.merge(:url => ""))
       thread.should be_valid
     end
   
-    it "should create a new instance with nil content_id" do
-      thread = ForumThread.new(@attrs.merge(:content_id => nil))
+    it "should create a valid new instance with nil content_id" do
+      thread = create_thread(@attrs.merge(:content_id => nil))
       thread.should be_valid
+    end
+    
+    it "should not create a valid new instance with forum nil" do
+      thread = ForumThread.new(@attrs)
+      thread.should_not be_valid
+      thread.errors[:forum_id].should cannot_be_blank
+    end
+    
+    def create_thread(attrs)
+      thread = ForumThread.new(attrs)
+      thread.forum = FactoryGirl.create(:forum)
+      thread
     end
   end
   
-  describe "status validation" do
+  describe "Status validation" do
     before do
       @thread = ForumThread.new(@attrs)
       @thread.forum = FactoryGirl.create(:forum)
     end
     
-    context "valid status" do
+    context "Valid status" do
       ForumThread.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @thread }
@@ -69,7 +82,7 @@ describe ForumThread do
       end
     end
     
-    context "invalid status" do
+    context "Invalid status" do
       (ModelHelper.all_status - ForumThread.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @thread }
@@ -78,8 +91,8 @@ describe ForumThread do
     end
   end
   
-  describe "ForumThread search" do
-    context "forum relationship" do
+  describe "Search" do
+    context "Forum relationship" do
       before do
         @forum = FactoryGirl.create(:forum)
         @threads = create_threads(@forum)

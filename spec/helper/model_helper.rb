@@ -28,3 +28,10 @@ module ModelHelper
     end
   end
 end
+
+
+RSpec::Matchers.define :cannot_be_blank do
+  match do |actual|
+    actual.include? "can't be blank"
+  end
+end
