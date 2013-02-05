@@ -22,7 +22,7 @@ describe Forum do
     }
   end
   
-  describe "Forum creation" do
+  describe "Object creation" do
     it "should create a valid new instance given right attributes" do
       forum = Forum.new(@attrs)
       forum.should be_valid
@@ -32,6 +32,7 @@ describe Forum do
     it "should not create a valid new instance with blank name" do
       forum = Forum.new(@attrs.merge(:name => ""))
       forum.should_not be_valid
+      forum.errors[:name].should cannot_be_blank
     end
   
     it "should create a new instance with blank description" do
@@ -40,12 +41,12 @@ describe Forum do
     end
   end
   
-  describe "status validation" do
+  describe "Status validation" do
     before do
       @forum = Forum.create(@attrs)
     end
     
-    context "valid status" do
+    context "Valid status" do
       Forum.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @forum }
@@ -53,7 +54,7 @@ describe Forum do
       end
     end
     
-    context "invalid status" do
+    context "Invalid status" do
       (ModelHelper.all_status - Forum.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @forum }
@@ -62,7 +63,7 @@ describe Forum do
     end
   end
   
-  describe "threads relationship" do
+  describe "Threads relationship" do
     before do
       @forum = Forum.create!(@attrs)
       @threds_attrs = { :name => "Sample Thread",
@@ -71,7 +72,7 @@ describe Forum do
                         :content_id => 2}
     end
     
-    context "thread creation" do
+    context "Thread creation" do
       it "should create thread instance" do
         thread = @forum.threads.create(@threds_attrs)
         thread.id.should_not be_nil
@@ -80,7 +81,7 @@ describe Forum do
       end
     end
     
-    context "thread searches" do
+    context "Thread searches" do
       before do
         @threads = []
         10.times do |n|
