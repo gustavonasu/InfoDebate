@@ -25,139 +25,150 @@ describe Commenter do
     }
   end
   
-  it "should create a new instance given right attributes" do
-    commenter = Commenter.new(@attrs)
-    commenter.should be_valid
-  end
-  
-  it "should update commenter without password" do
-    new_name = "New Commenter"
-    Commenter.create(@attrs)
-    commenter = Commenter.first
-    commenter.update_attributes(:name => new_name, :email => "new_commenter@infodebate.com")
-    commenter.should be_valid
-  end
-  
-  context "name attribute validations" do
-    it "should create a new instance with 100 chars on name attr" do
-      commenter = Commenter.new(@attrs.merge(:name => "a"*100))
+  describe "Object creation" do
+    
+    it "should create a new instance given right attributes" do
+      commenter = Commenter.new(@attrs)
       commenter.should be_valid
     end
   
-    it "name should not be blank" do
-      commenter = Commenter.new(@attrs.merge(:name => ""))
-      commenter.should_not be_valid
-    end
-  
-    it "name should not be greater than 100" do
-      commenter = Commenter.new(@attrs.merge(:name => "a"*101))
-      commenter.should_not be_valid
-    end
-  end
-  
-  
-  context "username attribute validations" do
-    it "username should not be blank" do
-      commenter = Commenter.new(@attrs.merge(:username => ""))
-      commenter.should_not be_valid
-    end
-  
-    it "username should not be lesser than 3" do
-      commenter = Commenter.new(@attrs.merge(:username => "a"*2))
-      commenter.should_not be_valid
-    end
-  
-    it "username should not be greater than 30" do
-      commenter = Commenter.new(@attrs.merge(:username => "a"*31))
-      commenter.should_not be_valid
-    end
-  
-    it "username should be unique" do
-      Commenter.create!(@attrs)
-      commenter = Commenter.new(@attrs.merge(:email => "new_email@example.com"))
-      commenter.should_not be_valid
-      commenter.errors["username"].size.should > 0
-    end
-    
-    it "username should be readonly" do
-      commenter = Commenter.create!(@attrs)
-      old_username = commenter.username
-      commenter.username = "new_username"
-      commenter.save
-      commenter.reload
-      commenter.username.should eq(old_username)
-    end
-  end
-  
-  
-  context "email attribute validations" do
-    it "email should not be blank" do
-      commenter = Commenter.new(@attrs.merge(:email => ""))
-      commenter.should_not be_valid
-    end
-  
-    it "email should have correct format" do
-      commenter = Commenter.new(@attrs.merge(:email => "test"))
-      commenter.should_not be_valid
-      commenter = Commenter.new(@attrs.merge(:email => "test@example"))
-      commenter.should_not be_valid
-      commenter = Commenter.new(@attrs.merge(:email => "test@example.com"))
-      commenter.should be_valid
-    end
-  
-    it "email should be unique" do
-      Commenter.create!(@attrs)
-      commenter = Commenter.new(@attrs.merge(:username => "new_username"))
-      commenter.should_not be_valid
-      commenter.errors["email"].size.should > 0
-    end
-  end
-  
-  
-  context "password attribute validations" do
-    it "password should not be blank" do
-      commenter = Commenter.new(@attrs.merge(:password => ""))
-      commenter.should_not be_valid
-    end
-    
-    it "password and password_confirmation should be equal" do
-      commenter = Commenter.new(@attrs.merge(:password => "pass",
-                                             :password_confirmation => "pass1"))
-      commenter.should_not be_valid
-    end
-    
-    it "password should not be lesser than 6" do
-      pass = "a"*5
-      commenter = Commenter.new(@attrs.merge(:password => pass,
-                                             :password_confirmation => pass))
-      commenter.should_not be_valid
-    end
-  
-    it "password should not be greater than 40" do
-      pass = "a"*41
-      commenter = Commenter.new(@attrs.merge(:password => pass,
-                                             :password_confirmation => pass))
-      commenter.should_not be_valid
-    end
-    
-    it "should not update password without password_confirmation" do
-      Commenter.create!(@attrs)
+    it "should update commenter without password" do
+      new_name = "New Commenter"
+      Commenter.create(@attrs)
       commenter = Commenter.first
-      commenter.update_attributes(:password => "new_pass", :password_confirmation => "")
-      commenter.errors['password'].length.should be > 0
-      commenter.should_not be_valid
+      commenter.update_attributes(:name => new_name, :email => "new_commenter@infodebate.com")
+      commenter.should be_valid
+    end
+  
+    context "Name attribute validations" do
+      it "should create a new instance with 100 chars on name attr" do
+        commenter = Commenter.new(@attrs.merge(:name => "a"*100))
+        commenter.should be_valid
+      end
+      
+      it "name should not be blank" do
+        commenter = Commenter.new(@attrs.merge(:name => ""))
+        commenter.should_not be_valid
+        commenter.errors[:name].should cannot_be_blank
+      end
+      
+      it "name should not be greater than 100" do
+        commenter = Commenter.new(@attrs.merge(:name => "a"*101))
+        commenter.should_not be_valid
+        commenter.errors[:name].should too_long
+      end
     end
     
-    it "should update password" do
-      Commenter.create!(@attrs)
-      commenter = Commenter.first
-      pass = "new_pass"
-      commenter.update_attributes(:password => pass, :password_confirmation => pass)
-      commenter.should be_valid
+    context "Username attribute validations" do
+      it "username should not be blank" do
+        commenter = Commenter.new(@attrs.merge(:username => ""))
+        commenter.should_not be_valid
+        commenter.errors[:username].should cannot_be_blank
+      end
+  
+      it "username should not be lesser than 3" do
+        commenter = Commenter.new(@attrs.merge(:username => "a"*2))
+        commenter.should_not be_valid
+        commenter.errors[:username].should too_short
+      end
+  
+      it "username should not be greater than 30" do
+        commenter = Commenter.new(@attrs.merge(:username => "a"*31))
+        commenter.should_not be_valid
+        commenter.errors[:username].should too_long
+      end
+  
+      it "username should be unique" do
+        Commenter.create!(@attrs)
+        commenter = Commenter.new(@attrs.merge(:email => "new_email@example.com"))
+        commenter.should_not be_valid
+        commenter.errors[:username].should be_unique
+      end
+    
+      it "username should be readonly" do
+        commenter = Commenter.create!(@attrs)
+        old_username = commenter.username
+        commenter.username = "new_username"
+        commenter.save
+        commenter.reload
+        commenter.username.should eq(old_username)
+      end
+    end
+    
+    context "Email attribute validations" do
+      it "email should not be blank" do
+        commenter = Commenter.new(@attrs.merge(:email => ""))
+        commenter.should_not be_valid
+      end
+      
+      it "email should have correct format" do
+        commenter = Commenter.new(@attrs.merge(:email => "test"))
+        commenter.should_not be_valid
+        commenter.errors[:email].should invalid_email
+        commenter = Commenter.new(@attrs.merge(:email => "test@example"))
+        commenter.should_not be_valid
+        commenter.errors[:email].should invalid_email
+        commenter = Commenter.new(@attrs.merge(:email => "test@example.com"))
+        commenter.should be_valid
+      end
+      
+      it "email should be unique" do
+        Commenter.create!(@attrs)
+        commenter = Commenter.new(@attrs.merge(:username => "new_username"))
+        commenter.should_not be_valid
+        commenter.errors[:email].should be_unique
+      end
+    end
+    
+    context "Password attribute validations" do
+      it "password should not be blank" do
+        commenter = Commenter.new(@attrs.merge(:password => ""))
+        commenter.should_not be_valid
+        commenter.errors[:password].should too_short
+      end
+      
+      it "password and password_confirmation should be equal" do
+        commenter = Commenter.new(@attrs.merge(:password => "pass",
+                                               :password_confirmation => "pass1"))
+        commenter.should_not be_valid
+        commenter.errors[:password].should not_match_confirmation
+      end
+      
+      it "password should not be lesser than 6" do
+        pass = "a"*5
+        commenter = Commenter.new(@attrs.merge(:password => pass,
+                                               :password_confirmation => pass))
+        commenter.should_not be_valid
+        commenter.errors[:password].should too_short
+      end
+      
+      it "password should not be greater than 40" do
+        pass = "a"*41
+        commenter = Commenter.new(@attrs.merge(:password => pass,
+                                               :password_confirmation => pass))
+        commenter.should_not be_valid
+        commenter.errors[:password].should too_long
+      end
+      
+      it "should not update password without password_confirmation" do
+        Commenter.create!(@attrs)
+        commenter = Commenter.first
+        commenter.update_attributes(:password => "new_pass", :password_confirmation => "")
+        commenter.should_not be_valid
+        commenter.errors[:password].should not_match_confirmation
+      end
+      
+      it "should update password" do
+        Commenter.create!(@attrs)
+        commenter = Commenter.first
+        pass = "new_pass"
+        commenter.update_attributes(:password => pass, :password_confirmation => pass)
+        commenter.should be_valid
+      end
     end
   end
   
-  context "authentication" do
+  describe "Authentication" do
     it "should authenticate with right password" do
       pass = "right_password"
       commenter = Commenter.create(@attrs.merge(:password => pass,

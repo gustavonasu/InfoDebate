@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module ModelHelper
   
   def self.all_status
@@ -30,8 +32,39 @@ module ModelHelper
 end
 
 
+# TODO arrumar mensagem de erro.
 RSpec::Matchers.define :cannot_be_blank do
   match do |actual|
-    actual.include? "can't be blank"
+    actual.index{ |msg| msg =~ /can't be blank/ }
+  end
+end
+
+RSpec::Matchers.define :too_long do
+  match do |actual|
+    actual.index{ |msg| msg =~ /is too long/ }
+  end
+end
+
+RSpec::Matchers.define :too_short do
+  match do |actual|
+    actual.index{ |msg| msg =~ /is too short/ }
+  end
+end
+
+RSpec::Matchers.define :be_unique do
+  match do |actual|
+    actual.index{ |msg| msg =~ /has already been taken/ }
+  end
+end
+
+RSpec::Matchers.define :not_match_confirmation do
+  match do |actual|
+    actual.index{ |msg| msg =~ /doesn't match confirmation/ }
+  end
+end
+
+RSpec::Matchers.define :invalid_email do
+  match do |actual|
+    actual.index{ |msg| msg =~ /não é um email válido/ }
   end
 end
