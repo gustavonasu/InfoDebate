@@ -27,30 +27,32 @@ describe ForumThread do
     }
   end
   
-  it "should create a valid new instance given right attributes" do
-    thread = ForumThread.new(@attrs)
-    thread.should be_valid
-    thread.active?.should be_true
-  end
+  describe "ForumThread creation" do
+    it "should create a valid new instance given right attributes" do
+      thread = ForumThread.new(@attrs)
+      thread.should be_valid
+      thread.active?.should be_true
+    end
   
-  it "should not create a new instance with blank name" do
-    thread = ForumThread.new(@attrs.merge(:name => ""))
-    thread.should_not be_valid
-  end
+    it "should not create a new instance with blank name" do
+      thread = ForumThread.new(@attrs.merge(:name => ""))
+      thread.should_not be_valid
+    end
   
-  it "should create a new instance with blank description" do
-    thread = ForumThread.new(@attrs.merge(:description => ""))
-    thread.should be_valid
-  end
+    it "should create a new instance with blank description" do
+      thread = ForumThread.new(@attrs.merge(:description => ""))
+      thread.should be_valid
+    end
   
-  it "should create a new instance with blank url" do
-    thread = ForumThread.new(@attrs.merge(:url => ""))
-    thread.should be_valid
-  end
+    it "should create a new instance with blank url" do
+      thread = ForumThread.new(@attrs.merge(:url => ""))
+      thread.should be_valid
+    end
   
-  it "should create a new instance with nil content_id" do
-    thread = ForumThread.new(@attrs.merge(:content_id => nil))
-    thread.should be_valid
+    it "should create a new instance with nil content_id" do
+      thread = ForumThread.new(@attrs.merge(:content_id => nil))
+      thread.should be_valid
+    end
   end
   
   describe "status validation" do
@@ -76,30 +78,32 @@ describe ForumThread do
     end
   end
   
-  context "forum relationship" do
-    before do
-      @forum = FactoryGirl.create(:forum)
-      @threads = create_threads(@forum)
-      @another_forum = FactoryGirl.create(:forum)
-      @another_threads = create_threads(@another_forum)
-    end
-    
-    def create_threads(forum)
-      threads = []
-      10.times do |n|
-        threads << FactoryGirl.create(:forum_thread, :forum => forum)
+  describe "ForumThread search" do
+    context "forum relationship" do
+      before do
+        @forum = FactoryGirl.create(:forum)
+        @threads = create_threads(@forum)
+        @another_forum = FactoryGirl.create(:forum)
+        @another_threads = create_threads(@another_forum)
       end
-      threads
-    end
     
-    it "should search by forum" do
-      ForumThread.find_all_by_forum_id(@forum).should eq(@threads)
-      ForumThread.find_all_by_forum_id(@another_forum).should eq(@another_threads)
-    end
+      def create_threads(forum)
+        threads = []
+        10.times do |n|
+          threads << FactoryGirl.create(:forum_thread, :forum => forum)
+        end
+        threads
+      end
     
-    it "should return threads search by forum relationship" do
-      @forum.threads.all.should eql(@threads)
-      @another_forum.threads.all.should eql(@another_threads)
+      it "should search by forum" do
+        ForumThread.find_all_by_forum_id(@forum).should eq(@threads)
+        ForumThread.find_all_by_forum_id(@another_forum).should eq(@another_threads)
+      end
+    
+      it "should return threads search by forum relationship" do
+        @forum.threads.all.should eql(@threads)
+        @another_forum.threads.all.should eql(@another_threads)
+      end
     end
   end
 end

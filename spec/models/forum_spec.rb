@@ -21,21 +21,23 @@ describe Forum do
       :description => "Forum Description"
     }
   end
-
-  it "should create a valid new instance given right attributes" do
-    forum = Forum.new(@attrs)
-    forum.should be_valid
-    forum.active?.should be_true
-  end
   
-  it "should not create a valid new instance with blank name" do
-    forum = Forum.new(@attrs.merge(:name => ""))
-    forum.should_not be_valid
-  end
+  describe "Forum creation" do
+    it "should create a valid new instance given right attributes" do
+      forum = Forum.new(@attrs)
+      forum.should be_valid
+      forum.active?.should be_true
+    end
   
-  it "should create a new instance with blank description" do
-    forum = Forum.new(@attrs.merge(:description => ""))
-    forum.should be_valid
+    it "should not create a valid new instance with blank name" do
+      forum = Forum.new(@attrs.merge(:name => ""))
+      forum.should_not be_valid
+    end
+  
+    it "should create a new instance with blank description" do
+      forum = Forum.new(@attrs.merge(:description => ""))
+      forum.should be_valid
+    end
   end
   
   describe "status validation" do
@@ -68,12 +70,14 @@ describe Forum do
                         :url => "http://infodebate.com/article/1",
                         :content_id => 2}
     end
-
-    it "should create thread instance" do
-      thread = @forum.threads.create(@threds_attrs)
-      thread.id.should_not be_nil
-      thread.active?.should be_true
-      thread.forum.should eq(@forum)
+    
+    context "thread creation" do
+      it "should create thread instance" do
+        thread = @forum.threads.create(@threds_attrs)
+        thread.id.should_not be_nil
+        thread.active?.should be_true
+        thread.forum.should eq(@forum)
+      end
     end
     
     context "thread searches" do
