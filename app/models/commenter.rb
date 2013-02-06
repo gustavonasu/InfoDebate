@@ -26,7 +26,7 @@ class Commenter < ActiveRecord::Base
   validates :password, :length => { :in => 6..40 },
                        :confirmation => true, :if => :validate_password?
   
-  before_validation :encrypt_password
+  before_validation :fix_password_validation, :encrypt_password
   
   def self.authenticate(username, submitted_password)
     commenter = first(:conditions => {:username => username})
@@ -46,7 +46,15 @@ class Commenter < ActiveRecord::Base
   private
     
     def validate_password?
-      !password.blank? || new_record?
+      new_record? ||
+      (!new_record? && !password.blank?)
+    end
+    
+    def fix_password_validation
+      # password_confirmation when nil doesn't validate
+      if !password.blank? && self.password_confirmation.blank?
+        self.password_confirmation = ""
+      end
     end
     
     def encrypt_password

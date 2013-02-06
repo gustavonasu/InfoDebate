@@ -34,7 +34,7 @@ describe Commenter do
   
     it "should update commenter without password" do
       new_name = "New Commenter"
-      Commenter.create(@attrs)
+      Commenter.create!(@attrs)
       commenter = Commenter.first
       commenter.update_attributes(:name => new_name, :email => "new_commenter@infodebate.com")
       commenter.should be_valid
@@ -164,6 +164,16 @@ describe Commenter do
         pass = "new_pass"
         commenter.update_attributes(:password => pass, :password_confirmation => pass)
         commenter.should be_valid
+      end
+      
+      it "should not update pass without confirmation" do
+        pass = "secret123"
+        Commenter.create!(@attrs.merge(:password => pass, :password_confirmation => pass))
+        commenter = Commenter.first
+        commenter.update_attributes(:password => "newpassword")
+        commenter.should_not be_valid
+        commenter.reload
+        commenter.has_password(pass).should be_true
       end
     end
   end
