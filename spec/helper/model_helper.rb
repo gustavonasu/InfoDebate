@@ -3,11 +3,11 @@
 module ModelHelper
   
   def self.all_status
-    Infodebate::Status.all_status
+    ModelStatus.all_status
   end
   
   def self.action(status)
-    Infodebate::Status.find_action(status)
+    ModelStatus.find_action(status)
   end
   
   all_status.each do |status|
@@ -25,7 +25,7 @@ module ModelHelper
   all_status.each do |status|
     shared_examples_for "invalid #{status} status validation" do
       it "should not change status to #{status}" do
-        expect { subject.send(ModelHelper.action(status)) }.to raise_error(Infodebate::InvalidStatus)  
+        expect { subject.send(ModelHelper.action(status)) }.to raise_error(InvalidStatus)  
       end
     end
   end

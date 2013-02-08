@@ -1,0 +1,2 @@
+class InvalidStatus < Exception
+end

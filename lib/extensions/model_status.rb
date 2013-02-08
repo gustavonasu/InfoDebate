@@ -1,4 +1,4 @@
-module Infodebate::Status
+module ModelStatus
   
     STATUS = { :active => 1,
                :inactive => 2,
@@ -67,7 +67,7 @@ module Infodebate::Status
       end
 
       def status=(s)
-        raise Infodebate::InvalidStatus unless valid_status? s
+        raise InvalidStatus unless valid_status? s
         write_attribute :status, STATUS[s]
       end
       

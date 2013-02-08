@@ -11,7 +11,7 @@
 #
 
 class Forum < ActiveRecord::Base
-  include Infodebate::Status
+  include ModelStatus
   
   attr_accessible :description, :name
 

@@ -14,7 +14,7 @@
 #
 
 class ForumThread < ActiveRecord::Base
-  include Infodebate::Status
+  include ModelStatus
   
   attr_accessible :content_id, :description, :name, :url
   
