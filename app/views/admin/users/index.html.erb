@@ -1,9 +1,9 @@
-<%= render 'shared/admin_title_options', :title => "Listing commenters",
- 				:options => [ {:label => "New Commenter", :path => new_admin_commenter_path, :type => "info"} ] %>
+<%= render 'shared/admin_title_options', :title => "Listing users",
+ 				:options => [ {:label => "New User", :path => new_admin_user_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 
-<%= form_tag admin_commenters_path, :method => 'get' do %>
+<%= form_tag admin_users_path, :method => 'get' do %>
 	<%= text_field_tag :q, params[:q], :class => "input-medium search-query" %>
 	<%= submit_tag "Search", :class => "btn" %>
 <% end %>
@@ -18,10 +18,10 @@
 		<th>Email</th>
 		<th></th>
 	</tr>
-	<% if @commenters.empty? %>
-		<tr><td colspan="5">No commenter found</td></tr>
+	<% if @users.empty? %>
+		<tr><td colspan="5">No user found</td></tr>
 	<% else %>
-		<%= render @commenters %>
+		<%= render @users %>
 	<% end %>
 </table>
 

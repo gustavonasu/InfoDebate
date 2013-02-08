@@ -1,0 +1,13 @@
+<%= render 'shared/admin_title_options', :title => "Show user",
+ 				:options => [ {:label => "Edit", :path => edit_admin_user_path(@user), :type => "info"},
+							  {:label => "Delete", :path => admin_user_path(@user), :type => "danger", 
+								:method => "delete", :confirmation_msg => "Are you sure to proceed?"},
+	 						  {:label => "Back", :path => admin_users_path, :type => "info"} ] %>
+
+<%= render 'shared/status_message' %>
+
+<div class="form-horizontal">
+	<%= render 'shared/field_show', :label => "Name", :value => @user.name %>
+	<%= render 'shared/field_show', :label => "Username", :value => @user.username %>
+	<%= render 'shared/field_show', :label => "Email", :value => @user.email %>
+</div>

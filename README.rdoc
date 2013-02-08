@@ -16,11 +16,11 @@ This project intends to manage Forum for third sites.
 
 2. User Manager.
 
-=== Commenter Module
+=== User Module
 
 1. Manage own comments.
 
-2. Follow/Unfollow others commenters.
+2. Follow/Unfollow others users.
 
 3. See replies.
 
@@ -29,7 +29,7 @@ This project intends to manage Forum for third sites.
 
 ===  Site Module
 
-1. Rich Rest API to manage Site, Forums, Threads, Comments and Commenters configurations.
+1. Rich Rest API to manage Site, Forums, Threads, Comments and Users configurations.
 
 2. Javascript client to append on site.
 

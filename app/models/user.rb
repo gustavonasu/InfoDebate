@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: commenters
+# Table name: users
 #
 #  id                 :integer          not null, primary key
 #  name               :string(100)      not null
@@ -12,7 +12,7 @@
 #  updated_at         :datetime         not null
 #
 
-class Commenter < ActiveRecord::Base
+class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
   attr_readonly :username
@@ -29,8 +29,8 @@ class Commenter < ActiveRecord::Base
   before_validation :fix_password_validation, :encrypt_password
   
   def self.authenticate(username, submitted_password)
-    commenter = first(:conditions => {:username => username})
-    return commenter if commenter.has_password(submitted_password)
+    user = first(:conditions => {:username => username})
+    return user if user.has_password(submitted_password)
   end
   
   def has_password(submitted_password)

@@ -1,20 +1,20 @@
 namespace :db do
   desc "Fill database with sample data"
-  task :populate_commenter => :environment do
+  task :populate_user => :environment do
     require 'faker'
-    if Commenter.count == 0
-      make_commenters
+    if User.count == 0
+      make_users
     end
   end
 end
 
-def make_commenters
+def make_users
   100.times do |n|
     name = Faker::Name.name
-    username = "commenter-#{n+1}"
+    username = "user-#{n+1}"
     email = "#{username}@infodebate.com"
     password = "password"
-    Commenter.create!(:name => name,
+    User.create!(:name => name,
                       :username => username,
                       :email => email,
                       :password => password,

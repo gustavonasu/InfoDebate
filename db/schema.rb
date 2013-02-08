@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20130201014024) do
 
-  create_table "commenters", :force => true do |t|
+  create_table "users", :force => true do |t|
     t.string   "name",               :limit => 100, :null => false
     t.string   "username",           :limit => 30,  :null => false
     t.string   "email",                             :null => false
@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(:version => 20130201014024) do
     t.datetime "updated_at",                        :null => false
   end
 
-  add_index "commenters", ["email"], :name => "index_commenters_on_email", :unique => true
-  add_index "commenters", ["name"], :name => "index_commenters_on_name"
-  add_index "commenters", ["username"], :name => "index_commenters_on_username"
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["name"], :name => "index_users_on_name"
+  add_index "users", ["username"], :name => "index_users_on_username"
 
   create_table "forum_threads", :force => true do |t|
     t.string   "name",        :limit => 100, :null => false

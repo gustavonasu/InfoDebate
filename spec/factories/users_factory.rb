@@ -1,10 +1,10 @@
 FactoryGirl.define do
-  factory :commenter do |commenter|
-    commenter.name "Gustavo Nasu"
-    commenter.username "gustavonasu"
-    commenter.email "mhartl@example.com"
-    commenter.password "secret"
-    commenter.password_confirmation "secret"
+  factory :user do |user|
+    user.name "Gustavo Nasu"
+    user.username "gustavonasu"
+    user.email "mhartl@example.com"
+    user.password "secret"
+    user.password_confirmation "secret"
   end
   
   sequence :email do |n|

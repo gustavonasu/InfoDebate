@@ -1,6 +1,6 @@
-class CreateCommenters < ActiveRecord::Migration
+class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :commenters do |t|
+    create_table :users do |t|
       t.string :name, :null => false, :limit => 100
       t.string :username, :null => false, :limit => 30
       t.string :email, :null => false
