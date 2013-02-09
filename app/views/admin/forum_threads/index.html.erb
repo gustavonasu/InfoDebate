@@ -1,0 +1,23 @@
+<h1>Listing forum_threads</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @forum_threads.each do |forum_thread| %>
+  <tr>
+	<td><%= forum_thread.name %></td>
+    <td><%= link_to 'Show', [:admin, forum_thread] %></td>
+    <td><%= link_to 'Edit', edit_admin_forum_thread_path(forum_thread) %></td>
+    <td><%= link_to 'Destroy', [:admin, forum_thread], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Forum thread', new_admin_forum_thread_path %>
