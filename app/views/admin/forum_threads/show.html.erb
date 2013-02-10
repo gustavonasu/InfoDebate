@@ -1,5 +1,14 @@
-<p id="notice"><%= notice %></p>
+<%= render 'shared/admin_title_options', :title => "Visualização de Thread",
+ 				:options => [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"},
+							  {:label => "Apagar", :path => admin_forum_thread_path(@forum_thread), :type => "danger", 
+								:method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
+	 						  {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
 
+<%= render 'shared/status_message' %>
 
-<%= link_to 'Edit', edit_admin_forum_thread_path(@forum_thread) %> |
-<%= link_to 'Back', admin_forum_threads_path %>
+<div class="form-horizontal">
+	<%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
+	<%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
+	<%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
+	<%= render 'shared/field_show', :label => "Forum", :value => @forum_thread.forum.name %>
+</div>

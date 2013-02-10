@@ -2,7 +2,7 @@ class Admin::ForumThreadsController < ApplicationController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index
-    @forum_threads = ForumThread.all
+    @forum_threads = ForumThread.paginate(:page => params[:page], :per_page => PER_PAGE)
   end
 
   # GET /admin/forum_threads/1
@@ -25,8 +25,8 @@ class Admin::ForumThreadsController < ApplicationController
   # POST /admin/forum_threads
   # POST /admin/forum_threads.json
   def create
-    @forum_thread = ForumThread.new(params[:forum_thread])
-    @forum_thread.forum = Forum.find(params[:forum_id])
+    @forum_thread = ForumThread.new(params[:forum_thread].except(:forum_id))
+    @forum_thread.forum = Forum.find(params[:forum_thread][:forum_id])
     if @forum_thread.save
       redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully created.'
     else
@@ -38,7 +38,8 @@ class Admin::ForumThreadsController < ApplicationController
   # PUT /admin/forum_threads/1.json
   def update
     @forum_thread = ForumThread.find(params[:id])
-    if @forum_thread.update_attributes(params[:forum_thread])
+    @forum_thread.forum = Forum.find(params[:forum_thread][:forum_id])
+    if @forum_thread.update_attributes(params[:forum_thread].except(:forum_id))
       redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully updated.'
     else
       render action: "edit"

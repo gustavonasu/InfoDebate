@@ -1,23 +1,24 @@
-<h1>Listing forum_threads</h1>
+<%= render 'shared/admin_title_options', :title => "Lista de Threads",
+ 				:options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path, :type => "info"} ] %>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= render 'shared/status_message' %>
 
-<% @forum_threads.each do |forum_thread| %>
-  <tr>
-	<td><%= forum_thread.name %></td>
-    <td><%= link_to 'Show', [:admin, forum_thread] %></td>
-    <td><%= link_to 'Edit', edit_admin_forum_thread_path(forum_thread) %></td>
-    <td><%= link_to 'Destroy', [:admin, forum_thread], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+
+<%= will_paginate %>
+
+<table class="table table-hover">
+	<tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Forum</th>
+		<th>Descrição</th>
+		<th></th>
+	</tr>
+	<% if @forum_threads.empty? %>
+		<tr><td colspan="5">Nenhuma Thread foi encontrada.</td></tr>
+	<% else %>
+		<%= render @forum_threads %>
+	<% end %>
 </table>
 
-<br />
-
-<%= link_to 'New Forum thread', new_admin_forum_thread_path %>
+<%= will_paginate %>
