@@ -1,21 +1,23 @@
-<h1>Listing admin_forums</h1>
+<%= render 'shared/admin_title_options', :title => "Lista de Forums",
+ 				:options => [ {:label => "Novo Forum", :path => new_admin_forum_path, :type => "info"} ] %>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= render 'shared/status_message' %>
 
-<% @forums.each do |admin_forum| %>
-  <tr>
-    <td><%= link_to 'Show', [:admin, admin_forum] %></td>
-    <td><%= link_to 'Edit', edit_admin_forum_path(admin_forum) %></td>
-    <td><%= link_to 'Destroy', [:admin, admin_forum], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+
+<%= will_paginate %>
+
+<table class="table table-hover">
+	<tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Descrição</th>
+		<th></th>
+	</tr>
+	<% if @forums.empty? %>
+		<tr><td colspan="5">Nenhum Forum foi encontrado.</td></tr>
+	<% else %>
+		<%= render @forums %>
+	<% end %>
 </table>
 
-<br />
-
-<%= link_to 'New Forum', new_admin_forum_path %>
+<%= will_paginate %>

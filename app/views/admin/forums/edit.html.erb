@@ -1,6 +1,9 @@
-<h1>Editing admin_forum</h1>
+<%= render 'shared/admin_title_options', :title => "Atualização de Forum",
+ 				:options => [ {:label => "Voltar", :path => admin_forum_path, :type => "info"} ] %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', [:admin, @forum] %> |
-<%= link_to 'Back', admin_forums_path %>
+<%= form_for([:admin, @forum], :html => {:class => "form-horizontal"}) do |f| %>
+	<%= render 'fields', :f => f %>	
+	<div class="controls"> 
+	    <%= f.submit "Salvar", :class => "btn btn-primary btn-large" %>
+	</div>
+<% end %>

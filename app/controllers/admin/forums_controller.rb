@@ -2,7 +2,7 @@ class Admin::ForumsController < ApplicationController
   # GET /admin/forums
   # GET /admin/forums.json
   def index
-    @forums = Forum.all
+    @forums = Forum.paginate(:page => params[:page], :per_page => PER_PAGE)
   end
 
   # GET /admin/forums/1
