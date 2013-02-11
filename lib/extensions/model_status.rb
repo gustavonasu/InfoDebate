@@ -59,12 +59,18 @@ module ModelStatus
     def deleted?
       :deleted == status
     end
-
+    
+    # Disable destroy object
+    def destroy
+      self.delete
+      self.save
+    end
+    
+    def status
+      STATUS.key(read_attribute(:status))
+    end
+    
     private
-
-      def status
-        STATUS.key(read_attribute(:status))
-      end
 
       def status=(s)
         raise InvalidStatus unless valid_status? s

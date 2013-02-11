@@ -22,7 +22,7 @@ class Forum < ActiveRecord::Base
   validates :status, :presence => true
   
   after_initialize do
-    self.active # default status is active
+    self.active if new_record? # default status is active
   end
   
   def self.valid_status

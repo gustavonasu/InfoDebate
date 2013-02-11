@@ -29,6 +29,15 @@ module ModelHelper
       end
     end
   end
+  
+  shared_examples_for "destroy ModelStatus instance" do
+    it "should not destroy instance" do
+      expect {
+        subject.destroy
+      }.to_not change(type, :count)
+      type.find(subject.id).deleted?.should be_true
+    end
+  end
 end
 
 

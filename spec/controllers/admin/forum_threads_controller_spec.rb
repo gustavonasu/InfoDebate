@@ -162,7 +162,8 @@ describe Admin::ForumThreadsController do
     it "destroys the requested admin_forum_thread" do
       expect {
         delete :destroy, {:id => @forum_thread.to_param}, valid_session
-      }.to change(ForumThread, :count).by(-1)
+      }.to_not change(ForumThread, :count)
+      ForumThread.find(@forum).deleted?.should be_true
     end
 
     it "redirects to the admin_forum_threads list" do

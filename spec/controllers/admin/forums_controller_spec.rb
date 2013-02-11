@@ -151,7 +151,8 @@ describe Admin::ForumsController do
       forum = Forum.create! valid_attributes
       expect {
         delete :destroy, {:id => forum.to_param}, valid_session
-      }.to change(Forum, :count).by(-1)
+      }.to_not change(Forum, :count)
+      Forum.find(forum).deleted?.should be_true
     end
 
     it "redirects to the admin_forums list" do

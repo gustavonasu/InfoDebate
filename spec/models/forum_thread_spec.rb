@@ -27,6 +27,12 @@ describe ForumThread do
     }
   end
   
+  def create_thread(attrs)
+    thread = ForumThread.new(attrs)
+    thread.forum = FactoryGirl.create(:forum)
+    thread
+  end
+  
   describe "Object creation" do
     it "should create a valid new instance given right attributes" do
       thread = create_thread(@attrs)
@@ -60,12 +66,6 @@ describe ForumThread do
       thread.should_not be_valid
       thread.errors[:forum_id].should cannot_be_blank
     end
-    
-    def create_thread(attrs)
-      thread = ForumThread.new(attrs)
-      thread.forum = FactoryGirl.create(:forum)
-      thread
-    end
   end
   
   describe "Status validation" do
@@ -88,6 +88,18 @@ describe ForumThread do
           subject { @thread }
         end
       end
+    end
+  end
+  
+  describe "Object deletion" do
+    before do
+      @thread = create_thread(@attrs)
+      @thread.save()
+    end
+    
+    it_should_behave_like "destroy ModelStatus instance" do
+      subject { @thread }
+      let(:type) { ForumThread }
     end
   end
   

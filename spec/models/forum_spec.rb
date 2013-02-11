@@ -63,6 +63,17 @@ describe Forum do
     end
   end
   
+  describe "Object deletion" do
+    before do
+      @forum = Forum.create!(@attrs)
+    end
+    
+    it_should_behave_like "destroy ModelStatus instance" do
+      subject { @forum }
+      let(:type) { Forum }
+    end
+  end
+  
   describe "Threads relationship" do
     before do
       @forum = Forum.create!(@attrs)
