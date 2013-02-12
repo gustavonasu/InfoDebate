@@ -29,4 +29,10 @@ class Forum < ActiveRecord::Base
     [:active, :inactive, :deleted]
   end
 
+  def self.search(search, page, per_page)
+    s = "%#{search}%"
+    paginate :per_page => per_page, :page => page,
+             :conditions => ['name like ?', s]
+  end
+
 end

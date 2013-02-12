@@ -2,4 +2,5 @@
  *= require_self
  *= require custom
  *= require custom-responsive
+ *= require select2
  */

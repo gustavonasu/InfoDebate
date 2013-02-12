@@ -2,13 +2,27 @@ class Admin::ForumsController < ApplicationController
   # GET /admin/forums
   # GET /admin/forums.json
   def index
-    @forums = Forum.paginate(:page => params[:page], :per_page => PER_PAGE)
+    per_page = params[:limit] || PER_PAGE
+    unless params[:q].blank?
+      @forums = Forum.search(params[:q], params[:page], per_page)
+    else
+      @forums = Forum.paginate(:page => params[:page], :per_page => per_page)
+    end
+    
+    respond_to do |format|
+      format.html
+      format.js { render :json => @forums.map {|f| {:id => f.id, :text => f.name} } }
+    end
   end
 
   # GET /admin/forums/1
   # GET /admin/forums/1.json
   def show
     @forum = Forum.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js { render :json => {:id => @forum.id, :text => @forum.name} }
+    end
   end
 
   # GET /admin/forums/new

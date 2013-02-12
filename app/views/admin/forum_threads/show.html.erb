@@ -10,5 +10,7 @@
 	<%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
 	<%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
 	<%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
-	<%= render 'shared/field_show', :label => "Forum", :value => @forum_thread.forum.name %>
+	<%= render 'shared/field_show', :label => "Forum", 
+								:value => "#{@forum_thread.forum.name} (Id: #{@forum_thread.forum.id})",
+								:link => admin_forum_path(@forum_thread.forum) %>
 </div>

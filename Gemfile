@@ -18,6 +18,7 @@ group :assets do
   gem 'bootstrap-sass', '~> 2.2.1.1'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem "select2-rails", "~> 3.2.1"
 end
 
 gem 'sqlite3-ruby', '1.3.3', :require => 'sqlite3', :group => [:development, :test]
