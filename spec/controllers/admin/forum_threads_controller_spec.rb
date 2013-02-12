@@ -19,7 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::ForumThreadsController do
-
+  
   before do
     @forum = FactoryGirl.create(:forum)
     @forum_thread = FactoryGirl.create(:forum_thread, valid_attributes.merge(:forum => @forum))
@@ -29,44 +29,37 @@ describe Admin::ForumThreadsController do
   # ForumThread. As you add validations to ForumThread, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {:name => "Thread Name"}
+    {:name => "Thread Name", :forum_id => @forum.id}
   end
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ForumThreadsController. Be sure to keep this updated too.
-  def valid_session
-    {}
-  end
-
-  def create_thread_form(forum_thread_attrs = valid_attributes)
-    {:forum_thread => forum_thread_attrs.merge(:forum_id => @forum.id)}
+  def create_thread_map(forum_thread_attrs = valid_attributes)
+    {:forum_thread => forum_thread_attrs}
   end
 
   describe "GET index" do
     it "assigns all admin_forum_threads as @forum_threads" do
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:forum_threads).should eq([@forum_thread])
     end
   end
 
   describe "GET show" do
     it "assigns the requested admin_forum_thread as @forum_thread" do
-      get :show, {:id => @forum_thread.to_param}, valid_session
+      get :show, {:id => @forum_thread.to_param}
       assigns(:forum_thread).should eq(@forum_thread)
     end
   end
 
   describe "GET new" do
     it "assigns a new admin_forum_thread as @forum_thread" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:forum_thread).should be_a_new(ForumThread)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested admin_forum_thread as @forum_thread" do
-      get :edit, {:id => @forum_thread.to_param}, valid_session
+      get :edit, {:id => @forum_thread.to_param}
       assigns(:forum_thread).should eq(@forum_thread)
     end
   end
@@ -75,40 +68,54 @@ describe Admin::ForumThreadsController do
     describe "with valid params" do
       it "creates a new ForumThread" do
         expect {
-          post :create, create_thread_form, valid_session
+          post :create, create_thread_map
         }.to change(ForumThread, :count).by(1)
       end
 
       it "assigns a newly created admin_forum_thread as @forum_thread" do
-        post :create, create_thread_form, valid_session
+        post :create, create_thread_map
         assigns(:forum_thread).should be_a(ForumThread)
         assigns(:forum_thread).should be_persisted
       end
 
       it "redirects to the created admin_forum_thread" do
-        post :create, create_thread_form, valid_session
+        post :create, create_thread_map
         response.should redirect_to([:admin, ForumThread.last])
       end
     end
 
     describe "with invalid params" do
+      before do
+        @thread_map = create_thread_map(:name => "", :forum_id => "")
+      end
+      
       it "assigns a newly created but unsaved admin_forum_thread as @forum_thread" do
         # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
-        post :create, create_thread_form({}), valid_session
+        post :create, @thread_map
         assigns(:forum_thread).should be_a_new(ForumThread)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
-        post :create, create_thread_form({}), valid_session
+        post :create, @thread_map
         response.should render_template("new")
+      end
+      
+      it "should return field with errors" do
+        post :create, @thread_map
+        assigns(:forum_thread).errors[:name].should cannot_be_blank
+        assigns(:forum_thread).errors[:forum_id].should cannot_be_blank
       end
     end
   end
 
   describe "PUT update" do
+    before do
+      @update_map = {:id => @forum_thread.to_param}
+    end
+    
     describe "with valid params" do
       it "updates the requested admin_forum_thread" do
         # Assuming there are no other admin_forum_threads in the database, this
@@ -116,43 +123,51 @@ describe Admin::ForumThreadsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         ForumThread.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => @forum_thread.to_param}.merge(create_thread_form({'these' => 'params'})), valid_session
+        put :update, @update_map.merge(create_thread_map({'these' => 'params'}))
       end
 
       it "assigns the requested admin_forum_thread as @forum_thread" do
-        put :update, {:id => @forum_thread.to_param}.merge(create_thread_form), valid_session
+        put :update, @update_map.merge(create_thread_map)
         assigns(:forum_thread).should eq(@forum_thread)
       end
 
       it "redirects to the admin_forum_thread" do
-        put :update, {:id => @forum_thread.to_param}.merge(create_thread_form), valid_session
+        put :update, @update_map.merge(create_thread_map)
         response.should redirect_to([:admin, @forum_thread])
       end
     end
 
     describe "with invalid params" do
+      before do
+        @thread_map = create_thread_map(:name => "", :forum_id => "")
+      end
+      
       it "assigns the admin_forum_thread as @forum_thread" do
         # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
-        put :update, {:id => @forum_thread.to_param}.merge(create_thread_form({})), valid_session
+        put :update, @update_map.merge(@thread_map)
         assigns(:forum_thread).should eq(@forum_thread)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
-        put :update, {:id => @forum_thread.to_param}.merge(create_thread_form({})), valid_session
+        put :update, @update_map.merge(@thread_map)
         response.should render_template("edit")
+      end
+      
+      it "should return field with errors" do
+        put :update, @update_map.merge(@thread_map)
+        assigns(:forum_thread).errors[:name].should cannot_be_blank
+        assigns(:forum_thread).errors[:forum_id].should cannot_be_blank
       end
     end
     
     describe "Update Forum association" do
       it "should update Forum association" do
         new_forum = FactoryGirl.create(:forum)
-        attrs = {:id => @forum_thread.to_param,
-                 :forum_thread => {:name => @forum_thread.name,
-                                  :forum_id => new_forum.id } }
-        put :update, attrs
+        put :update, @update_map.merge(create_thread_map(:name => @forum_thread.name,
+                                                      :forum_id => new_forum.id))
         ForumThread.find(@forum_thread.id).forum_id.should eq(new_forum.id)
       end
     end
@@ -161,13 +176,13 @@ describe Admin::ForumThreadsController do
   describe "DELETE destroy" do
     it "destroys the requested admin_forum_thread" do
       expect {
-        delete :destroy, {:id => @forum_thread.to_param}, valid_session
+        delete :destroy, {:id => @forum_thread.to_param}
       }.to_not change(ForumThread, :count)
       ForumThread.find(@forum).deleted?.should be_true
     end
 
     it "redirects to the admin_forum_threads list" do
-      delete :destroy, {:id => @forum_thread.to_param}, valid_session
+      delete :destroy, {:id => @forum_thread.to_param}
       response.should redirect_to(admin_forum_threads_url)
     end
   end

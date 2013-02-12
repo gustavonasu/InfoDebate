@@ -26,7 +26,7 @@ class Admin::ForumThreadsController < ApplicationController
   # POST /admin/forum_threads.json
   def create
     @forum_thread = ForumThread.new(params[:forum_thread].except(:forum_id))
-    @forum_thread.forum = Forum.find(params[:forum_thread][:forum_id])
+    @forum_thread.forum = get_forum
     if @forum_thread.save
       redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully created.'
     else
@@ -38,13 +38,15 @@ class Admin::ForumThreadsController < ApplicationController
   # PUT /admin/forum_threads/1.json
   def update
     @forum_thread = ForumThread.find(params[:id])
-    @forum_thread.forum = Forum.find(params[:forum_thread][:forum_id])
+    @forum_thread.forum = get_forum
     if @forum_thread.update_attributes(params[:forum_thread].except(:forum_id))
       redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully updated.'
     else
       render action: "edit"
     end
   end
+
+  
 
   # DELETE /admin/forum_threads/1
   # DELETE /admin/forum_threads/1.json
@@ -53,4 +55,12 @@ class Admin::ForumThreadsController < ApplicationController
     @forum_thread.destroy
     redirect_to admin_forum_threads_url
   end
+  
+  private
+    
+    def get_forum
+      forum_id = params[:forum_thread][:forum_id] 
+      return nil if forum_id.blank?
+      Forum.find(forum_id)
+    end
 end
