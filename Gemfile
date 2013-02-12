@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
+gem 'rack', '1.4.1'
 
 gem 'gravatar_image_tag', '1.1.3'
 gem 'will_paginate', '3.0.3'
