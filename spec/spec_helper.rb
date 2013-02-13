@@ -4,9 +4,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
-require "helpers_spec/model_helper"
-require "helpers_spec/rest_helper"
-require "helpers_spec/standard_search_helper"
+# include helpers spec
+Dir[Rails.root.join("spec/helpers_spec/*.rb")].each {|f| require f}
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
