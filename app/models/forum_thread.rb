@@ -15,6 +15,7 @@
 
 class ForumThread < ActiveRecord::Base
   include ModelStatus
+  extend StandardModelSearch
   
   attr_accessible :content_id, :description, :name, :url
   
@@ -25,7 +26,6 @@ class ForumThread < ActiveRecord::Base
   validates :status, :presence => true
   validates :url, :length => { :maximum => 500 }
   validates :forum_id, :presence => true
-  
   
   after_initialize do
     self.active if new_record? # default status is active

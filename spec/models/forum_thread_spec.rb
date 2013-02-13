@@ -17,6 +17,7 @@ require 'spec_helper'
 
 describe ForumThread do
   include ModelHelper
+  include StandardSearchHelper
   
   before do
     @attrs = { 
@@ -31,6 +32,17 @@ describe ForumThread do
     thread = ForumThread.new(attrs)
     thread.forum = FactoryGirl.create(:forum)
     thread
+  end
+  
+  def create_threads(total, forum)
+    threads = []
+    total.times do |n|
+      threads << FactoryGirl.create(:forum_thread,
+                                    :name => FactoryGirl.generate(:thread_name),
+                                    :description => FactoryGirl.generate(:thread_name),
+                                    :forum => forum)
+    end
+    threads
   end
   
   describe "Object creation" do
@@ -107,19 +119,11 @@ describe ForumThread do
     context "Forum relationship" do
       before do
         @forum = FactoryGirl.create(:forum)
-        @threads = create_threads(@forum)
+        @threads = create_threads(10, @forum)
         @another_forum = FactoryGirl.create(:forum)
-        @another_threads = create_threads(@another_forum)
+        @another_threads = create_threads(10, @another_forum)
       end
-    
-      def create_threads(forum)
-        threads = []
-        10.times do |n|
-          threads << FactoryGirl.create(:forum_thread, :forum => forum)
-        end
-        threads
-      end
-    
+      
       it "should search by forum" do
         ForumThread.find_all_by_forum_id(@forum).should eq(@threads)
         ForumThread.find_all_by_forum_id(@another_forum).should eq(@another_threads)
@@ -129,6 +133,21 @@ describe ForumThread do
         @forum.threads.all.should eql(@threads)
         @another_forum.threads.all.should eql(@another_threads)
       end
+    end
+  end
+  
+  describe "Customized search" do
+    before do
+      @forum = FactoryGirl.create(:forum)
+      @num_threads = 30
+      @threads = create_threads(@num_threads, @forum)
+      @thread = @threads[-1]
+    end
+    
+    it_should_behave_like "Standard Search" do
+      subject { @thread }
+      let(:type) { ForumThread }
+      let(:num_instances) { @num_threads }
     end
   end
 end

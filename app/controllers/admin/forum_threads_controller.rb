@@ -2,7 +2,13 @@ class Admin::ForumThreadsController < ApplicationController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index
-    @forum_threads = ForumThread.paginate(:page => params[:page], :per_page => PER_PAGE)
+    if !params[:q].blank?
+      @forum_threads = ForumThread.search({:term => params[:q]}, params[:page])
+    else
+      @forum_threads = ForumThread.paginate(:page => params[:page], :per_page => PER_PAGE)
+    end
+    status = params[:status] || :active
+    @forum_threads = @forum_threads.scoped_by_status(ForumThread::STATUS[status.to_sym])
   end
 
   # GET /admin/forum_threads/1
@@ -12,7 +18,6 @@ class Admin::ForumThreadsController < ApplicationController
   end
 
   # GET /admin/forum_threads/new
-  # GET /admin/forum_threads/new.json
   def new
     @forum_thread = ForumThread.new
   end
@@ -23,7 +28,6 @@ class Admin::ForumThreadsController < ApplicationController
   end
 
   # POST /admin/forum_threads
-  # POST /admin/forum_threads.json
   def create
     @forum_thread = ForumThread.new(params[:forum_thread].except(:forum_id))
     @forum_thread.forum = get_forum
@@ -35,7 +39,6 @@ class Admin::ForumThreadsController < ApplicationController
   end
 
   # PUT /admin/forum_threads/1
-  # PUT /admin/forum_threads/1.json
   def update
     @forum_thread = ForumThread.find(params[:id])
     @forum_thread.forum = get_forum
@@ -49,7 +52,6 @@ class Admin::ForumThreadsController < ApplicationController
   
 
   # DELETE /admin/forum_threads/1
-  # DELETE /admin/forum_threads/1.json
   def destroy
     @forum_thread = ForumThread.find(params[:id])
     @forum_thread.destroy

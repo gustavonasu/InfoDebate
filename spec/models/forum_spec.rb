@@ -199,11 +199,6 @@ describe Forum do
         results.should include(@forum)
       end
       
-      it "should return correctly searching by name" do
-        results = Forum.search(@forum.name)
-        results.should include(@forum)
-      end
-      
       it "should return correctly searching by description" do
         results = Forum.search(@forum.description)
         results.should include(@forum)

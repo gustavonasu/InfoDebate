@@ -2,6 +2,10 @@
            :options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
 
+<%= render 'shared/admin/search_form', :path => admin_forum_threads_path %>
+
+<%= render 'shared/admin/status_options', :status_options => [:active, :inactive], :status_default => :active %>
+
 <%= will_paginate %>
 
 <table class="table table-hover">

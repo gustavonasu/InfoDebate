@@ -37,8 +37,29 @@ describe Admin::ForumThreadsController do
   end
 
   describe "GET index" do
+    before do
+      @forum_threads = [@forum_thread]
+      10.times do
+        @forum_threads << FactoryGirl.create(:forum_thread,
+                                  :name => FactoryGirl.generate(:thread_name),
+                                  :forum => @forum)
+      end
+    end
+    
     it "assigns all admin_forum_threads as @forum_threads" do
       get :index, {}
+      assigns(:forum_threads).should eq(@forum_threads)
+    end
+    
+    it "assigns forums searching by q" do
+      get :index, {:q => @forum_thread.name}
+      assigns(:forum_threads).should eq([@forum_thread])
+    end
+    
+    it "assigns forums searching by status" do
+      @forum_thread.inactive
+      @forum_thread.save
+      get :index, {:status => 'inactive'}
       assigns(:forum_threads).should eq([@forum_thread])
     end
   end

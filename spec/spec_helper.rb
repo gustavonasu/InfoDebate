@@ -6,6 +6,7 @@ require 'rspec/autorun'
 
 require "helpers_spec/model_helper"
 require "helpers_spec/rest_helper"
+require "helpers_spec/standard_search_helper"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
