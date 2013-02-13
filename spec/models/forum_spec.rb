@@ -121,4 +121,29 @@ describe Forum do
       end
     end
   end
+  
+  describe "Customized search" do
+    before do
+      @numOfForums = 30
+      @forums = []
+      @numOfForums.times do |i|
+        @forums << FactoryGirl.create(:forum,
+                                :name => FactoryGirl.generate(:forum_name))
+      end
+    end
+    
+    context "searchByName" do
+      it "should limit pagination" do
+        limit = 5
+        results = Forum.search_by_name("", limit)
+        results.size.should eq(limit)
+      end
+      
+      it "should return correctly" do
+        forum = @forums[-1]
+        results = Forum.search_by_name(forum.name)
+        results.should include(forum)
+      end
+    end
+  end
 end

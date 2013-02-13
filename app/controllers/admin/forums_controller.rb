@@ -3,8 +3,8 @@ class Admin::ForumsController < ApplicationController
   # GET /admin/forums.json
   def index
     per_page = params[:limit] || PER_PAGE
-    unless params[:q].blank?
-      @forums = Forum.search(params[:q], params[:page], per_page)
+    unless params[:name].blank?
+      @forums = Forum.search_by_name(params[:name], per_page, params[:page])
     else
       @forums = Forum.paginate(:page => params[:page], :per_page => per_page)
     end
