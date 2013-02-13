@@ -1,7 +1,0 @@
-pt:
-    status:
-        active: "Ativo"
-        inactive: "Inativo"
-        banned: "Banido"
-        pending: "Pendente"
-        deleted: "Removido"
