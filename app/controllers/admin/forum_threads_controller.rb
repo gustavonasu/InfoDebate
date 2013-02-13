@@ -2,13 +2,8 @@ class Admin::ForumThreadsController < ApplicationController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index
-    if !params[:q].blank?
-      @forum_threads = ForumThread.search({:term => params[:q]}, params[:page])
-    else
-      @forum_threads = ForumThread.paginate(:page => params[:page], :per_page => PER_PAGE)
-    end
-    status = params[:status] || :active
-    @forum_threads = @forum_threads.scoped_by_status(ForumThread::STATUS[status.to_sym])
+    @forum_threads = ForumThread.search({:term => params[:q], :status => params[:status]},
+                                          params[:page])
   end
 
   # GET /admin/forum_threads/1

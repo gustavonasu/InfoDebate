@@ -19,6 +19,7 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::ForumThreadsController do
+  include ControllerHelper
   
   before do
     @forum = FactoryGirl.create(:forum)
@@ -46,21 +47,10 @@ describe Admin::ForumThreadsController do
       end
     end
     
-    it "assigns all admin_forum_threads as @forum_threads" do
-      get :index, {}
-      assigns(:forum_threads).should eq(@forum_threads)
-    end
-    
-    it "assigns forums searching by q" do
-      get :index, {:q => @forum_thread.name}
-      assigns(:forum_threads).should eq([@forum_thread])
-    end
-    
-    it "assigns forums searching by status" do
-      @forum_thread.inactive
-      @forum_thread.save
-      get :index, {:status => 'inactive'}
-      assigns(:forum_threads).should eq([@forum_thread])
+    it_should_behave_like "Controller Standard Search" do
+      let(:instances) { @forum_threads }
+      let(:instance) { @forum_thread }
+      let(:instances_symbol) { :forum_threads }
     end
   end
 

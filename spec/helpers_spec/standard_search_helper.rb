@@ -22,5 +22,12 @@ module StandardSearchHelper
       results = type.search({:term => subject.description})
       results.should include(subject)
     end
+    
+    it "should return correctly searching by status" do
+      subject.inactive
+      subject.save
+      results = type.search({:status => :inactive})
+      results.should include(subject)
+    end
   end
 end
