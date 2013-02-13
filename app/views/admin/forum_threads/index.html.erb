@@ -1,24 +1,23 @@
 <%= render 'shared/admin_title_options', :title => "Lista de Threads",
- 				:options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path, :type => "info"} ] %>
-
+           :options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
-
 
 <%= will_paginate %>
 
 <table class="table table-hover">
-	<tr>
-		<th>Id</th>
-		<th>Nome</th>
-		<th>Forum</th>
-		<th>Descrição</th>
-		<th></th>
-	</tr>
-	<% if @forum_threads.empty? %>
-		<tr><td colspan="5">Nenhuma Thread foi encontrada.</td></tr>
-	<% else %>
-		<%= render @forum_threads %>
-	<% end %>
+  <tr>
+    <th>Id</th>
+    <th>Nome</th>
+    <th>Status</th>
+    <th>Forum</th>
+    <th>Descrição</th>
+    <th></th>
+  </tr>
+  <% if @forum_threads.empty? %>
+    <tr><td colspan="5">Nenhuma Thread foi encontrada.</td></tr>
+  <% else %>
+    <%= render @forum_threads %>
+  <% end %>
 </table>
 
 <%= will_paginate %>

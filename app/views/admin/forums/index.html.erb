@@ -1,23 +1,22 @@
 <%= render 'shared/admin_title_options', :title => "Lista de Forums",
- 				:options => [ {:label => "Novo Forum", :path => new_admin_forum_path, :type => "info"} ] %>
-
+           :options => [ {:label => "Novo Forum", :path => new_admin_forum_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
-
 
 <%= will_paginate %>
 
 <table class="table table-hover">
-	<tr>
-		<th>Id</th>
-		<th>Nome</th>
-		<th>Descrição</th>
-		<th></th>
-	</tr>
-	<% if @forums.empty? %>
-		<tr><td colspan="5">Nenhum Forum foi encontrado.</td></tr>
-	<% else %>
-		<%= render @forums %>
-	<% end %>
+  <tr>
+    <th>Id</th>
+    <th>Nome</th>
+    <th>Status</th>
+    <th>Descrição</th>
+    <th></th>
+  </tr>
+  <% if @forums.empty? %>
+    <tr><td colspan="5">Nenhum Forum foi encontrado.</td></tr>
+  <% else %>
+    <%= render @forums %>
+  <% end %>
 </table>
 
 <%= will_paginate %>

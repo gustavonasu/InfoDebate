@@ -1,6 +1,7 @@
 <tr>
   <td><%= forum.id %></td>
   <td><%= forum.name %></td>
+  <td><%= t forum.status, :scope => 'status' %></td>
   <td><%= forum.description %></td>
   <td>
 		<%= render 'shared/table_action', :action => "show", :path => admin_forum_path(forum) %>

@@ -1,6 +1,7 @@
 <tr>
   <td><%= forum_thread.id %></td>
   <td><%= forum_thread.name %></td>
+  <td><%= t forum_thread.status, :scope => 'status' %></td>
   <td><%= forum_thread.forum.name %></td>
   <td><%= forum_thread.description %></td>
   <td>
