@@ -15,6 +15,16 @@ require 'spec_helper'
 describe Forum do
   include ModelHelper
   
+  def create_forums(total)
+    forums = []
+    total.times do |i|
+      forums << FactoryGirl.create(:forum,
+                              :name => FactoryGirl.generate(:forum_name),
+                              :description => FactoryGirl.generate(:forum_name))
+    end
+    forums
+  end
+  
   before do
     @attrs = { 
       :name => "Sample Forum",
@@ -60,6 +70,20 @@ describe Forum do
           subject { @forum }
         end
       end
+    end
+  end
+  
+  describe "Status Search" do
+    before do
+      @numOfForums = 30
+      @forums = create_forums(@numOfForums)
+    end
+    
+    it "default search should ignored deleted forums" do
+      forum = @forums[-1]
+      forum.delete
+      forum.save
+      Forum.all.length.should eq(@numOfForums - 1)
     end
   end
   
@@ -125,24 +149,64 @@ describe Forum do
   describe "Customized search" do
     before do
       @numOfForums = 30
-      @forums = []
-      @numOfForums.times do |i|
-        @forums << FactoryGirl.create(:forum,
-                                :name => FactoryGirl.generate(:forum_name))
-      end
+      @forums = create_forums(@numOfForums)
     end
     
     context "searchByName" do
-      it "should limit pagination" do
+      it "should limit page" do
         limit = 5
-        results = Forum.search_by_name("", limit)
-        results.size.should eq(limit)
+        results = Forum.search_by_name("%", 1, limit)
+        results.length.should eq(limit)
+      end
+      
+      it "should paginate" do
+        limit = 20
+        results = Forum.search_by_name("%", 2, limit)
+        results.length.should eq(@numOfForums - limit)
       end
       
       it "should return correctly" do
         forum = @forums[-1]
         results = Forum.search_by_name(forum.name)
         results.should include(forum)
+      end
+      
+      it "should return nothing for blank search" do
+        results = Forum.search_by_name("")
+        results.should be_empty
+      end
+    end
+    
+    context "By term" do
+      before do
+        @forum = @forums[-1]
+      end
+      
+      it "should limit page" do
+        limit = 5
+        results = Forum.search("%", 1, limit)
+        results.length.should eq(limit)
+      end
+      
+      it "should paginate" do
+        limit = 20
+        results = Forum.search("%", 2, limit)
+        results.length.should eq(@numOfForums - limit)
+      end
+      
+      it "should return correctly searching by name" do
+        results = Forum.search(@forum.name)
+        results.should include(@forum)
+      end
+      
+      it "should return correctly searching by name" do
+        results = Forum.search(@forum.name)
+        results.should include(@forum)
+      end
+      
+      it "should return correctly searching by description" do
+        results = Forum.search(@forum.description)
+        results.should include(@forum)
       end
     end
   end

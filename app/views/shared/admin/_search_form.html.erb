@@ -1,0 +1,5 @@
+<%= form_tag path, :method => 'get' do %>
+  <%= text_field_tag :q, params[:q], :class => "input-medium search-query" %>
+  <%= hidden_field_tag :status, params[:status] %>
+  <%= submit_tag "Buscar", :class => "btn" %>
+<% end %>

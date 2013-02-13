@@ -26,6 +26,7 @@ class ForumThread < ActiveRecord::Base
   validates :url, :length => { :maximum => 500 }
   validates :forum_id, :presence => true
   
+  
   after_initialize do
     self.active if new_record? # default status is active
   end

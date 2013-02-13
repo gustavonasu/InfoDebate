@@ -37,9 +37,23 @@ describe Admin::ForumsController do
     end
     
     context "html request" do
-      it "assigns all admin_forums as @forums" do
+      it "assigns all forums as @forums" do
         get :index, {}
         assigns(:forums).should eq(@forums)
+      end
+      
+      it "assigns forums searching by q" do
+        forum = @forums[-1]
+        get :index, {:q => forum.name}
+        assigns(:forums).should eq([forum])
+      end
+      
+      it "assigns forums searching by q and status" do
+        forum = @forums[-1]
+        forum.inactive
+        forum.save
+        get :index, {:q => forum.name, :status => 'inactive'}
+        assigns(:forums).should eq([forum])
       end
     end
     
@@ -177,10 +191,10 @@ describe Admin::ForumsController do
   describe "DELETE destroy" do
     it "destroys the requested admin_forum" do
       forum = Forum.create! valid_attributes
-      expect {
-        delete :destroy, {:id => forum.to_param}
-      }.to_not change(Forum, :count)
-      Forum.find(forum).deleted?.should be_true
+      init_count = Forum.unscoped.count
+      delete :destroy, {:id => forum.to_param}
+      Forum.unscoped.count.should eq(init_count)
+      Forum.unscoped.find(forum).deleted?.should be_true
     end
 
     it "redirects to the admin_forums list" do

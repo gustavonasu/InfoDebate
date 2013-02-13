@@ -1,4 +1,4 @@
-module ModelStatus
+module ModelStatus 
   
     STATUS = { :active => 1,
                :inactive => 2,
@@ -17,7 +17,7 @@ module ModelStatus
     end
     
     def self.find_action(status)
-      STATUS_ACTION_MAP[status]
+      STATUS_ACTION_MAP[status.to_sym]
     end
     
     def active

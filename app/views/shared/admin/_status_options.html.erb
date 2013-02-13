@@ -1,0 +1,12 @@
+<div class="btn-group btn-status">
+  <% status_options.each do |status| %>
+    <% selected = (params[:status].nil? && status_default == status) || params[:status] == status.to_s %>
+    <button class="btn <%= selected == true ? 'active' : '' %>">
+      <% if selected == false %>
+        <a href="<%= status_url(status)%>"><%= t status, :scope => :status %></a>
+      <% else %>
+        <%= t status, :scope => :status %>
+      <% end %>
+    </button>
+  <% end %>
+</div>

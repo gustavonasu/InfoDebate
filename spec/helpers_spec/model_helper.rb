@@ -32,10 +32,10 @@ module ModelHelper
   
   shared_examples_for "destroy ModelStatus instance" do
     it "should not destroy instance" do
-      expect {
-        subject.destroy
-      }.to_not change(type, :count)
-      type.find(subject.id).deleted?.should be_true
+      init_count = type.unscoped.count
+      subject.destroy
+      type.unscoped.count.should eq(init_count)
+      type.unscoped.find(subject.id).deleted?.should be_true
     end
   end
 end
@@ -44,31 +44,31 @@ end
 # TODO arrumar mensagem de erro.
 RSpec::Matchers.define :cannot_be_blank do
   match do |actual|
-    actual.index{ |msg| msg =~ /can't be blank/ }
+    actual.index{ |msg| msg =~ /não pode ficar em branco/ }
   end
 end
 
 RSpec::Matchers.define :too_long do
   match do |actual|
-    actual.index{ |msg| msg =~ /is too long/ }
+    actual.index{ |msg| msg =~ /é muito longo/ }
   end
 end
 
 RSpec::Matchers.define :too_short do
   match do |actual|
-    actual.index{ |msg| msg =~ /is too short/ }
+    actual.index{ |msg| msg =~ /é muito curto/ }
   end
 end
 
 RSpec::Matchers.define :be_unique do
   match do |actual|
-    actual.index{ |msg| msg =~ /has already been taken/ }
+    actual.index{ |msg| msg =~ /já está em uso/ }
   end
 end
 
 RSpec::Matchers.define :not_match_confirmation do
   match do |actual|
-    actual.index{ |msg| msg =~ /doesn't match confirmation/ }
+    actual.index{ |msg| msg =~ /não está de acordo com a confirmação/ }
   end
 end
 
