@@ -14,6 +14,7 @@ require 'spec_helper'
 
 describe Forum do
   include ModelHelper
+  include StandardSearchHelper
   
   def create_forums(total)
     forums = []
@@ -75,15 +76,15 @@ describe Forum do
   
   describe "Status Search" do
     before do
-      @numOfForums = 30
-      @forums = create_forums(@numOfForums)
+      @num_forums = 30
+      @forums = create_forums(@num_forums)
     end
     
     it "default search should ignored deleted forums" do
       forum = @forums[-1]
       forum.delete
       forum.save
-      Forum.all.length.should eq(@numOfForums - 1)
+      Forum.all.length.should eq(@num_forums - 1)
     end
   end
   
@@ -148,8 +149,9 @@ describe Forum do
   
   describe "Customized search" do
     before do
-      @numOfForums = 30
-      @forums = create_forums(@numOfForums)
+      @num_forums = 30
+      @forums = create_forums(@num_forums)
+      @forum = @forums[-1]
     end
     
     context "searchByName" do
@@ -162,13 +164,12 @@ describe Forum do
       it "should paginate" do
         limit = 20
         results = Forum.search_by_name("%", 2, limit)
-        results.length.should eq(@numOfForums - limit)
+        results.length.should eq(@num_forums - limit)
       end
       
       it "should return correctly" do
-        forum = @forums[-1]
-        results = Forum.search_by_name(forum.name)
-        results.should include(forum)
+        results = Forum.search_by_name(@forum.name)
+        results.should include(@forum)
       end
       
       it "should return nothing for blank search" do
@@ -177,32 +178,10 @@ describe Forum do
       end
     end
     
-    context "By term" do
-      before do
-        @forum = @forums[-1]
-      end
-      
-      it "should limit page" do
-        limit = 5
-        results = Forum.search("%", 1, limit)
-        results.length.should eq(limit)
-      end
-      
-      it "should paginate" do
-        limit = 20
-        results = Forum.search("%", 2, limit)
-        results.length.should eq(@numOfForums - limit)
-      end
-      
-      it "should return correctly searching by name" do
-        results = Forum.search(@forum.name)
-        results.should include(@forum)
-      end
-      
-      it "should return correctly searching by description" do
-        results = Forum.search(@forum.description)
-        results.should include(@forum)
-      end
+    it_should_behave_like "Standard Search" do
+      subject { @forum }
+      let(:type) { Forum }
+      let(:num_instances) { @num_forums }
     end
   end
 end

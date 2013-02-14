@@ -19,7 +19,8 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::ForumsController do
-
+  include ControllerHelper
+  
   # This should return the minimal set of attributes required to create a valid
   # Forum. As you add validations to Forum, be sure to
   # update the return value of this method accordingly.
@@ -37,23 +38,14 @@ describe Admin::ForumsController do
     end
     
     context "html request" do
-      it "assigns all forums as @forums" do
-        get :index, {}
-        assigns(:forums).should eq(@forums)
+      before do
+        @forum = @forums[-1]
       end
       
-      it "assigns forums searching by q" do
-        forum = @forums[-1]
-        get :index, {:q => forum.name}
-        assigns(:forums).should eq([forum])
-      end
-      
-      it "assigns forums searching by q and status" do
-        forum = @forums[-1]
-        forum.inactive
-        forum.save
-        get :index, {:q => forum.name, :status => 'inactive'}
-        assigns(:forums).should eq([forum])
+      it_should_behave_like "Controller Standard Search" do
+        let(:instances) { @forums }
+        let(:instance) { @forum }
+        let(:instances_symbol) { :forums }
       end
     end
     
