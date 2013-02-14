@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def parse_for_js_response(instances)
-    instances.map {|f| {:id => f.id, :text => f.name} }
+  def parse_list_for_js_response(instances)
+    instances.map {|obj| parse_for_js_response(obj) }
+  end
+  
+  def parse_for_js_response(obj)
+    {:id => obj.id, :text => obj.name}
   end
 end

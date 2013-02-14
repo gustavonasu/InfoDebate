@@ -47,29 +47,45 @@ describe Admin::ForumThreadsController do
       end
     end
     
-    it_should_behave_like "Controller Standard Search" do
-      let(:instances) { @forum_threads }
-      let(:instance) { @forum_thread }
-      let(:instances_symbol) { :forum_threads }
+    context "html request" do
+      it_should_behave_like "Controller Standard Search" do
+        let(:instances) { @forum_threads }
+        let(:instance) { @forum_thread }
+        let(:instances_symbol) { :forum_threads }
+      end
+    
+      describe "Special search cases" do
+        before do
+          @another_forum = FactoryGirl.create(:forum)
+          @another_thread = FactoryGirl.create(:forum_thread, :forum => @another_forum)
+        end
+      
+        it "assigns forums searching by forum_id" do
+          get :index, {:forum_id => @another_forum.id}
+          assigns(:forum_threads).should eq([@another_thread])
+        end
+      end
     end
     
-    describe "Special search cases" do
-      before do
-        @another_forum = FactoryGirl.create(:forum)
-        @another_thread = FactoryGirl.create(:forum_thread, :forum => @another_forum)
-      end
-      
-      it "assigns forums searching by forum_id" do
-        get :index, {:forum_id => @another_forum.id}
-        assigns(:forum_threads).should eq([@another_thread])
+    context "js request" do
+      it_should_behave_like "Controller js Search" do
+        subject { @forum_threads }
       end
     end
   end
 
   describe "GET show" do
-    it "assigns the requested admin_forum_thread as @forum_thread" do
-      get :show, {:id => @forum_thread.to_param}
-      assigns(:forum_thread).should eq(@forum_thread)
+    context "html request" do
+      it "assigns the requested admin_forum_thread as @forum_thread" do
+        get :show, {:id => @forum_thread.to_param}
+        assigns(:forum_thread).should eq(@forum_thread)
+      end
+    end
+    
+    context "js request" do
+      it_should_behave_like "Controller js Show" do
+        subject { @forum_thread }
+      end
     end
   end
 

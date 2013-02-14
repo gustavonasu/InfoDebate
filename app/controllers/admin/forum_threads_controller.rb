@@ -2,14 +2,24 @@ class Admin::ForumThreadsController < ApplicationController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index
-    @forum_threads = ForumThread.search({:term => params[:q], :status => params[:status], :forum_id => params[:forum_id]},
-                                          params[:page])
+    respond_to do |format|
+      format.html { 
+        @forum_threads = ForumThread.search({:term => params[:q], 
+                                            :status => params[:status], :forum_id => params[:forum_id]},
+                                            params[:page])
+      }
+      format.js { render :json => parse_list_for_js_response(search_by_name(ForumThread)) }
+    end
   end
 
   # GET /admin/forum_threads/1
   # GET /admin/forum_threads/1.json
   def show
     @forum_thread = ForumThread.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js { render :json => parse_for_js_response(@forum_thread) }
+    end
   end
 
   # GET /admin/forum_threads/new

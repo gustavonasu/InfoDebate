@@ -144,6 +144,12 @@ describe ForumThread do
       @thread = @threads[-1]
     end
     
+    it_should_behave_like "Standard Search By Name" do
+      subject { @thread }
+      let(:type) { ForumThread }
+      let(:num_instances) { @num_threads }
+    end
+    
     it_should_behave_like "Standard Search" do
       subject { @thread }
       let(:type) { ForumThread }

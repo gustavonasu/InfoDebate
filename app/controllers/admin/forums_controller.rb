@@ -4,7 +4,7 @@ class Admin::ForumsController < ApplicationController
   def index
     respond_to do |format|
       format.html { @forums = Forum.search({:term => params[:q], :status => params[:status]}, params[:page]) }
-      format.js { render :json => parse_for_js_response(search_by_name(Forum)) }
+      format.js { render :json => parse_list_for_js_response(search_by_name(Forum)) }
     end
   end
 
@@ -14,7 +14,7 @@ class Admin::ForumsController < ApplicationController
     @forum = Forum.find(params[:id])
     respond_to do |format|
       format.html
-      format.js { render :json => {:id => @forum.id, :text => @forum.name} }
+      format.js { render :json => parse_for_js_response(@forum) }
     end
   end
 
