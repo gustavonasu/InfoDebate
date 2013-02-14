@@ -2,7 +2,10 @@
            :options => [ {:label => "Novo Forum", :path => new_admin_forum_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
 
-<%= render 'shared/admin/search_form', :path => admin_forums_path %>
+<%= render 'shared/admin/search_form', :path => admin_forums_path,
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :status => {:tag => :hidden_field_tag} } %>
+
 
 <%= render 'shared/admin/status_options', :status_options => [:active, :inactive], :status_default => :active %>
 

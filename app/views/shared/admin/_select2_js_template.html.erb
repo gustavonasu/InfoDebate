@@ -1,0 +1,33 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#<%= field_name %>").select2({
+      placeholder: "Selecione um <%= label %>",
+      formatNoMatches: function() { return "<%= label %> não encontrado" },
+      formatSearching: function() { return "Buscando ..." },
+      ajax: {
+        url: "<%= index_path %>",
+        dataType: 'json',
+        data: function (term, page) {
+          return {
+            name: term,
+            limit: 10
+          };
+        },
+        results: function (data, page) {
+          return {results: data};
+        }
+      },
+      initSelection: function(element, callback) {
+        <% unless obj.nil? %>
+            var id=$(element).val();
+            if (id!="") {
+              $.ajax("<%= show_path %>",
+                {
+                     dataType: "json"
+                }).done(function(data) { callback(data); });
+            }
+        <% end %>
+      }
+    });
+  });
+</script>

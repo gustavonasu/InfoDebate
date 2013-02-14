@@ -2,7 +2,21 @@
            :options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
 
-<%= render 'shared/admin/search_form', :path => admin_forum_threads_path %>
+<% forum = Forum.find_by_id(params[:forum_id]) %>
+<% forum_path = admin_forum_path(forum) unless forum.nil? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "forum_id",
+     :label => "Forum",
+     :obj => forum,
+     :index_path => admin_forums_path,
+     :show_path => forum_path %>
+
+<%= render 'shared/admin/search_form', :path => admin_forum_threads_path,
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :status => {:tag => :hidden_field_tag},
+                  :forum_id => {:tag => :hidden_field_tag} } %>
+
+<%= hidden_field_tag :forum_list, params[:forum_id] %>
 
 <%= render 'shared/admin/status_options', :status_options => [:active, :inactive], :status_default => :active %>
 

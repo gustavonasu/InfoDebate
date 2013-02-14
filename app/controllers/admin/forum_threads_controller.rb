@@ -2,7 +2,7 @@ class Admin::ForumThreadsController < ApplicationController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index
-    @forum_threads = ForumThread.search({:term => params[:q], :status => params[:status]},
+    @forum_threads = ForumThread.search({:term => params[:q], :status => params[:status], :forum_id => params[:forum_id]},
                                           params[:page])
   end
 

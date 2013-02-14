@@ -1,5 +1,6 @@
 <%= form_tag path, :method => 'get' do %>
-  <%= text_field_tag :q, params[:q], :class => "input-medium search-query" %>
-  <%= hidden_field_tag :status, params[:status] %>
+  <% fields.each do |field, options| %>
+    <%= send(options[:tag], field, params[field], :class => options[:class]) %>
+  <% end %>
   <%= submit_tag "Buscar", :class => "btn" %>
 <% end %>

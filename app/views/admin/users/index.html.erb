@@ -3,7 +3,9 @@
 
 <%= render 'shared/status_message' %>
 
-<%= render 'shared/admin/search_form', :path => admin_users_path %>
+<%= render 'shared/admin/search_form', :path => admin_users_path,
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"} } %>
+
 
 <%= will_paginate %>
 

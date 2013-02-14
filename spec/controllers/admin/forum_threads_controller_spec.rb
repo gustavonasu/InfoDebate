@@ -52,6 +52,18 @@ describe Admin::ForumThreadsController do
       let(:instance) { @forum_thread }
       let(:instances_symbol) { :forum_threads }
     end
+    
+    describe "Special search cases" do
+      before do
+        @another_forum = FactoryGirl.create(:forum)
+        @another_thread = FactoryGirl.create(:forum_thread, :forum => @another_forum)
+      end
+      
+      it "assigns forums searching by forum_id" do
+        get :index, {:forum_id => @another_forum.id}
+        assigns(:forum_threads).should eq([@another_thread])
+      end
+    end
   end
 
   describe "GET show" do

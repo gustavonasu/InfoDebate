@@ -1,43 +1,11 @@
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#forum_thread_forum_id").select2({
-      placeholder: "Selecione um Forum",
-      formatNoMatches: function() { return "Forum não encontrado" },
-      formatSearching: function() { return "Buscando ..." },
-      ajax: {
-        url: "<%= admin_forums_path %>",
-        dataType: 'json',
-        data: function (term, page) {
-          return {
-            q: term,
-            limit: 10
-          };
-        },
-        results: function (data, page) {
-          return {results: data};
-        }
-      },
-      initSelection: function(element, callback) {
-        <% unless @forum_thread.forum.nil? %>
-            var id=$(element).val();
-            if (id!="") {
-              $.ajax("<%= admin_forum_path(@forum_thread.forum) %>",
-                {
-                     dataType: "json"
-                }).done(function(data) { callback(data); });
-            }
-        <% end %>
-      }
-    });
-  });
-</script>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "forum_thread_forum_id",
+     :label => "Forum",
+     :obj => @forum_thread.forum,
+     :index_path => admin_forums_path,
+     :show_path => admin_forum_path(@forum_thread.forum) %>
 
 <%= render 'shared/error_messages', :object => f.object %>
 <%= render 'shared/field', :f => f, :field_name => :name %>
 <%= render 'shared/field', :f => f, :field_name => :description %>
 <%= render 'shared/field', :f => f, :field_name => :forum_id %>
-
-
-<input id="e5" type="hidden"></input>
-
-

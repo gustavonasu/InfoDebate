@@ -4,7 +4,12 @@ module StandardModelSearch
     query = ""
     query_params = {}
     
-    if options[:term]
+    if(self.respond_to?(:extended_search))
+      result = extended_search(options)
+      query, query_params = result unless result.nil?
+    end
+    
+    unless options[:term].blank?
       build_query_by_term options[:term]  do |q, p|
         query = append_query(query, q)
         query_params.merge!(p)
@@ -33,7 +38,7 @@ module StandardModelSearch
   end
   
   def build_query_by_status(status)
-    status = :active if status.nil?
+    status = :active if status.blank?
     q = '(status = :status)'
     p = {:status => ModelStatus::STATUS[status.to_sym]}
     yield q, p

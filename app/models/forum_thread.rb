@@ -35,4 +35,7 @@ class ForumThread < ActiveRecord::Base
     [:active, :inactive, :deleted]
   end
   
+  def self.extended_search(options)
+    ["forum_id = :forum_id", {:forum_id => options[:forum_id]}] unless options[:forum_id].blank?
+  end
 end

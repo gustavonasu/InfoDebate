@@ -149,5 +149,17 @@ describe ForumThread do
       let(:type) { ForumThread }
       let(:num_instances) { @num_threads }
     end
+    
+    context "Special search cases" do
+      before do
+        @another_forum = FactoryGirl.create(:forum)
+        @another_thread = FactoryGirl.create(:forum_thread, :forum => @another_forum)
+      end
+      
+      it "should return correctly searching by forum" do
+        results = ForumThread.search({:forum_id => @another_forum.id})
+        results.should eq([@another_thread])
+      end
+    end
   end
 end
