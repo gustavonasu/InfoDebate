@@ -3,13 +3,8 @@ class Admin::ForumsController < ApplicationController
   # GET /admin/forums.json
   def index
     respond_to do |format|
-      format.html { 
-        @forums = Forum.search({:term => params[:q], :status => params[:status]}, params[:page])
-      }
-      format.js {
-        @forums = find_forums_for_js_response
-        render :json => @forums.map {|f| {:id => f.id, :text => f.name} }
-      }
+      format.html { @forums = Forum.search({:term => params[:q], :status => params[:status]}, params[:page]) }
+      format.js { render :json => parse_for_js_response(search_by_name(Forum)) }
     end
   end
 
@@ -59,19 +54,4 @@ class Admin::ForumsController < ApplicationController
     @forum.destroy
     redirect_to admin_forums_url
   end
-  
-  private
-  
-    def find_forums_for_html_response
-      Forum.search({:term => params[:q], :status => params[:status]}, params[:page])
-    end
-    
-    def find_forums_for_js_response
-      per_page = params[:limit] || PER_PAGE
-      if !params[:name].blank?
-        forums = Forum.search_by_name(params[:name], params[:page], per_page)
-      else
-        forums = Forum.paginate(:page => params[:page], :per_page => PER_PAGE)
-      end
-    end
 end

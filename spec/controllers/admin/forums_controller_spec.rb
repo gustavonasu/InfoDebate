@@ -50,36 +50,27 @@ describe Admin::ForumsController do
     end
     
     context "js request" do
-      it "response all forums as json" do
-        get :index, {:format => :js}
-        result = @forums.map{|forum| {:id => forum.id, :text => forum.name}}.as_json
-        json_response.should eq(result)
-      end
-      
-      it "response all forums as json" do
-        forum = @forums[-1]
-        get :index, {:format => :js, :name => forum.name}
-        json_response[0]["id"].should eq(forum.id)
-        json_response[0]["text"].should eq(forum.name)
+      it_should_behave_like "Controller js Search" do
+        subject { @forums }
       end
     end
   end
 
   describe "GET show" do
+    before do
+      @forum = Forum.create! valid_attributes
+    end
+    
     context "html request" do
       it "assigns the requested admin_forum as @forum" do
-        forum = Forum.create! valid_attributes
-        get :show, {:id => forum.to_param}
-        assigns(:forum).should eq(forum)
+        get :show, {:id => @forum.to_param}
+        assigns(:forum).should eq(@forum)
       end
     end
     
     context "js request" do
-      it "response all forums as json" do
-        forum = Forum.create! valid_attributes
-        get :show, {:id => forum.to_param, :format => :js}
-        json_response["id"].should eq(forum.id)
-        json_response["text"].should eq(forum.name)
+      it_should_behave_like "Controller js Show" do
+        subject { @forum }
       end
     end
   end

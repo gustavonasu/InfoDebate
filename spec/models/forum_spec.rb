@@ -154,28 +154,10 @@ describe Forum do
       @forum = @forums[-1]
     end
     
-    context "searchByName" do
-      it "should limit page" do
-        limit = 5
-        results = Forum.search_by_name("%", 1, limit)
-        results.length.should eq(limit)
-      end
-      
-      it "should paginate" do
-        limit = 20
-        results = Forum.search_by_name("%", 2, limit)
-        results.length.should eq(@num_forums - limit)
-      end
-      
-      it "should return correctly" do
-        results = Forum.search_by_name(@forum.name)
-        results.should include(@forum)
-      end
-      
-      it "should return nothing for blank search" do
-        results = Forum.search_by_name("")
-        results.should be_empty
-      end
+    it_should_behave_like "Standard Search By Name" do
+      subject { @forum }
+      let(:type) { Forum }
+      let(:num_instances) { @num_forums }
     end
     
     it_should_behave_like "Standard Search" do

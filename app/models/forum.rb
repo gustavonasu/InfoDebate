@@ -31,11 +31,4 @@ class Forum < ActiveRecord::Base
   def self.valid_status
     [:active, :inactive, :deleted]
   end
-  
-  def self.search_by_name(term, page = 1, per_page = PER_PAGE)
-    s = term.blank? ? "" : "%#{term}%"
-    paginate :per_page => per_page, :page => page,
-             :conditions => ['upper(name) like upper(?)', s]
-  end
-
 end
