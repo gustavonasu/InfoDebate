@@ -1,13 +1,15 @@
-<%= render 'shared/admin_title_options', :title => "Show user",
- 				:options => [ {:label => "Edit", :path => edit_admin_user_path(@user), :type => "info"},
-							  {:label => "Delete", :path => admin_user_path(@user), :type => "danger", 
-								:method => "delete", :confirmation_msg => "Are you sure to proceed?"},
-	 						  {:label => "Back", :path => admin_users_path, :type => "info"} ] %>
+<%= render 'shared/admin_title_options', :title => "Visualização de Usuário",
+           :options => [ {:label => "Alterar", :path => edit_admin_user_path(@user), :type => "info"},
+                         {:label => "Apagar", :path => admin_user_path(@user), :type => "danger", 
+                          :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
+                         {:label => "Voltar", :path => admin_users_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 
 <div class="form-horizontal">
-	<%= render 'shared/field_show', :label => "Name", :value => @user.name %>
-	<%= render 'shared/field_show', :label => "Username", :value => @user.username %>
-	<%= render 'shared/field_show', :label => "Email", :value => @user.email %>
+  <%= render 'shared/field_show', :label => "Nome", :value => @user.name %>
+  <%= render 'shared/field_show', :label => "Login", :value => @user.username %>
+  <%= render 'shared/field_show', :label => "Email", :value => @user.email %>
+  <%= render 'shared/field_show', :label => "Criado em", :value => l(@user.created_at) %>
+  <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@user.updated_at) %>
 </div>

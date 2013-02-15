@@ -1,16 +1,18 @@
 <%= render 'shared/admin_title_options', :title => "Visualização de Thread",
- 				:options => [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"},
-							  {:label => "Apagar", :path => admin_forum_thread_path(@forum_thread), :type => "danger", 
-								:method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
-	 						  {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
+        :options => [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"},
+        {:label => "Apagar", :path => admin_forum_thread_path(@forum_thread), :type => "danger", 
+        :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
+        {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 
 <div class="form-horizontal">
-	<%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
-	<%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
-	<%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
-	<%= render 'shared/field_show', :label => "Forum", 
-								:value => "#{@forum_thread.forum.name} (Id: #{@forum_thread.forum.id})",
-								:link => admin_forum_path(@forum_thread.forum) %>
+  <%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
+  <%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
+  <%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
+  <%= render 'shared/field_show', :label => "Forum", 
+                                  :value => "#{@forum_thread.forum.name} (Id: #{@forum_thread.forum.id})",
+                                  :link => admin_forum_path(@forum_thread.forum) %>
+  <%= render 'shared/field_show', :label => "Criado em", :value => l(@forum_thread.created_at) %>
+  <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@forum_thread.updated_at) %>
 </div>
