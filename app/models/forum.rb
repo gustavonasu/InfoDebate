@@ -31,4 +31,11 @@ class Forum < ActiveRecord::Base
   def self.valid_status
     [:active, :inactive, :deleted]
   end
+  
+  def destroy
+    Forum.transaction do
+      soft_destroy
+      threads.each {|thread| thread.destroy }
+    end
+  end
 end

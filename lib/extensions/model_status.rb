@@ -61,10 +61,12 @@ module ModelStatus
     end
     
     # Disable destroy object
-    def destroy
+    def soft_destroy
       self.delete
       self.save
     end
+    
+    alias_method :destroy, :soft_destroy
     
     def status
       STATUS.key(read_attribute(:status))

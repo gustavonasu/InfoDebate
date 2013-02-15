@@ -91,11 +91,20 @@ describe Forum do
   describe "Object deletion" do
     before do
       @forum = Forum.create!(@attrs)
+      @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+      @forum.threads << @thread
+      @forum.save()
     end
     
     it_should_behave_like "destroy ModelStatus instance" do
       subject { @forum }
       let(:type) { Forum }
+    end
+    
+    it "should cascade deletion to forum_thread" do
+      @forum.destroy
+      Forum.unscoped.find(@forum.id).should be_deleted
+      ForumThread.unscoped.find(@thread.id).should be_deleted
     end
   end
   
