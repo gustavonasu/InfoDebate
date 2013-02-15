@@ -13,3 +13,20 @@
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@forum.created_at) %>
   <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@forum.updated_at) %>
 </div>
+
+<% unless @forum.threads.empty? %>
+<div>
+  <h3>Threads associadas:</h3>
+  <ul class="unstyled" style="margin-left: 30px;">
+    <% limit = 5 %>
+    <% @forum.threads.first(limit).each do |thread| %>
+      <li style="margin-bottom: 10px;">
+        <%= link_to "#{thread.name} (ID: #{thread.id})", admin_forum_thread_path(thread) %>
+      </li>
+    <% end %>
+    <% if @forum.threads.length > limit %>
+      <%= link_to "Ver todos", admin_forum_threads_path(:forum_id => @forum.id) %>
+    <% end %>
+  </ul>
+</div>
+<% end %>

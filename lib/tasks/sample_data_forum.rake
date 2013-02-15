@@ -17,8 +17,10 @@ def make_forums
 end
 
 def make_threads(forum)
-  forum.threads.create!(:name => Faker::Name.name,
-                        :description => Faker::Name.title,
-                        :url => Faker::Internet.url,
-                        :content_id => Random.rand(50000))
+  12.times do |variable|
+    forum.threads.create!(:name => Faker::Name.name,
+                          :description => Faker::Name.title,
+                          :url => Faker::Internet.url,
+                          :content_id => Random.rand(50000))
+  end
 end
