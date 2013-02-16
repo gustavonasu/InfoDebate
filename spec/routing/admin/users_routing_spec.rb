@@ -31,5 +31,9 @@ describe Admin::UsersController do
       delete("/admin/users/1").should route_to("admin/users#destroy", :id => "1")
     end
 
+    it "routes to #change_status" do
+      get("/admin/users/1/change_status/active").should route_to("admin/users#change_status",
+                                                                    :id => "1", :status_action => 'active')
+    end
   end
 end

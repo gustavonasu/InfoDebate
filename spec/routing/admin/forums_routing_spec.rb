@@ -30,6 +30,10 @@ describe Admin::ForumsController do
     it "routes to #destroy" do
       delete("/admin/forums/1").should route_to("admin/forums#destroy", :id => "1")
     end
-
+    
+    it "routes to #change_status" do
+      get("/admin/forums/1/change_status/active").should route_to("admin/forums#change_status",
+                                                                    :id => "1", :status_action => 'active')
+    end
   end
 end

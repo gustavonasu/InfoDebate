@@ -54,4 +54,11 @@ class Admin::ForumsController < ApplicationController
     @forum.destroy
     redirect_to admin_forums_url
   end
+  
+  def change_status
+    @forum = Forum.find(params[:id])
+    @forum.send(params[:status_action])
+    @forum.save
+    redirect_to admin_forum_url(@forum.id)
+  end
 end

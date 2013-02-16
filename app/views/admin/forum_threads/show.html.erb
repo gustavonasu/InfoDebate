@@ -1,8 +1,10 @@
+
 <%= render 'shared/admin_title_options', :title => "Visualização de Thread",
-        :options => [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"},
-        {:label => "Apagar", :path => admin_forum_thread_path(@forum_thread), :type => "danger", 
-        :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
-        {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
+        :options =>  
+          [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"},
+            {:label => "Apagar", :path => admin_forum_thread_path(@forum_thread), :type => "danger", 
+               :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
+            {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 

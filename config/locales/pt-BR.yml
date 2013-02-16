@@ -5,6 +5,11 @@ pt-BR:
     banned: "Banido"
     pending: "Pendente"
     deleted: "Removido"
+  status_action:
+    active: "Ativar"
+    inactive: "Inativar"
+    delete: "Apagar"
+  confirmation_msg: "Tem certeza que deseja prosseguir?"
   date:
     abbr_day_names:
     - Dom

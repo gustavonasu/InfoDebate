@@ -1,9 +1,9 @@
 <%= render 'shared/admin_title_options', :title => "Visualização de Forum",
-           :options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path(:forum_id => @forum.id), :type => "info"},
-                         {:label => "Alterar", :path => edit_admin_forum_path(@forum), :type => "info"},
-                         {:label => "Apagar", :path => admin_forum_path(@forum), :type => "danger", 
-                          :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
-                         {:label => "Voltar", :path => admin_forums_path, :type => "info"} ] %>
+           :options => [ {:label => "Nova Thread", :path => new_admin_forum_thread_path(:forum_id => @forum.id), 
+	                      :type => "info"},
+                         {:label => "Alterar", :path => edit_admin_forum_path(@forum), :type => "info"}] +
+                       generate_status_change_actions(@forum, :forum) +
+                       [ {:label => "Voltar", :path => admin_forums_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 

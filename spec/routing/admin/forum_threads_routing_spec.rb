@@ -31,5 +31,9 @@ describe Admin::ForumThreadsController do
       delete("/admin/forum_threads/1").should route_to("admin/forum_threads#destroy", :id => "1")
     end
 
+    it "routes to #change_status" do
+      get("/admin/forum_threads/1/change_status/active").should route_to("admin/forum_threads#change_status",
+                                                                    :id => "1", :status_action => 'active')
+    end
   end
 end
