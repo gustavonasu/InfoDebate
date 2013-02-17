@@ -42,10 +42,20 @@ module StandardModelSearch
     end
   
     def build_query_by_term(term)
-      q = '(upper(name) like upper(:term) or upper(description) like upper(:term))'
+      q = create_query_for_term
       p = {:term => (term.blank? ? "" : "%#{term}%")}
       yield q, p
     end
+    
+    def create_query_for_term
+      query = ""
+        term_search_fields.each_with_index do |field, index|
+        query += "upper(#{field}) like upper(:term)"
+        query += " or " if term_search_fields.length - 1 > index
+      end
+      "(#{query})"
+    end
+    
   
     def build_query_by_status(status)
       status = :active if status.blank?

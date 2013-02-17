@@ -15,6 +15,7 @@
 
 class User < ActiveRecord::Base
   include ModelStatus
+  extend StandardModelSearch
     
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
@@ -42,6 +43,10 @@ class User < ActiveRecord::Base
     [:active, :inactive, :pending, :banned, :deleted]
   end
   
+  def self.term_search_fields
+    [:name, :username, :email]
+  end
+  
   def self.authenticate(username, submitted_password)
     user = first(:conditions => {:username => username})
     return user if user.has_password(submitted_password)
@@ -49,12 +54,6 @@ class User < ActiveRecord::Base
   
   def has_password(submitted_password)
     self.encrypted_password == encrypt(submitted_password)
-  end
-  
-  def self.search(search, page)
-    s = "%#{search}%"
-    paginate :per_page => PER_PAGE, :page => page,
-             :conditions => ['name like ? or username like ? or email like ?', s, s, s]
   end
   
   private

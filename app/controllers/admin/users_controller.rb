@@ -1,10 +1,8 @@
 class Admin::UsersController < Admin::AdminController
   # GET /users
   def index
-    unless params[:q].blank?
-      @users = User.search(params[:q], params[:page])
-    else
-      @users = User.paginate(:page => params[:page], :per_page => PER_PAGE)
+    respond_to do |format|
+      format.html { @users = User.search({:term => params[:q], :status => params[:status]}, params[:page]) }
     end
   end
 

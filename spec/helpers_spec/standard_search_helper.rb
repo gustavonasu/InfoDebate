@@ -37,14 +37,11 @@ module StandardSearchHelper
       results.length.should eq(num_instances - limit)
     end
     
-    it "should return correctly searching by name" do
-      results = type.search({:term => subject.name})
-      results.should include(subject)
-    end
-    
-    it "should return correctly searching by description" do
-      results = type.search({:term => subject.description})
-      results.should include(subject)
+    it "should return correctly searching by fields" do
+      type.term_search_fields.each do |field|
+        results = type.search({:term => subject.read_attribute(field)})
+        results.should include(subject)
+      end
     end
     
     it "should return correctly searching by status" do

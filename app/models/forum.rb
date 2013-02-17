@@ -32,6 +32,10 @@ class Forum < ActiveRecord::Base
     [:active, :inactive, :deleted]
   end
   
+  def self.term_search_fields
+    [:name, :description]
+  end
+  
   def inactive
     exec_status_action "do_inactive"
   end

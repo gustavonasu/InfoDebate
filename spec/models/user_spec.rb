@@ -222,6 +222,31 @@ describe User do
     end
   end
   
+  describe "Customized search" do
+     before do
+       @num_users = 30
+       @users = []
+       @num_users.times do
+         @users << FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
+                                             :username => FactoryGirl.generate(:username),
+                                             :email => FactoryGirl.generate(:email))
+       end
+       @user = @users[-1]
+     end
+
+     it_should_behave_like "Standard Search By Name" do
+       subject { @user }
+       let(:type) { User }
+       let(:num_instances) { @num_users }
+     end
+
+     it_should_behave_like "Standard Search" do
+       subject { @user }
+       let(:type) { User }
+       let(:num_instances) { @num_users }
+     end
+   end
+  
   describe "Authentication" do
     it "should authenticate with right password" do
       pass = "right_password"
