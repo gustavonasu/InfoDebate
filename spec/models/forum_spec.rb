@@ -55,6 +55,9 @@ describe Forum do
   describe "Status validation" do
     before do
       @forum = Forum.create(@attrs)
+      @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+      @forum.threads << @thread
+      @forum.save!
     end
     
     context "Valid status" do
@@ -65,6 +68,14 @@ describe Forum do
         
         it_should_behave_like "valid #{status} status validation with persistence" do
           subject { @forum }
+        end
+      end
+      
+      it "should cascade inactive action to threads" do
+        @forum.inactive!
+        @forum.reload.should be_inactive
+        @forum.threads.each do |t|
+          t.reload.should be_inactive
         end
       end
     end
@@ -101,7 +112,7 @@ describe Forum do
       @forum = Forum.create!(@attrs)
       @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
       @forum.threads << @thread
-      @forum.save()
+      @forum.save!
     end
     
     it_should_behave_like "destroy ModelStatus instance" do

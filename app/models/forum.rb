@@ -32,17 +32,25 @@ class Forum < ActiveRecord::Base
     [:active, :inactive, :deleted]
   end
   
+  def inactive
+    exec_status_action "do_inactive"
+  end
+  
+  def inactive!
+    exec_status_action "do_inactive!"
+  end
+  
   def destroy
-    exec_delete "do_delete!"
+    exec_status_action "do_delete!"
   end
   alias_method :delete!, :destroy
   
   def delete
-    exec_delete "do_delete"
+    exec_status_action "do_delete"
   end
   
   private
-    def exec_delete(action)
+    def exec_status_action(action)
       Forum.transaction do
         send(action)
         threads.each {|thread| thread.send(action) }
