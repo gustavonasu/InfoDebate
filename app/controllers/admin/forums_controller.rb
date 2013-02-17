@@ -37,7 +37,7 @@ class Admin::ForumsController < Admin::AdminController
   def create
     @forum = Forum.new(params[:forum])
     if @forum.save
-      redirect_to [:admin, @forum], notice: 'Forum was successfully created.'
+      redirect_to [:admin, @forum], notice: t(:creation_success, scope: :action_messages, model: 'Forum')
     else
       render action: "new"
     end
@@ -47,7 +47,7 @@ class Admin::ForumsController < Admin::AdminController
   def update
     @forum = Forum.find(params[:id])
     if @forum.update_attributes(params[:forum])
-      redirect_to [:admin, @forum], notice: 'Forum was successfully updated.'
+      redirect_to [:admin, @forum], notice: t(:update_success, :scope => :action_messages, :model => 'Forum')
     else
       render action: "edit"
     end
@@ -57,7 +57,7 @@ class Admin::ForumsController < Admin::AdminController
   def destroy
     @forum = Forum.find(params[:id])
     @forum.destroy
-    redirect_to admin_forums_url
+    redirect_to admin_forums_url, notice: t(:deletion_success, :scope => :action_messages, :model => 'Forum')
   end
 
   private

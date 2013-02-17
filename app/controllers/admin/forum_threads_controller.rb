@@ -40,7 +40,7 @@ class Admin::ForumThreadsController < Admin::AdminController
     @forum_thread = ForumThread.new(params[:forum_thread].except(:forum_id))
     @forum_thread.forum = get_forum
     if @forum_thread.save
-      redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully created.'
+      redirect_to [:admin, @forum_thread], notice: t(:creation_success, scope: :action_messages, model: 'Thread')
     else
       render action: "new"
     end
@@ -51,7 +51,7 @@ class Admin::ForumThreadsController < Admin::AdminController
     @forum_thread = ForumThread.find(params[:id])
     @forum_thread.forum = get_forum
     if @forum_thread.update_attributes(params[:forum_thread].except(:forum_id))
-      redirect_to [:admin, @forum_thread], notice: 'Forum thread was successfully updated.'
+      redirect_to [:admin, @forum_thread], notice: t(:update_success, scope: :action_messages, model: 'Thread')
     else
       render action: "edit"
     end
@@ -61,7 +61,7 @@ class Admin::ForumThreadsController < Admin::AdminController
   def destroy
     @forum_thread = ForumThread.find(params[:id])
     @forum_thread.destroy
-    redirect_to admin_forum_threads_url
+    redirect_to admin_forum_threads_url, notice: t(:deletion_success, scope: :action_messages, model: 'Thread')
   end
 
   private

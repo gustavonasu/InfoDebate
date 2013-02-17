@@ -15,8 +15,12 @@ pt-BR:
     deleted: "Apagado"
   confirmation_msg: "Tem certeza que deseja prosseguir?"
   status_action_message:
-      success: "Status foi atualizado com sucesso"
+      success: "Status foi atualizado com sucesso."
       invalid: "Status não pode ser alterado. Status inválido."
+  action_messages:
+      creation_success: "%{model} foi criado com sucesso."
+      update_success: "%{model} foi atualizado com sucesso."
+      deletion_success: "%{model} foi apagado com sucesso."
   date:
     abbr_day_names:
     - Dom
