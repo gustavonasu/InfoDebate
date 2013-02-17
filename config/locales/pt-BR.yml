@@ -9,6 +9,10 @@ pt-BR:
     active: "Ativar"
     inactive: "Inativar"
     delete: "Apagar"
+  status_label:
+    active: "Ativado"
+    inactive: "Inativado"
+    deleted: "Apagado"
   confirmation_msg: "Tem certeza que deseja prosseguir?"
   status_action_message:
       success: "Status foi atualizado com sucesso"

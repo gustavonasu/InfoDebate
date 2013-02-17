@@ -8,6 +8,7 @@
 <div class="form-horizontal">
   <%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
   <%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
+  <%= render 'shared/field_show', :label => "Status", :value => t(@forum_thread.status, :scope => :status_label) %>
   <%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
   <%= render 'shared/field_show', :label => "Forum", 
                                   :value => "#{@forum_thread.forum.name} (Id: #{@forum_thread.forum.id})",
