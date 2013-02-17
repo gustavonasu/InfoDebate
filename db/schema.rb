@@ -11,21 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130201014024) do
-
-  create_table "users", :force => true do |t|
-    t.string   "name",               :limit => 100, :null => false
-    t.string   "username",           :limit => 30,  :null => false
-    t.string   "email",                             :null => false
-    t.string   "encrypted_password"
-    t.string   "salt"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-  end
-
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["name"], :name => "index_users_on_name"
-  add_index "users", ["username"], :name => "index_users_on_username"
+ActiveRecord::Schema.define(:version => 20130217182904) do
 
   create_table "forum_threads", :force => true do |t|
     t.string   "name",        :limit => 100, :null => false
@@ -47,5 +33,20 @@ ActiveRecord::Schema.define(:version => 20130201014024) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "name",               :limit => 100, :null => false
+    t.string   "username",           :limit => 30,  :null => false
+    t.string   "email",                             :null => false
+    t.string   "encrypted_password"
+    t.string   "salt"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "status"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["name"], :name => "index_users_on_name"
+  add_index "users", ["username"], :name => "index_users_on_username"
 
 end

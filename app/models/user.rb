@@ -10,9 +10,12 @@
 #  salt               :string(255)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  status             :integer
 #
 
 class User < ActiveRecord::Base
+  include ModelStatus
+    
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
   attr_readonly :username
@@ -25,8 +28,19 @@ class User < ActiveRecord::Base
                     :uniqueness => { :case_sensitive => false }
   validates :password, :length => { :in => 6..40 },
                        :confirmation => true, :if => :validate_password?
+  validates :status, :presence => true
   
   before_validation :fix_password_validation, :encrypt_password
+  
+  default_scope where("status != #{STATUS[:deleted]}")
+  
+  after_initialize do
+    self.active if new_record? # default status is active
+  end
+  
+  def self.valid_status
+    [:active, :inactive, :pending, :banned, :deleted]
+  end
   
   def self.authenticate(username, submitted_password)
     user = first(:conditions => {:username => username})
