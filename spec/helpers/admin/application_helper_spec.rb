@@ -70,7 +70,52 @@ describe Admin::ApplicationHelper do
         actions.should include(@delete_map)
         actions.should include(@active_map)
       end
-   end
+    end
+    
+    context "User model" do
+      before do
+        @user = FactoryGirl.create(:user)
+        @delete_map = {:label => t(:delete, :scope => :status_action), :path => admin_user_path(@user), :type => "danger", 
+                       :method => "delete", :confirmation_msg => t(:confirmation_msg)}
+        @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
+                         :path => change_status_admin_user_path(@user, :status_action => "inactive"),
+                         :confirmation_msg => t(:confirmation_msg)}
+        @ban_map = {:label => t(:ban, :scope => :status_action), :type => "danger",
+                    :path => change_status_admin_user_path(@user, :status_action => "ban"),
+                    :confirmation_msg => t(:confirmation_msg)}
+        @pending_map = {:label => t(:pending, :scope => :status_action), :type => "warning",
+                        :path => change_status_admin_user_path(@user, :status_action => "pending"),
+                        :confirmation_msg => t(:confirmation_msg)}
+        @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
+                       :path => change_status_admin_user_path(@user, :status_action => "active")}
+        @status_maps = {:delete => @delete_map, :inactive => @inactive_map, :active => @active_map,
+                        :pending => @pending_map, :ban => @ban_map}
+      end
+    
+      it "with user active" do
+        actions = helper.generate_status_change_actions(@user, "user")
+        assert_generated_status_change_actions actions, :active
+      end
+      
+      it "with user inactive" do
+        @user.inactive!
+        actions = helper.generate_status_change_actions(@user, "user")
+        assert_generated_status_change_actions actions, :inactive
+      end
+      
+      it "with user pendig" do
+        @user.pending!
+        actions = helper.generate_status_change_actions(@user, "user")
+        assert_generated_status_change_actions actions, :pending
+      end
+      
+      def assert_generated_status_change_actions(actions, curr_action)
+        @status_maps.each do |action, map|
+          actions.should_not include(map) if action == curr_action
+          actions.should include(map) if action != curr_action
+        end
+      end
+    end
   end
 end
 

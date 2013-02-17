@@ -16,6 +16,12 @@ module Admin::ApplicationHelper
                              :inactive => {:default_map => {:type => "warning"},
                                            :path_pattern => 'change_status_admin_#{resource_name}_path',
                                            :include_param_action => true, :confirmation => true},
+                             :pending => {:default_map => {:type => "warning"},
+                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
+                                          :include_param_action => true, :confirmation => true},
+                             :ban => {:default_map => {:type => "danger"},
+                                      :path_pattern => 'change_status_admin_#{resource_name}_path',
+                                      :include_param_action => true, :confirmation => true},
                              :delete => {:default_map => {:type => "danger", :method => "delete"}, 
                                          :path_pattern => 'admin_#{resource_name}_path',
                                          :confirmation => true}}

@@ -1,13 +1,14 @@
 <%= render 'shared/admin_title_options', :title => "Visualização de Usuário",
-           :options => [ {:label => "Alterar", :path => edit_admin_user_path(@user), :type => "info"},
-                         {:label => "Apagar", :path => admin_user_path(@user), :type => "danger", 
-                          :method => "delete", :confirmation_msg => "Tem certeza que deseja prosseguir?"},
-                         {:label => "Voltar", :path => admin_users_path, :type => "info"} ] %>
+           :options => [ {:label => "Alterar", :path => edit_admin_user_path(@user), :type => "info"} ] +
+                       generate_status_change_actions(@user, :user) +
+                       [ {:label => "Voltar", :path => admin_users_path, :type => "info"} ] %>
 
 <%= render 'shared/status_message' %>
 
 <div class="form-horizontal">
+  <%= render 'shared/field_show', :label => "Id", :value => @user.id %>
   <%= render 'shared/field_show', :label => "Nome", :value => @user.name %>
+  <%= render 'shared/field_show', :label => "Status", :value => t(@user.status, :scope => :status_label) %>
   <%= render 'shared/field_show', :label => "Login", :value => @user.username %>
   <%= render 'shared/field_show', :label => "Email", :value => @user.email %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@user.created_at) %>

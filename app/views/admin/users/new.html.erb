@@ -1,11 +1,11 @@
-<%= render 'shared/admin_title_options', :title => "New user",
- 				:options => [ {:label => "Back", :path => admin_users_path, :type => "info"} ] %>
+<%= render 'shared/admin_title_options', :title => "Novo Usuário",
+           :options => [ {:label => "Back", :path => admin_users_path, :type => "info"} ] %>
 
 <%= form_for([:admin, @user], :html => {:class => "form-horizontal"}) do |f| %>
-	<%= render 'fields', :f => f %>
-	<%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password %>
-	<%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password_confirmation %>
-	<div class="controls"> 
-	    <%= f.submit "Save", :class => "btn btn-primary btn-large" %>
-	</div>
+  <%= render 'fields', :f => f %>
+  <%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password %>
+  <%= render 'shared/field', :field_type => "password_field", :f => f, :field_name => :password_confirmation %>
+  <div class="controls"> 
+    <%= f.submit "Salvar", :class => "btn btn-primary btn-large" %>
+  </div>
 <% end %>

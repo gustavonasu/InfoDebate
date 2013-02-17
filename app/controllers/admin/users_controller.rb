@@ -1,4 +1,7 @@
 class Admin::UsersController < Admin::AdminController
+  
+  before_filter :init_obj_for_change_status, :only => [:change_status]
+  
   # GET /users
   def index
     respond_to do |format|
@@ -47,4 +50,10 @@ class Admin::UsersController < Admin::AdminController
     @user.destroy
     redirect_to admin_users_path(:page => params[:page]), :notice => 'User was successfully deleted.'
   end
+  
+  private
+  
+    def init_obj_for_change_status
+      @obj = User.find(params[:id])
+    end
 end

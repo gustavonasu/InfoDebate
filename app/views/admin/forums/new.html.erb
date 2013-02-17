@@ -1,9 +1,9 @@
 <%= render 'shared/admin_title_options', :title => "Novo Forum",
- 				:options => [ {:label => "Back", :path => admin_forums_path, :type => "info"} ] %>
+           :options => [ {:label => "Voltar", :path => admin_forums_path, :type => "info"} ] %>
 
 <%= form_for([:admin, @forum], :html => {:class => "form-horizontal"}) do |f| %>
-	<%= render 'fields', :f => f %>
-	<div class="controls"> 
-	    <%= f.submit "Salvar", :class => "btn btn-primary btn-large" %>
-	</div>
+  <%= render 'fields', :f => f %>
+  <div class="controls"> 
+    <%= f.submit "Salvar", :class => "btn btn-primary btn-large" %>
+  </div>
 <% end %>

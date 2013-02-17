@@ -5,8 +5,9 @@
   <td><%= forum_thread.forum.name %></td>
   <td><%= forum_thread.description %></td>
   <td>
-		<%= render 'shared/table_action', :action => "show", :path => admin_forum_thread_path(forum_thread) %>
-     	<%= render 'shared/table_action', :action => "edit", :path => edit_admin_forum_thread_path(forum_thread) %>
-		<%= render 'shared/table_action', :action => "delete", :path => admin_forum_thread_path(forum_thread, :page => params[:page]) %>
-	</td>
+    <%= render 'shared/table_action', :action => "show", :path => admin_forum_thread_path(forum_thread) %>
+    <%= render 'shared/table_action', :action => "edit", :path => edit_admin_forum_thread_path(forum_thread) %>
+    <%= render 'shared/table_action', :action => "delete", 
+               :path => admin_forum_thread_path(forum_thread, :page => params[:page]) %>
+  </td>
 </tr>

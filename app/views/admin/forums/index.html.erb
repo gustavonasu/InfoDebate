@@ -6,7 +6,6 @@
       :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
                   :status => {:tag => :hidden_field_tag} } %>
 
-
 <%= render 'shared/admin/status_options', :status_options => Forum.valid_status, :status_default => :active %>
 
 <%= will_paginate %>

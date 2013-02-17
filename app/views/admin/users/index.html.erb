@@ -1,24 +1,27 @@
-<%= render 'shared/admin_title_options', :title => "Listing users",
-           :options => [ {:label => "New User", :path => new_admin_user_path, :type => "info"} ] %>
-
+<%= render 'shared/admin_title_options', :title => "Lista de Usuários",
+           :options => [ {:label => "Novo Usuário", :path => new_admin_user_path, :type => "info"} ] %>
 <%= render 'shared/status_message' %>
 
 <%= render 'shared/admin/search_form', :path => admin_users_path,
-      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"} } %>
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                         :status => {:tag => :hidden_field_tag} } %>
 
+<%= render 'shared/admin/status_options', :status_options => User.valid_status, :status_default => :active %>
 
 <%= will_paginate %>
 
 <table class="table table-hover">
   <tr>
     <th>Id</th>
-    <th>Name</th>
-    <th>Username</th>
+    <th>Nome</th>
+    <th>Status</th>
+    <th>Login</th>
     <th>Email</th>
+    <th>Data de Criação</th>
     <th></th>
   </tr>
   <% if @users.empty? %>
-    <tr><td colspan="5">No user found</td></tr>
+    <tr><td colspan="7">Nenhum Usuário foi encontrado.</td></tr>
   <% else %>
     <%= render @users %>
   <% end %>
