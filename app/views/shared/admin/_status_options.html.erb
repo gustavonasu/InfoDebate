@@ -1,5 +1,5 @@
 <div class="btn-group btn-status">
-  <% status_options.each do |status| %>
+  <% status_options.reject{|s| s == :deleted}.each do |status| %>
     <% selected = (params[:status].blank? && status_default == status) || params[:status] == status.to_s %>
     <button class="btn <%= selected == true ? 'active' : '' %>">
       <% if selected == false %>
