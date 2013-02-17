@@ -1,4 +1,4 @@
-class Admin::ForumThreadsController < ApplicationController
+class Admin::ForumThreadsController < Admin::AdminController
   # GET /admin/forum_threads
   # GET /admin/forum_threads.json
   def index

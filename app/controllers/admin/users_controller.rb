@@ -1,5 +1,4 @@
-
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < Admin::AdminController
   # GET /users
   def index
     unless params[:q].blank?
