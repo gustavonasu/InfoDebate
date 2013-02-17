@@ -187,4 +187,25 @@ describe Admin::ForumsController do
     end
   end
 
+  describe "CHANGE_STATUS request" do
+    before do
+      @forum = Forum.create! valid_attributes
+    end
+    
+    context "Valid status" do
+      Forum.valid_status.reject{|s| s == :deleted}.each do |status|
+        it_should_behave_like "valid #{status} status change" do
+          subject { @forum }
+        end
+      end
+    end
+    
+    context "Invalid status" do
+      (ModelHelper.all_status - Forum.valid_status).each do |status|
+        it_should_behave_like "invalid #{status} status change" do
+          subject { @forum }
+        end
+      end
+    end
+  end
 end

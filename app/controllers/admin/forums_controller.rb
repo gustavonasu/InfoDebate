@@ -1,4 +1,9 @@
+# encoding: UTF-8
+
 class Admin::ForumsController < Admin::AdminController
+
+  before_filter :init_obj_for_change_status, :only => [:change_status]
+
   # GET /admin/forums
   # GET /admin/forums.json
   def index
@@ -54,11 +59,10 @@ class Admin::ForumsController < Admin::AdminController
     @forum.destroy
     redirect_to admin_forums_url
   end
+
+  private
   
-  def change_status
-    @forum = Forum.find(params[:id])
-    @forum.send(params[:status_action])
-    @forum.save
-    redirect_to admin_forum_url(@forum.id)
-  end
+    def init_obj_for_change_status
+      @obj = Forum.find(params[:id])
+    end
 end

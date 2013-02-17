@@ -10,6 +10,9 @@ pt-BR:
     inactive: "Inativar"
     delete: "Apagar"
   confirmation_msg: "Tem certeza que deseja prosseguir?"
+  status_action_message:
+      success: "Status foi atualizado com sucesso"
+      invalid: "Status não pode ser alterado. Status inválido."
   date:
     abbr_day_names:
     - Dom

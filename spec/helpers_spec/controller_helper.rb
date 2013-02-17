@@ -41,4 +41,31 @@ module ControllerHelper
       assigns(instances_symbol).should eq([instance])
     end
   end
+  
+  ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+    shared_examples_for "valid #{status} status change" do
+      it "should change status to #{status}" do
+        execute_and_validate_status_change(subject, status)
+        subject.reload.send("#{status}?").should be_true
+        flash[:notice].should_not be_nil
+      end
+    end
+  end
+  
+  ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+    shared_examples_for "invalid #{status} status change" do
+      it "should change status to #{status}" do
+        execute_and_validate_status_change(subject, status)
+        subject.reload.send("#{status}?").should be_false
+        flash[:error].should_not be_nil
+      end
+    end
+  end
+  
+  def execute_and_validate_status_change(obj, status)
+    obj.inactive unless obj.inactive?
+    obj.save
+    get :change_status, {:id => obj.id, :status_action => ModelStatus.find_action(status)}
+    obj.should redirect_to(:action => :show)
+  end
 end

@@ -20,6 +20,13 @@ class Admin::AdminController < ApplicationController
   end
   
   def change_status
-    head :not_found
+    begin
+      @obj.send(params[:status_action])
+      @obj.save
+      message = {notice: t(:success, :scope => :status_action_message)}
+    rescue InvalidStatus => e
+      message = {flash: {error: t(:invalid, :scope => :status_action_message)}}
+    end
+    redirect_to [:admin, @obj], message
   end
 end
