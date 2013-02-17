@@ -43,6 +43,7 @@ describe Admin::ForumThreadsController do
       10.times do
         @forum_threads << FactoryGirl.create(:forum_thread,
                                   :name => FactoryGirl.generate(:thread_name),
+                                  :description => FactoryGirl.generate(:thread_name),
                                   :forum => @forum)
       end
     end

@@ -24,17 +24,19 @@ module ControllerHelper
   end
   
   shared_examples_for "Controller Standard Search" do
-    it "assigns all admin_forum_threads as @forum_threads" do
+    it "assigns all instances" do
       get :index, {}
       assigns(instances_symbol).should eq(instances)
     end
     
-    it "assigns forums searching by q" do
-      get :index, {:q => instance.name}
-      assigns(instances_symbol).should eq([instance])
+    it "assigns right instances searching by q" do
+      instance.class.term_search_fields.each do |attr|
+        get :index, {:q => instance.read_attribute(attr)}
+        assigns(instances_symbol).should eq([instance])
+      end
     end
     
-    it "assigns forums searching by status" do
+    it "assigns right instances searching by status" do
       instance.inactive!
       get :index, {:status => 'inactive'}
       assigns(instances_symbol).should eq([instance])

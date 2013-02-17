@@ -6,12 +6,17 @@ class Admin::UsersController < Admin::AdminController
   def index
     respond_to do |format|
       format.html { @users = User.search({:term => params[:q], :status => params[:status]}, params[:page]) }
+      format.js { render :json => parse_list_for_js_response(search_by_name(User)) }
     end
   end
 
   # GET /users/1
   def show
     @user = User.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js { render :json => parse_for_js_response(@user) }
+    end
   end
 
   # GET /users/new

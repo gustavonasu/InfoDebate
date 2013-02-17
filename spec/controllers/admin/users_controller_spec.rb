@@ -19,6 +19,8 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::UsersController do
+  include ControllerHelper
+    
   render_views
   
   # This should return the minimal set of attributes required to create a valid
@@ -31,63 +33,80 @@ describe Admin::UsersController do
      :password => "secret",
      :password_confirmation => "secret"}
   end
- 
+  
+  def create_users(total)
+    users = []
+    total.times do
+      users << FactoryGirl.create(:user, 
+                                  :name => FactoryGirl.generate(:name),
+                                  :username => FactoryGirl.generate(:username),
+                                  :email => FactoryGirl.generate(:email))
+    end
+    users
+  end
+  
   describe "GET index" do
-    before do
-      @user = FactoryGirl.create(:user)
-      @users = [@user]
-      35.times do
-        @users << FactoryGirl.create(:user, 
-                                            :name => FactoryGirl.generate(:name),
-                                            :username => FactoryGirl.generate(:username),
-                                            :email => FactoryGirl.generate(:email))
+
+    describe "stardard validations" do
+      before do
+        @users = create_users(10)
+        @user = @users[-1]
+      end
+      
+      context "html request" do
+        it_should_behave_like "Controller Standard Search" do
+          let(:instances) { @users }
+          let(:instance) { @user }
+          let(:instances_symbol) { :users }
+        end
+      end
+      
+      context "js request" do
+        it_should_behave_like "Controller js Search" do
+          subject { @users }
+        end
       end
     end
+    
+    describe "extra validations" do
+      before do
+        create_users(35)
+      end
         
-    it "should limit users length" do
-      get :index, {}
-      assigns(:users).length.should eq(PER_PAGE)
-    end
+      it "should limit users length" do
+        get :index, {}
+        assigns(:users).length.should eq(PER_PAGE)
+      end
     
-    it "should have pagination information" do
-      get :index, {}
-      response.should have_selector("div.pagination")
-      response.should have_selector("li.disabled", :content => "Previous")
-      response.should have_selector("a", :href => admin_users_path(:page => 2),
-                                         :content => "2")
-      response.should have_selector("a", :href => admin_users_path(:page => 2),
-                                         :content => "Next")
-    end
-    
-    context "search" do
-      it "should find user by name" do
-        get :index, {:q => @user.name}
-        response.should have_selector("td", :content => @user.id.to_s)
-      end
-      
-      it "should find user by username" do
-        get :index, {:q => @user.username}
-        response.should have_selector("td", :content => @user.id.to_s)
-      end
-      
-      it "should find user by email" do
-        get :index, {:q => @user.email}
-        response.should have_selector("td", :content => @user.id.to_s)
-      end
-      
-      it "should not find user by wrong name" do
-        get :index, {:q => "wrong"}
-        response.should_not have_selector("td", :content => @user.id.to_s)
+      it "should have pagination information" do
+        get :index, {}
+        response.should have_selector("div.pagination")
+        response.should have_selector("li.disabled", :content => "Previous")
+        response.should have_selector("a", :href => admin_users_path(:page => 2),
+                                           :content => "2")
+        response.should have_selector("a", :href => admin_users_path(:page => 2),
+                                           :content => "Next")
       end
     end
   end
 
 
   describe "GET show" do
-    it "assigns the requested user as @user" do
-      user = User.create! valid_attributes
-      get :show, {:id => user.to_param}
-      assigns(:user).should eq(user)
+    before do
+      @user = User.create! valid_attributes
+    end
+    
+    context "html request" do
+      it "assigns the requested user as @user" do
+        get :show, {:id => @user.to_param}
+        assigns(:user).should eq(@user)
+      end
+    end
+    
+    context "js request" do
+      it_should_behave_like "Controller js Show" do
+        subject { @user }
+      end
     end
   end
 
@@ -207,5 +226,26 @@ describe Admin::UsersController do
       response.should redirect_to(admin_users_url)
     end
   end
-
+  
+  describe "CHANGE_STATUS request" do
+    before do
+      @user = User.create! valid_attributes
+    end
+    
+    context "Valid status" do
+      User.valid_status.reject{|s| s == :deleted}.each do |status|
+        it_should_behave_like "valid #{status} status change" do
+          subject { @user }
+        end
+      end
+    end
+    
+    context "Invalid status" do
+      (ModelHelper.all_status - User.valid_status).each do |status|
+        it_should_behave_like "invalid #{status} status change" do
+          subject { @user }
+        end
+      end
+    end
+  end
 end
