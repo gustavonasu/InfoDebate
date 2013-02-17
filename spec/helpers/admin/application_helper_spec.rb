@@ -52,10 +52,10 @@ describe Admin::ApplicationHelper do
         @delete_map = {:label => t(:delete, :scope => :status_action), :path => admin_forum_path(@forum), :type => "danger", 
                        :method => "delete", :confirmation_msg => t(:confirmation_msg)}
         @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
-                         :path => change_status_admin_forum_path(@forum, :action => "inactive"), 
+                         :path => change_status_admin_forum_path(@forum, :status_action => "inactive"), 
                          :confirmation_msg => t(:confirmation_msg)}
         @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
-                       :path => change_status_admin_forum_path(@forum, :action => "active")}
+                       :path => change_status_admin_forum_path(@forum, :status_action => "active")}
       end
     
       it "with forum active" do
