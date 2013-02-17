@@ -78,6 +78,26 @@ describe ForumThread do
       thread.should_not be_valid
       thread.errors[:forum_id].should cannot_be_blank
     end
+    
+    it "should have active status by default" do
+      thread = create_thread(@attrs)
+      thread.should be_active
+    end
+    
+    it "thread should be inactive when forum is inactive using association create method" do
+      forum = FactoryGirl.create(:forum)
+      forum.inactive!
+      thread = forum.threads.create(@attrs)
+      thread.should be_inactive
+    end
+    
+    it "thread should be inactive when forum is inactive using new method" do
+      forum = FactoryGirl.create(:forum)
+      forum.inactive!
+      thread = ForumThread.new(@attrs)
+      thread.forum = forum
+      thread.should be_inactive
+    end
   end
   
   describe "Status validation" do

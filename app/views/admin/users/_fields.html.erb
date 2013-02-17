@@ -1,6 +1,8 @@
 <%= render 'shared/error_messages', :object => f.object %>
-<%= render 'shared/field_show', :label => "Id", :value => f.object.id %>
-<%= render 'shared/field_show', :label => "Status", :value => t(f.object.status, :scope => :status_label)  %>
+<% unless f.object.new_record? %>
+  <%= render 'shared/field_show', :label => "Id", :value => f.object.id %>
+  <%= render 'shared/field_show', :label => "Status", :value => t(f.object.status, :scope => :status_label)  %>
+<% end %>
 <%= render 'shared/field', :f => f, :field_name => :name %>
 <%= render 'shared/field', :f => f, :field_name => :username,
                            :disabled => !f.object.new_record? %>

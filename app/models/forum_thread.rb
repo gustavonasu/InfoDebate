@@ -29,6 +29,13 @@ class ForumThread < ActiveRecord::Base
   
   after_initialize do
     self.active if new_record? # default status is active
+    update_status(forum)
+  end
+  
+  alias_method :original_forum=, :forum=
+  def forum=(new_forum)
+    update_status(new_forum)
+    self.original_forum = new_forum
   end
   
   def self.valid_status
@@ -42,4 +49,10 @@ class ForumThread < ActiveRecord::Base
   def self.extended_search(options)
     ["forum_id = :forum_id", {:forum_id => options[:forum_id]}] unless options[:forum_id].blank?
   end
+  
+  private
+  
+    def update_status(forum)
+      self.inactive if !forum.nil? && !forum.active?
+    end
 end
