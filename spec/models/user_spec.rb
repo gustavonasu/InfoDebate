@@ -16,6 +16,8 @@
 require 'spec_helper'
 
 describe User do
+  include ModelHelper
+    
   before do
     @attrs = { 
       :name => "Sample User",
@@ -176,6 +178,47 @@ describe User do
         user.reload
         user.has_password(pass).should be_true
       end
+    end
+  end
+  
+  describe "Status validation" do
+    before do
+      @user = User.create!(@attrs)
+    end
+    
+    context "Valid status" do
+      User.valid_status.each do |status|
+        it_should_behave_like "valid #{status} status validation" do
+          subject { @user }
+        end
+        
+        it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @user }
+        end
+      end
+    end
+    
+    context "Invalid status" do
+      (ModelHelper.all_status - User.valid_status).each do |status|
+        it_should_behave_like "invalid #{status} status validation" do
+          subject { @user }
+        end
+        
+        it_should_behave_like "invalid #{status} status validation with persistence" do
+          subject { @user }
+        end
+      end
+    end
+  end
+  
+  describe "Object deletion" do
+    before do
+      @user = User.create!(@attrs)
+    end
+    
+    it_should_behave_like "destroy ModelStatus instance" do
+      subject { @user }
+      let(:type) { User }
     end
   end
   
