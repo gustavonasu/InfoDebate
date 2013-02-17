@@ -18,4 +18,8 @@ class Admin::AdminController < ApplicationController
   def parse_for_js_response(obj)
     {:id => obj.id, :text => obj.name}
   end
+  
+  def change_status
+    head :not_found
+  end
 end

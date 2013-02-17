@@ -53,14 +53,19 @@ class Admin::ForumThreadsController < Admin::AdminController
       render action: "edit"
     end
   end
-
   
-
   # DELETE /admin/forum_threads/1
   def destroy
     @forum_thread = ForumThread.find(params[:id])
     @forum_thread.destroy
     redirect_to admin_forum_threads_url
+  end
+
+  def change_status
+    @forum_thread = ForumThread.find(params[:id])
+    @forum_thread.send(params[:status_action])
+    @forum_thread.save
+    redirect_to admin_forum_thread_url(@forum_thread.id)
   end
   
   private
