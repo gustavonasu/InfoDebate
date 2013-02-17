@@ -33,9 +33,19 @@ class Forum < ActiveRecord::Base
   end
   
   def destroy
-    Forum.transaction do
-      soft_destroy
-      threads.each {|thread| thread.destroy }
-    end
+    exec_delete "do_delete!"
   end
+  alias_method :delete!, :destroy
+  
+  def delete
+    exec_delete "do_delete"
+  end
+  
+  private
+    def exec_delete(action)
+      Forum.transaction do
+        send(action)
+        threads.each {|thread| thread.send(action) }
+      end
+    end
 end

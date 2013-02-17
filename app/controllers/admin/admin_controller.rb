@@ -21,8 +21,7 @@ class Admin::AdminController < ApplicationController
   
   def change_status
     begin
-      @obj.send(params[:status_action])
-      @obj.save
+      @obj.send("#{params[:status_action]}!")
       message = {notice: t(:success, :scope => :status_action_message)}
     rescue InvalidStatus => e
       message = {flash: {error: t(:invalid, :scope => :status_action_message)}}

@@ -48,8 +48,7 @@ module StandardSearchHelper
     end
     
     it "should return correctly searching by status" do
-      subject.inactive
-      subject.save
+      subject.inactive!
       results = type.search({:status => :inactive})
       results.should include(subject)
     end

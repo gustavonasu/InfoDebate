@@ -91,12 +91,20 @@ describe ForumThread do
         it_should_behave_like "valid #{status} status validation" do
           subject { @thread }
         end
+        
+        it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @thread }
+        end
       end
     end
     
     context "Invalid status" do
       (ModelHelper.all_status - ForumThread.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
+          subject { @thread }
+        end
+        
+        it_should_behave_like "invalid #{status} status validation with persistence" do
           subject { @thread }
         end
       end

@@ -65,8 +65,7 @@ describe Admin::ApplicationHelper do
       end
       
       it "with forum inactive" do
-        @forum.inactive
-        @forum.save!
+        @forum.inactive!
         actions = helper.generate_status_change_actions(@forum, "forum")
         actions.should include(@delete_map)
         actions.should include(@active_map)

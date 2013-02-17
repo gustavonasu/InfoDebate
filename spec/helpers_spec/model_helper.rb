@@ -14,18 +14,28 @@ module ModelHelper
     shared_examples_for "valid #{status} status validation" do
       it "should change status to #{status}" do
         subject.send(ModelHelper.action(status))
-        subject.send("#{status}?").should be_true
-        (ModelHelper.all_status - [status]).each do |another_status|
-          subject.send("#{another_status}?").should be_false
-        end
+        assert_status_change(subject, status)
+        
       end
     end
-  end
-  
-  all_status.each do |status|
+    
+    shared_examples_for "valid #{status} status validation with persistence" do
+      it "should change status to #{status}" do
+        subject.send("#{ModelHelper.action(status)}!")
+        assert_status_change(subject, status)
+        subject.reload.status.should eq(status)
+      end
+    end
+    
     shared_examples_for "invalid #{status} status validation" do
       it "should not change status to #{status}" do
         expect { subject.send(ModelHelper.action(status)) }.to raise_error(InvalidStatus)  
+      end
+    end
+    
+    shared_examples_for "invalid #{status} status validation with persistence" do
+      it "should not change status to #{status}" do
+        expect { subject.send("#{ModelHelper.action(status)}!") }.to raise_error(InvalidStatus)  
       end
     end
   end
@@ -38,6 +48,15 @@ module ModelHelper
       type.unscoped.find(subject.id).deleted?.should be_true
     end
   end
+  
+  private
+  
+    def assert_status_change(obj, status)
+      obj.send("#{status}?").should be_true
+      (ModelHelper.all_status - [status]).each do |another_status|
+        obj.send("#{another_status}?").should be_false
+      end
+    end
 end
 
 

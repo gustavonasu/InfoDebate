@@ -62,12 +62,20 @@ describe Forum do
         it_should_behave_like "valid #{status} status validation" do
           subject { @forum }
         end
+        
+        it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @forum }
+        end
       end
     end
     
     context "Invalid status" do
       (ModelHelper.all_status - Forum.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
+          subject { @forum }
+        end
+        
+        it_should_behave_like "invalid #{status} status validation with persistence" do
           subject { @forum }
         end
       end
@@ -101,10 +109,21 @@ describe Forum do
       let(:type) { Forum }
     end
     
-    it "should cascade deletion to forum_thread" do
+    it "should cascade deletion to forum_thread using destroy" do
       @forum.destroy
-      Forum.unscoped.find(@forum.id).should be_deleted
-      ForumThread.unscoped.find(@thread.id).should be_deleted
+      assert_delete_cascade(@forum)
+    end
+    
+    it "should cascade deletion to forum_thread using delete" do
+      @forum.delete!
+      assert_delete_cascade(@forum)
+    end
+    
+    def assert_delete_cascade(forum)
+      Forum.unscoped.find(forum.id).should be_deleted
+      forum.threads.each do |t|
+        ForumThread.unscoped.find(t.id).should be_deleted
+      end
     end
   end
   

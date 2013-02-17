@@ -20,53 +20,90 @@ module ModelStatus
       STATUS_ACTION_MAP[status.to_sym]
     end
     
-    def active
+    
+    def do_active!
+      do_active
+      save!
+    end
+    alias_method :active!, :do_active!
+    
+    def do_active
       send(:status=, :active)
     end
-
+    alias_method :active, :do_active
+    
     def active?
       :active == status
     end
-
-    def inactive
+    
+    
+    def do_inactive!
+      do_inactive
+      save!
+    end
+    alias_method :inactive!, :do_inactive!
+    
+    def do_inactive
       send(:status=, :inactive)
     end
-
+    alias_method :inactive, :do_inactive
+    
     def inactive?
       :inactive == status
     end
     
-    def ban
+    
+    def do_ban!
+      do_ban
+      save!
+    end
+    alias_method :ban!, :do_ban!
+    
+    def do_ban
       send(:status=, :banned)
     end
+    alias_method :ban, :do_ban
     
     def banned?
       :banned == status
     end
     
-    def pending
+    
+    def do_pending!
+      do_pending
+      save!
+    end
+    alias_method :pending!, :do_pending!
+    
+    def do_pending
       send(:status=, :pending)
     end
+    alias_method :pending, :do_pending
     
     def pending?
       :pending == status
     end
     
-    def delete
+    
+    def do_delete!
+      do_delete
+      save!
+    end
+    alias_method :delete!, :do_delete!
+    
+    def do_delete
       send(:status=, :deleted)
     end
+    alias_method :delete, :do_delete
 
     def deleted?
       :deleted == status
     end
     
     # Disable destroy object
-    def soft_destroy
-      self.delete
-      self.save
+    def destroy
+      do_delete!
     end
-    
-    alias_method :destroy, :soft_destroy
     
     def status
       STATUS.key(read_attribute(:status))

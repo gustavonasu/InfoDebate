@@ -35,8 +35,7 @@ module ControllerHelper
     end
     
     it "assigns forums searching by status" do
-      instance.inactive
-      instance.save
+      instance.inactive!
       get :index, {:status => 'inactive'}
       assigns(instances_symbol).should eq([instance])
     end
@@ -63,8 +62,7 @@ module ControllerHelper
   end
   
   def execute_and_validate_status_change(obj, status)
-    obj.inactive unless obj.inactive?
-    obj.save
+    obj.inactive! unless obj.inactive?
     get :change_status, {:id => obj.id, :status_action => ModelStatus.find_action(status)}
     obj.should redirect_to(:action => :show)
   end
