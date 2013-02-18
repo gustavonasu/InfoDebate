@@ -35,6 +35,19 @@ describe Comment do
     comment
   end
   
+  def create_comments(total)
+    comments = []
+    total.times do
+      thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+      user = FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
+                                       :username => FactoryGirl.generate(:username),
+                                       :email => FactoryGirl.generate(:email))
+      comments << FactoryGirl.create(:comment, :body => FactoryGirl.generate(:text_comment),
+                                               :thread => thread, :user => user)
+    end
+    comments
+  end
+  
   describe "Object creation" do
     
     it "should create a new instance given right attributes" do
@@ -87,6 +100,20 @@ describe Comment do
     it_should_behave_like "destroy ModelStatus instance" do
       subject { @comment }
       let(:type) { Comment }
+    end
+  end
+  
+  describe "Customized search" do
+    before do
+      @num_comments = 30
+      @comments = create_comments(@num_comments)
+      @comment = @comments[-1]
+    end
+    
+    it_should_behave_like "Standard Search" do
+      subject { @comment }
+      let(:type) { Comment }
+      let(:num_instances) { @num_comments }
     end
   end
 end

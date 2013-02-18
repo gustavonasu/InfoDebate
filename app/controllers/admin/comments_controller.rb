@@ -5,7 +5,11 @@ class Admin::CommentsController < Admin::AdminController
   # GET /admin/comments
   # GET /admin/comments.json
   def index
-    @comments = Comment.paginate :page => 1
+    @comments = Comment.search({ :term => params[:q], 
+                                 :thread_id => params[:thread_id],
+                                 :user_id => params[:user_id],
+                                 :status => params[:status]},
+                               params[:page])
   end
 
   # GET /admin/comments/1

@@ -16,7 +16,8 @@
 
 class Comment < ActiveRecord::Base
   include ModelStatus
-  
+  extend StandardModelSearch
+    
   attr_accessible :body, :dislike, :like
   
   belongs_to :thread, :class_name => "ForumThread"
@@ -35,5 +36,23 @@ class Comment < ActiveRecord::Base
   
   def self.valid_status
     [:active, :inactive, :pending, :banned, :deleted]
+  end
+  
+  def self.term_search_fields
+    [:body]
+  end
+  
+  def self.extended_search(options)
+    query = ""
+    query_params = {}
+    unless options[:thread_id].blank?
+      query = "thread_id = :thread_id"
+      query_params = {:thread_id => options[:thread_id]}
+    end
+    unless options[:user_id].blank?
+      query = append_query(query, "user_id = :user_id")
+      query_params.merge!(:user_id => options[:user_id])
+    end
+    [query, query_params] 
   end
 end

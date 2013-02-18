@@ -42,12 +42,47 @@ describe Admin::CommentsController do
     comment.save
     comment
   end
+  
+  def create_comments(total)
+    comments = []
+    total.times do
+      thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+      user = FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
+                                       :username => FactoryGirl.generate(:username),
+                                       :email => FactoryGirl.generate(:email))
+      comments << FactoryGirl.create(:comment, :body => FactoryGirl.generate(:text_comment),
+                                               :thread => thread, :user => user)
+    end
+    comments
+  end
 
   describe "GET index" do
-    it "assigns all admin_comments as @comments" do
-      comment = create_comment
-      get :index, {}
-      assigns(:comments).should eq([comment])
+    before do
+      @comments = create_comments(10)
+      @comment = @comments[-1]
+    end
+    
+    it_should_behave_like "Controller Standard Search" do
+      let(:instances) { @comments }
+      let(:instance) { @comment }
+      let(:instances_symbol) { :comments }
+    end
+    
+    describe "Special search cases" do
+      it "assigns comments searching by thread_id" do
+        get :index, {:thread_id => @comment.thread.id}
+        assigns(:comments).should eq([@comment])
+      end
+      
+      it "assigns comments searching by user_id" do
+        get :index, {:user_id => @comment.user.id}
+        assigns(:comments).should eq([@comment])
+      end
+      
+      it "assigns comments searching by thread_id and user_id" do
+        get :index, {:thread_id => @comment.thread.id, :user_id => @comment.user.id}
+        assigns(:comments).should eq([@comment])
+      end
     end
   end
 
