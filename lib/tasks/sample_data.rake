@@ -3,5 +3,6 @@ namespace :db do
   task :populate => :environment do
     Rake::Task['db:populate_users'].invoke
     Rake::Task['db:populate_forums'].invoke
+    Rake::Task['db:populate_comments'].invoke
   end
 end

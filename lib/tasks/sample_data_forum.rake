@@ -9,7 +9,7 @@ namespace :db do
 end
 
 def make_forums
-  100.times do |n|
+  50.times do |n|
     forum = Forum.create!(:name => Faker::Name.name,
                           :description => Faker::Name.title)
     make_threads(forum)
@@ -17,7 +17,7 @@ def make_forums
 end
 
 def make_threads(forum)
-  12.times do |variable|
+  5.times do |variable|
     forum.threads.create!(:name => Faker::Name.name,
                           :description => Faker::Name.title,
                           :url => Faker::Internet.url,
