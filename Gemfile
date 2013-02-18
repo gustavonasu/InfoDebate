@@ -8,6 +8,8 @@ gem 'will_paginate', '3.0.3'
 
 gem 'jquery-rails'
 
+gem 'faker', '1.0.1'
+
 group :production do
   gem 'pg', '0.13.0'
 end
@@ -27,7 +29,6 @@ gem 'sqlite3-ruby', '1.3.3', :require => 'sqlite3', :group => [:development, :te
 group :development do
   gem 'rspec-rails', '2.11.0'
   gem 'annotate', '2.5.0'
-  gem 'faker', '1.0.1'
 end
 
 group :test do
