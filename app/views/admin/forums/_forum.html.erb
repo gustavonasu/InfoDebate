@@ -6,6 +6,6 @@
   <td>
     <%= render 'shared/table_action', :action => "show", :path => admin_forum_path(forum) %>
     <%= render 'shared/table_action', :action => "edit", :path => edit_admin_forum_path(forum) %>
-    <%= render 'shared/table_action', :action => "delete", :path => admin_forum_path(forum, :page => params[:page]) %>
+    <%= render 'shared/table_action', :action => "delete", :path => admin_forum_path(forum) %>
   </td>
 </tr>

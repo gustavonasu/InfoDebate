@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130217182904) do
+ActiveRecord::Schema.define(:version => 20130218000112) do
+
+  create_table "comments", :force => true do |t|
+    t.text     "body",       :limit => 4000
+    t.integer  "thread_id",                                 :null => false
+    t.integer  "user_id",                                   :null => false
+    t.integer  "status",                                    :null => false
+    t.integer  "dislike",                    :default => 0
+    t.integer  "like",                       :default => 0
+    t.integer  "parent_id"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"
+  add_index "comments", ["thread_id"], :name => "index_comments_on_thread_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "forum_threads", :force => true do |t|
     t.string   "name",        :limit => 100, :null => false

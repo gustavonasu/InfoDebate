@@ -1,0 +1,49 @@
+<%= render 'shared/admin_title_options', :title => "Lista de Comentários" %>
+<%= render 'shared/status_message' %>
+
+<% thread = ForumThread.find_by_id(params[:thread_id]) %>
+<% thread_path = admin_forum_thread_path(thread) unless thread.nil? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "thread_id",
+     :label => "Thread",
+     :obj => thread,
+     :index_path => admin_forum_threads_path,
+     :show_path => thread_path %>
+
+<% user = User.find_by_id(params[:user_id]) %>
+<% user_path = admin_user_path(user) unless user.nil? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "user_id",
+     :label => "Usuário",
+     :obj => user,
+     :index_path => admin_users_path,
+     :show_path => user_path %>
+
+<%= render 'shared/admin/search_form', :path => admin_comments_path,
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :status => {:tag => :hidden_field_tag},
+                  :thread_id => {:tag => :hidden_field_tag},
+                  :user_id => {:tag => :hidden_field_tag}} %>
+
+<%= render 'shared/admin/status_options', :status_options => Comment.valid_status, :status_default => :active %>
+
+<%= will_paginate %>
+
+<table class="table table-hover">
+  <tr>
+    <th>Id</th>
+    <th>Thread</th>
+    <th>Usuário</th>
+    <th>Status</th>
+    <th>Comentário</th>
+    <th>Data de Criação</th>
+    <th></th>
+  </tr>
+  <% if @comments.empty? %>
+    <tr><td colspan="5">Nenhum Comentário foi encontrado.</td></tr>
+  <% else %>
+    <%= render @comments %>
+  <% end %>
+</table>
+
+<%= will_paginate %>

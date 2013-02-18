@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   attr_accessible :name, :username, :email, :password, :password_confirmation
   attr_readonly :username
   
+  has_many :comments
+  
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :username, :presence => true, :length => { :in => 3..30 },
                        :uniqueness => { :case_sensitive => false }

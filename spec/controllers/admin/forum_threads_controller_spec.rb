@@ -215,12 +215,12 @@ describe Admin::ForumThreadsController do
 
   describe "DELETE destroy" do
     it "destroys the requested admin_forum_thread" do
-      expect {
-        delete :destroy, {:id => @forum_thread.to_param}
-      }.to_not change(ForumThread, :count)
-      ForumThread.find(@forum).deleted?.should be_true
+      init_count = ForumThread.unscoped.count
+      delete :destroy, {:id => @forum_thread.to_param}
+      ForumThread.unscoped.count.should eq(init_count)
+      ForumThread.unscoped.find(@forum_thread).deleted?.should be_true
     end
-
+    
     it "redirects to the admin_forum_threads list" do
       delete :destroy, {:id => @forum_thread.to_param}
       response.should redirect_to(admin_forum_threads_url)

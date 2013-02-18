@@ -16,8 +16,6 @@
                   :status => {:tag => :hidden_field_tag},
                   :forum_id => {:tag => :hidden_field_tag} } %>
 
-<%= hidden_field_tag :forum_list, params[:forum_id] %>
-
 <%= render 'shared/admin/status_options', :status_options => ForumThread.valid_status, :status_default => :active %>
 
 <%= will_paginate %>

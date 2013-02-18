@@ -20,12 +20,15 @@ class ForumThread < ActiveRecord::Base
   attr_accessible :content_id, :description, :name, :url
   
   belongs_to :forum
+  has_many :comments
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :description, :length => { :maximum => 255 }
   validates :status, :presence => true
   validates :url, :length => { :maximum => 500 }
   validates :forum_id, :presence => true
+  
+  default_scope where("status != #{STATUS[:deleted]}")
   
   after_initialize do
     self.active if new_record? # default status is active

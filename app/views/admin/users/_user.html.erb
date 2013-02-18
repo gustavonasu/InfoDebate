@@ -8,6 +8,6 @@
   <td>
     <%= render 'shared/table_action', :action => "show", :path => admin_user_path(user) %>
     <%= render 'shared/table_action', :action => "edit", :path => edit_admin_user_path(user) %>
-    <%= render 'shared/table_action', :action => "delete", :path => admin_user_path(user, :page => params[:page]) %>
+    <%= render 'shared/table_action', :action => "delete", :path => admin_user_path(user) %>
   </td>
 </tr>
