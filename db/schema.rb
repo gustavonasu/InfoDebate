@@ -14,15 +14,15 @@
 ActiveRecord::Schema.define(:version => 20130218000112) do
 
   create_table "comments", :force => true do |t|
-    t.text     "body",       :limit => 4000
-    t.integer  "thread_id",                                 :null => false
-    t.integer  "user_id",                                   :null => false
-    t.integer  "status",                                    :null => false
-    t.integer  "dislike",                    :default => 0
-    t.integer  "like",                       :default => 0
+    t.string   "body",       :limit => 500
+    t.integer  "thread_id",                                :null => false
+    t.integer  "user_id",                                  :null => false
+    t.integer  "status",                                   :null => false
+    t.integer  "dislike",                   :default => 0
+    t.integer  "like",                      :default => 0
     t.integer  "parent_id"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"

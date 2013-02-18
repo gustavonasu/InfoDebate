@@ -1,7 +1,7 @@
 class CreateComments < ActiveRecord::Migration
   def change
     create_table :comments do |t|
-      t.text :body, :limit => 4000
+      t.string :body, :limit => 4000
       t.integer :thread_id, :null => false
       t.integer :user_id, :null => false
       t.integer :status, :null => false
