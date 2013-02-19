@@ -1,119 +1,119 @@
 # == Schema Information
 #
-# Table name: comments
+# Table name: complaints
 #
 #  id         :integer          not null, primary key
+#  comment_id :integer
 #  body       :string(4000)
-#  thread_id  :integer          not null
-#  user_id    :integer          not null
-#  status     :integer          not null
-#  dislike    :integer          default(0)
-#  like       :integer          default(0)
-#  parent_id  :integer
+#  status     :integer
+#  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 require 'spec_helper'
 
-describe Comment do
+describe Complaint do
   include ModelHelper
 
   before do
-    @attrs = { 
-      :body => "Comment"
-    }
+    @attrs = {:body => "Complaint text"}
     @forum = FactoryGirl.create(:forum)
-    @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+    thread = FactoryGirl.create(:forum_thread, :forum => @forum)
     @user = FactoryGirl.create(:user)
+    @comment = FactoryGirl.create(:comment, :thread => thread, :user => @user)
   end
   
-  def create_comment(attrs = @attrs, thread = @thread, user = @user)
-    comment = Comment.new(attrs)
-    comment.thread = thread
-    comment.user = user
-    comment
+  def create_complaint(attrs = @attrs, comment = @comment, user = @user)
+    complaint = Complaint.create(attrs)
+    complaint.comment = comment
+    complaint.user = user
+    complaint.save
+    complaint
   end
-  
-  def create_comments(total)
-    comments = []
+
+  def create_complaints(total)
+    complaints = []
     total.times do
       thread = FactoryGirl.create(:forum_thread, :forum => @forum)
       user = FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
                                        :username => FactoryGirl.generate(:username),
                                        :email => FactoryGirl.generate(:email))
-      comments << FactoryGirl.create(:comment, :body => FactoryGirl.generate(:text_comment),
-                                               :thread => thread, :user => user)
+      comment = FactoryGirl.create(:comment, :thread => thread, :user => user)
+      complaints << FactoryGirl.create(:complaint, :body => FactoryGirl.generate(:text_complaint),
+                                                   :comment => comment, :user => user)
     end
-    comments
+    complaints
   end
+
   
   describe "Object creation" do
     
     it "should create a new instance given right attributes" do
-      comment = create_comment
-      comment.should be_valid
+      complaint = create_complaint
+      complaint.should be_valid
     end
     
     it "should not create new instance given blank body attribute" do
-      comment = create_comment({:body => ""})
-      comment.should_not be_valid
+      complaint = create_complaint({:body => ""})
+      complaint.should_not be_valid
     end
   end
-  
+
   describe "Status validation" do
     before do
-      @comment = create_comment
+      @complaint = create_complaint
     end
     
     context "Valid status" do
-      Comment.valid_status.each do |status|
+      Complaint.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
-          subject { @comment }
+          subject { @complaint }
         end
         
         it_should_behave_like "valid #{status} status validation with persistence" do
-          subject { @comment }
+          subject { @complaint }
         end
       end
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Comment.valid_status).each do |status|
+      (ModelHelper.all_status - Complaint.valid_status).each do |status|
         it_should_behave_like "invalid #{status} status validation" do
-          subject { @comment }
+          subject { @complaint }
         end
         
         it_should_behave_like "invalid #{status} status validation with persistence" do
-          subject { @comment }
+          subject { @complaint }
         end
       end
     end
   end
-  
+
   describe "Object deletion" do
     before do
-      @comment = create_comment
-      @comment.save!
+      @complaint = create_complaint
+      @complaint.save!
     end
     
     it_should_behave_like "destroy ModelStatus instance" do
-      subject { @comment }
-      let(:type) { Comment }
+      subject { @complaint }
+      let(:type) { Complaint }
     end
   end
   
   describe "Customized search" do
     before do
-      @num_comments = 30
-      @comments = create_comments(@num_comments)
-      @comment = @comments[-1]
+      @num_complaints = 30
+      @complaints = create_complaints(@num_complaints)
+      @complaint = @complaints[-1]
     end
     
     it_should_behave_like "Standard Search" do
-      subject { @comment }
-      let(:type) { Comment }
-      let(:num_instances) { @num_comments }
+      subject { @complaint }
+      let(:type) { Complaint }
+      let(:num_instances) { @num_complaints }
     end
   end
+
 end

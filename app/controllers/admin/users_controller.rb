@@ -1,3 +1,6 @@
+# encoding: UTF-8
+
+
 class Admin::UsersController < Admin::AdminController
   
   before_filter :init_obj_for_change_status, :only => [:change_status]
@@ -33,7 +36,7 @@ class Admin::UsersController < Admin::AdminController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to [:admin, @user], notice: 'User was successfully created.'
+      redirect_to [:admin, @user], notice: t(:creation_success, scope: :action_messages, model: 'Usuário')
     else
       render action: "new"
     end
@@ -43,7 +46,7 @@ class Admin::UsersController < Admin::AdminController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
-      redirect_to [:admin, @user], notice: 'User was successfully updated.'
+      redirect_to [:admin, @user], notice: t(:update_success, scope: :action_messages, model: 'Usuário')
     else
       render action: "edit"
     end
@@ -53,7 +56,7 @@ class Admin::UsersController < Admin::AdminController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    redirect_to admin_users_path(:page => params[:page]), :notice => 'User was successfully deleted.'
+    redirect_to admin_users_path, notice: t(:deletion_success, scope: :action_messages, model: 'Usuário')
   end
   
   private

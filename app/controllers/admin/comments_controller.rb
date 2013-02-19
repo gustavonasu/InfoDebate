@@ -1,3 +1,6 @@
+# encoding: UTF-8
+
+
 class Admin::CommentsController < Admin::AdminController
 
   before_filter :init_obj_for_change_status, :only => [:change_status]
@@ -34,7 +37,7 @@ class Admin::CommentsController < Admin::AdminController
     @comment.thread = get_thread
     @comment.user = get_user
     if @comment.save
-      redirect_to [:admin, @comment], notice: 'Comment was successfully created.'
+      redirect_to [:admin, @comment], notice: t(:creation_success, scope: :action_messages, model: 'Comentário')
     else
       render action: "new"
     end
@@ -46,7 +49,7 @@ class Admin::CommentsController < Admin::AdminController
     @comment.thread = get_thread
     @comment.user = get_user
     if @comment.update_attributes(params[:comment].except(:thread_id, :user_id))
-      redirect_to [:admin, @comment], notice: 'Comment was successfully updated.'
+      redirect_to [:admin, @comment], notice: t(:update_success, scope: :action_messages, model: 'Comentário')
     else
       render action: "edit"
     end
@@ -56,7 +59,7 @@ class Admin::CommentsController < Admin::AdminController
   def destroy
     @comment = Comment.find(params[:id])
     @comment.destroy
-    redirect_to admin_comments_url
+    redirect_to admin_comments_url, notice: t(:deletion_success, scope: :action_messages, model: 'Comentário')
   end
   
   private

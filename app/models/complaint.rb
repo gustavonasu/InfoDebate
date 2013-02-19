@@ -1,34 +1,29 @@
 # == Schema Information
 #
-# Table name: comments
+# Table name: complaints
 #
 #  id         :integer          not null, primary key
+#  comment_id :integer
 #  body       :string(4000)
-#  thread_id  :integer          not null
-#  user_id    :integer          not null
-#  status     :integer          not null
-#  dislike    :integer          default(0)
-#  like       :integer          default(0)
-#  parent_id  :integer
+#  status     :integer
+#  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-class Comment < ActiveRecord::Base
+class Complaint < ActiveRecord::Base
   include ModelStatus
   extend StandardModelSearch
     
-  attr_accessible :body, :dislike, :like
+  attr_accessible :body
   
-  belongs_to :thread, :class_name => "ForumThread"
+  belongs_to :comment
   belongs_to :user
-  
-  has_many :complaints
   
   validates :body, :presence => true, :length => { :maximum => 4000 }
   validates :status, :presence => true
+  validates :comment_id, :presence => true
   validates :user_id, :presence => true
-  validates :thread_id, :presence => true
   
   default_scope where("status != #{STATUS[:deleted]}")
   
@@ -37,7 +32,7 @@ class Comment < ActiveRecord::Base
   end
   
   def self.valid_status
-    [:active, :inactive, :pending, :banned, :deleted]
+    [:active, :inactive, :pending, :deleted]
   end
   
   def self.term_search_fields
@@ -47,9 +42,9 @@ class Comment < ActiveRecord::Base
   def self.extended_search(options)
     query = ""
     query_params = {}
-    unless options[:thread_id].blank?
-      query = "thread_id = :thread_id"
-      query_params = {:thread_id => options[:thread_id]}
+    unless options[:comment_id].blank?
+      query = "comment_id = :comment_id"
+      query_params = {:comment_id => options[:comment_id]}
     end
     unless options[:user_id].blank?
       query = append_query(query, "user_id = :user_id")
@@ -57,4 +52,5 @@ class Comment < ActiveRecord::Base
     end
     [query, query_params] 
   end
+  
 end

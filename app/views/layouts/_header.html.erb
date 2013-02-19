@@ -13,7 +13,13 @@
               <li><%= link_to "Threads", admin_forum_threads_path %></li>
             </ul>
           </li>
-          <li><%= link_to "Moderação", admin_comments_path %></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Moderação <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Comentários", admin_comments_path %></li>
+              <li><%= link_to "Reclamações", admin_complaints_path %></li>
+            </ul>
+          </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuários <b class="caret"></b></a>
             <ul class="dropdown-menu">

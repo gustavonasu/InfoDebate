@@ -4,5 +4,6 @@ namespace :db do
     Rake::Task['db:populate_users'].invoke
     Rake::Task['db:populate_forums'].invoke
     Rake::Task['db:populate_comments'].invoke
+    Rake::Task['db:populate_complaints'].invoke
   end
 end

@@ -197,10 +197,10 @@ describe Admin::CommentsController do
     end
     
     it "destroys the requested admin_comment" do
-      init_count = Comment.unscoped.count
-      delete :destroy, {:id => @comment.to_param}
-      Comment.unscoped.count.should eq(init_count)
-      Comment.unscoped.find(@comment).deleted?.should be_true
+      expect {
+        delete :destroy, {:id => @comment.to_param}
+      }.to change(Comment, :count).by(-1)
+      @comment.reload.should be_deleted
     end
     
     it "redirects to the admin_comments list" do

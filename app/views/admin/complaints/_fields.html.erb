@@ -1,0 +1,20 @@
+<% @complaint.user = User.find_by_id(params[:user_id]) unless params[:user_id].nil? %>
+<% user_path = admin_user_path(@comment.user) unless @complaint.user.nil? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "complaint_user_id",
+     :label => "Usuário",
+     :obj => @complaint.user,
+     :index_path => admin_users_path,
+     :show_path => user_path %>
+
+
+
+<%= render 'shared/error_messages', :object => f.object %>
+<% unless f.object.new_record? %>
+  <%= render 'shared/field_show', :label => "Id", :value => f.object.id %>
+  <%= render 'shared/field_show', :label => "Status", :value => t(f.object.status, :scope => :status_label)  %>
+<% end %>
+
+<%= render 'shared/field', :f => f, :field_name => :comment_id %>
+<%= render 'shared/field', :f => f, :field_name => :user_id %>
+<%= render 'shared/field', :f => f, :field_name => :body %>

@@ -218,6 +218,7 @@ describe Admin::UsersController do
       expect {
         delete :destroy, {:id => user.to_param}
       }.to change(User, :count).by(-1)
+      user.reload.should be_deleted
     end
 
     it "redirects to the users list" do

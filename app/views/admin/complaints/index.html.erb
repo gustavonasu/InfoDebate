@@ -1,0 +1,40 @@
+<%= render 'shared/admin_title_options', :title => "Lista de Reclamações" %>
+<%= render 'shared/status_message' %>
+
+<% user = User.find_by_id(params[:user_id]) %>
+<% user_path = admin_user_path(user) unless user.nil? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "user_id",
+     :label => "Usuário",
+     :obj => user,
+     :index_path => admin_users_path,
+     :show_path => user_path %>
+
+<%= render 'shared/admin/search_form', :path => admin_complaints_path,
+      :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :status => {:tag => :hidden_field_tag},
+                  :comment_id => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :user_id => {:tag => :hidden_field_tag}} %>
+
+<%= render 'shared/admin/status_options', :status_options => Complaint.valid_status, :status_default => :active %>
+
+<%= will_paginate %>
+
+<table class="table table-hover">
+  <tr>
+    <th>Id</th>
+    <th>Id Comentário</th>
+    <th>Usuário</th>
+    <th>Status</th>
+    <th>Reclamação</th>
+    <th>Data de Criação</th>
+    <th></th>
+  </tr>
+  <% if @complaints.empty? %>
+    <tr><td colspan="7">Nenhuma Reclamação foi encontrada.</td></tr>
+  <% else %>
+    <%= render @complaints %>
+  <% end %>
+</table>
+
+<%= will_paginate %>

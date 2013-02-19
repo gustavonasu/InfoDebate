@@ -26,9 +26,6 @@ describe Admin::ForumThreadsController do
     @forum_thread = FactoryGirl.create(:forum_thread, valid_attributes.merge(:forum => @forum))
   end
 
-  # This should return the minimal set of attributes required to create a valid
-  # ForumThread. As you add validations to ForumThread, be sure to
-  # update the return value of this method accordingly.
   def valid_attributes
     {:name => "Thread Name", :forum_id => @forum.id}
   end
@@ -215,10 +212,10 @@ describe Admin::ForumThreadsController do
 
   describe "DELETE destroy" do
     it "destroys the requested admin_forum_thread" do
-      init_count = ForumThread.unscoped.count
-      delete :destroy, {:id => @forum_thread.to_param}
-      ForumThread.unscoped.count.should eq(init_count)
-      ForumThread.unscoped.find(@forum_thread).deleted?.should be_true
+      expect {
+        delete :destroy, {:id => @forum_thread.to_param}
+      }.to change(ForumThread, :count).by(-1)
+      @forum_thread.reload.should be_deleted
     end
     
     it "redirects to the admin_forum_threads list" do

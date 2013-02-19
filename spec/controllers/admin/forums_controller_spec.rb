@@ -175,10 +175,10 @@ describe Admin::ForumsController do
   describe "DELETE destroy" do
     it "destroys the requested admin_forum" do
       forum = Forum.create! valid_attributes
-      init_count = Forum.unscoped.count
-      delete :destroy, {:id => forum.to_param}
-      Forum.unscoped.count.should eq(init_count)
-      Forum.unscoped.find(forum).deleted?.should be_true
+      expect {
+        delete :destroy, {:id => forum.to_param}
+      }.to change(Forum, :count).by(-1)
+      forum.reload.should be_deleted
     end
 
     it "redirects to the admin_forums list" do

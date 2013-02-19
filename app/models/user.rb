@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   attr_readonly :username
   
   has_many :comments
+  has_many :complaints
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :username, :presence => true, :length => { :in => 3..30 },

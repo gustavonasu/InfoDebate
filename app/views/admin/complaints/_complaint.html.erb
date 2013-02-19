@@ -1,0 +1,12 @@
+<tr>
+  <td><%= complaint.id %></td>
+  <td><%= complaint.comment.id %></td>
+  <td><%= complaint.user.name %></td>
+  <td><%= t complaint.status, :scope => 'status' %></td>
+  <td><%= complaint.body %></td>
+  <td><%= l complaint.created_at, :format => :short %></td>
+  <td>
+    <%= render 'shared/table_action', :action => "show", :path => admin_complaint_path(complaint) %>
+    <%= render 'shared/table_action', :action => "delete", :path => admin_complaint_path(complaint) %>
+  </td>
+</tr>
