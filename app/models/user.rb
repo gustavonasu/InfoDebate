@@ -14,7 +14,7 @@
 #
 
 class User < ActiveRecord::Base
-  include ModelStatus
+  include Status::ModelStatus
   extend StandardModelSearch
     
   attr_accessor :password
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   
   before_validation :fix_password_validation, :encrypt_password
   
-  default_scope where("status != #{STATUS[:deleted]}")
+  default_scope where("status != #{find_status_value(:deleted)}")
   
   # Define configurações de status
   def_valid_status :active, :inactive, :pending, :banned, :deleted

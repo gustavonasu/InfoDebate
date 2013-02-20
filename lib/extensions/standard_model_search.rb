@@ -60,7 +60,7 @@ module StandardModelSearch
     def build_query_by_status(status)
       status = :active if status.blank?
       q = '(status = :status)'
-      p = {:status => ModelStatus::STATUS[status.to_sym]}
+      p = {:status => find_status_value(status)}
       yield q, p
     end
 end

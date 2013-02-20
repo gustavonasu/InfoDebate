@@ -2,7 +2,7 @@
 
 module ModelHelper
   
-  ModelStatus.all_status.each do |status|
+  Status::ModelStatus.all_status.each do |status|
     shared_examples_for "valid #{status} status validation" do
       it "should change status to #{status}" do
         subject.send(subject.find_action(status))
@@ -21,13 +21,13 @@ module ModelHelper
     
     shared_examples_for "invalid #{status} status validation" do
       it "should not change status to #{status}" do
-        expect { subject.send(subject.find_action(status)) }.to raise_error(InvalidStatus)  
+        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::InvalidStatus)
       end
     end
     
     shared_examples_for "invalid #{status} status validation with persistence" do
       it "should not change status to #{status}" do
-        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(InvalidStatus)  
+        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::InvalidStatus)
       end
     end
   end

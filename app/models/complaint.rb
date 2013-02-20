@@ -12,7 +12,7 @@
 #
 
 class Complaint < ActiveRecord::Base
-  include ModelStatus
+  include Status::ModelStatus
   extend StandardModelSearch
     
   attr_accessible :body
@@ -25,7 +25,7 @@ class Complaint < ActiveRecord::Base
   validates :comment_id, :presence => true
   validates :user_id, :presence => true
   
-  default_scope where("status != #{STATUS[:deleted]}")
+  default_scope where("status != #{find_status_value(:deleted)}")
   
   # Define configurações de status
   def_valid_status :active, :inactive, :pending, :deleted

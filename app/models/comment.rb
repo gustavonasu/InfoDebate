@@ -15,7 +15,7 @@
 #
 
 class Comment < ActiveRecord::Base
-  include ModelStatus
+  include Status::ModelStatus
   extend StandardModelSearch
     
   attr_accessible :body, :dislike, :like
@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
   validates :user_id, :presence => true
   validates :thread_id, :presence => true
   
-  default_scope where("status != #{STATUS[:deleted]}")
+  default_scope where("status != #{find_status_value(:deleted)}")
   
   # Define configurações de status
   def_valid_status :active, :inactive, :pending, :banned, :deleted

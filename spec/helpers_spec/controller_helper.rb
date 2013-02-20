@@ -43,7 +43,7 @@ module ControllerHelper
     end
   end
   
-  ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+  Status::ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
     shared_examples_for "valid #{status} status change" do
       it "should change status to #{status}" do
         execute_and_validate_status_change(subject, status)
@@ -53,7 +53,7 @@ module ControllerHelper
     end
   end
   
-  ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+  Status::ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
     shared_examples_for "invalid #{status} status change" do
       it "should change status to #{status}" do
         execute_and_validate_status_change(subject, status)
@@ -65,7 +65,7 @@ module ControllerHelper
   
   def execute_and_validate_status_change(obj, status)
     obj.inactive! unless obj.inactive?
-    get :change_status, {:id => obj.id, :status_action => ModelStatus.find_action(status)}
+    get :change_status, {:id => obj.id, :status_action => obj.find_action(status)}
     obj.should redirect_to(:action => :show)
   end
 end

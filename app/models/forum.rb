@@ -11,7 +11,7 @@
 #
 
 class Forum < ActiveRecord::Base
-  include ModelStatus
+  include Status::ModelStatus
   extend StandardModelSearch
   
   attr_accessible :description, :name
@@ -22,7 +22,7 @@ class Forum < ActiveRecord::Base
   validates :description, :length => { :maximum => 255 }
   validates :status, :presence => true
   
-  default_scope where("status != #{STATUS[:deleted]}")
+  default_scope where("status != #{find_status_value(:deleted)}")
   
   # Define configurações de status
   def_valid_status :active, :inactive, :deleted

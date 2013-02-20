@@ -23,7 +23,7 @@ class Admin::AdminController < ApplicationController
     begin
       @obj.send("#{params[:status_action]}!")
       message = {notice: t(:success, :scope => :status_action_message)}
-    rescue InvalidStatus => e
+    rescue Status::InvalidStatus => e
       message = {flash: {error: t(:invalid, :scope => :status_action_message)}}
     end
     redirect_to [:admin, @obj], message
