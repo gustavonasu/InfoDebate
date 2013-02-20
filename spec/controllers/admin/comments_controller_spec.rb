@@ -224,7 +224,7 @@ describe Admin::CommentsController do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Comment.valid_status).each do |status|
+      Comment.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status change" do
           subject { @comment }
         end

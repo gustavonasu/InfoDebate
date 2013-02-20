@@ -187,6 +187,11 @@ describe User do
     end
     
     context "Valid status" do
+      
+      it_should_behave_like "define status methods" do
+        subject { @user }
+      end
+      
       User.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @user }
@@ -199,7 +204,7 @@ describe User do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - User.valid_status).each do |status|
+      User.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @user }
         end

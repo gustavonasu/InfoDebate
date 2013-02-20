@@ -234,7 +234,7 @@ describe Admin::ForumThreadsController do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - ForumThread.valid_status).each do |status|
+      ForumThread.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status change" do
           subject { @forum_thread }
         end

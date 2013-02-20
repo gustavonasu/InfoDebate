@@ -29,8 +29,8 @@ module Admin::ApplicationHelper
   
   def generate_status_change_actions(obj, resource_name)
     actions = []
-    obj.class.valid_status.select {|s| s != obj.status}.each do |status|
-      action = ModelStatus.find_action(status)
+    obj.valid_status.select {|s| s != obj.status }.each do |status|
+      action = obj.find_action(status)
       action_config = ACTION_CONFIG_BY_STATUS[action]
       action_map = action_config[:default_map]
       action_map.merge! build_action_label(action)

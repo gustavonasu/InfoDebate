@@ -224,7 +224,7 @@ describe Admin::ComplaintsController do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Complaint.valid_status).each do |status|
+      Complaint.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status change" do
           subject { @complaint }
         end

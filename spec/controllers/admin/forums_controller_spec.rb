@@ -202,7 +202,7 @@ describe Admin::ForumsController do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Forum.valid_status).each do |status|
+      Forum.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status change" do
           subject { @forum }
         end

@@ -67,6 +67,11 @@ describe Comment do
     end
     
     context "Valid status" do
+      
+      it_should_behave_like "define status methods" do
+        subject { @comment }
+      end
+      
       Comment.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @comment }
@@ -79,7 +84,7 @@ describe Comment do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Comment.valid_status).each do |status|
+      Comment.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @comment }
         end

@@ -61,6 +61,11 @@ describe Forum do
     end
     
     context "Valid status" do
+      
+      it_should_behave_like "define status methods" do
+        subject { @forum }
+      end
+      
       Forum.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @forum }
@@ -81,7 +86,7 @@ describe Forum do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Forum.valid_status).each do |status|
+      Forum.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @forum }
         end

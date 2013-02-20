@@ -24,12 +24,13 @@ class Forum < ActiveRecord::Base
   
   default_scope where("status != #{STATUS[:deleted]}")
   
+  # Define configurações de status
+  def_valid_status :active, :inactive, :deleted
+  def_un_target_status :pending
+  def_terminal_status :deleted
+  
   after_initialize do
     self.active if new_record? # default status is active
-  end
-  
-  def self.valid_status
-    [:active, :inactive, :deleted]
   end
   
   def self.term_search_fields

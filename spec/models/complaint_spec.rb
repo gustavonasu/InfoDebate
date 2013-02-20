@@ -66,6 +66,11 @@ describe Complaint do
     end
     
     context "Valid status" do
+      
+      it_should_behave_like "define status methods" do
+        subject { @complaint }
+      end
+      
       Complaint.valid_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @complaint }
@@ -78,7 +83,7 @@ describe Complaint do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - Complaint.valid_status).each do |status|
+      Complaint.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status validation" do
           subject { @complaint }
         end

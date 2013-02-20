@@ -242,7 +242,7 @@ describe Admin::UsersController do
     end
     
     context "Invalid status" do
-      (ModelHelper.all_status - User.valid_status).each do |status|
+      User.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status change" do
           subject { @user }
         end
