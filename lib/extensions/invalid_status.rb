@@ -1,2 +1,0 @@
-class InvalidStatus < Exception
-end
