@@ -83,6 +83,23 @@ describe Forum do
           t.reload.should be_inactive
         end
       end
+      
+      it "should cascade deletion to forum_thread using destroy" do
+        @forum.destroy
+        assert_delete_cascade(@forum)
+      end
+
+      it "should cascade deletion to forum_thread using delete" do
+        @forum.delete!
+        assert_delete_cascade(@forum)
+      end
+
+      def assert_delete_cascade(forum)
+        Forum.unscoped.find(forum.id).should be_deleted
+        forum.threads.each do |t|
+          ForumThread.unscoped.find(t.id).should be_deleted
+        end
+      end
     end
     
     context "Invalid status" do
@@ -123,23 +140,6 @@ describe Forum do
     it_should_behave_like "destroy ModelStatus instance" do
       subject { @forum }
       let(:type) { Forum }
-    end
-    
-    it "should cascade deletion to forum_thread using destroy" do
-      @forum.destroy
-      assert_delete_cascade(@forum)
-    end
-    
-    it "should cascade deletion to forum_thread using delete" do
-      @forum.delete!
-      assert_delete_cascade(@forum)
-    end
-    
-    def assert_delete_cascade(forum)
-      Forum.unscoped.find(forum.id).should be_deleted
-      forum.threads.each do |t|
-        ForumThread.unscoped.find(t.id).should be_deleted
-      end
     end
   end
   

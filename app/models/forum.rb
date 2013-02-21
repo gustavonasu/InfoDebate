@@ -16,7 +16,7 @@ class Forum < ActiveRecord::Base
   
   attr_accessible :description, :name
 
-  has_many :threads, :class_name => "ForumThread"
+  has_many :threads, :class_name => "ForumThread", :autosave => true
 
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :description, :length => { :maximum => 255 }
@@ -29,6 +29,9 @@ class Forum < ActiveRecord::Base
   def_un_target_status :pending
   def_terminal_status :deleted
   
+  # Define callbacks para alteração de status
+  def_before_status_change :inactive, :deleted, :exec_status_change
+  
   after_initialize do
     self.active if new_record? # default status is active
   end
@@ -37,28 +40,8 @@ class Forum < ActiveRecord::Base
     [:name, :description]
   end
   
-  def inactive
-    exec_status_action "do_inactive"
-  end
-  
-  def inactive!
-    exec_status_action "do_inactive!"
-  end
-  
-  def destroy
-    exec_status_action "do_delete!"
-  end
-  alias_method :delete!, :destroy
-  
-  def delete
-    exec_status_action "do_delete"
-  end
-  
   private
-    def exec_status_action(action)
-      Forum.transaction do
-        send(action)
-        threads.each {|thread| thread.send(action) }
-      end
+    def exec_status_change(action)
+      threads.each {|thread| thread.send(action) }
     end
 end

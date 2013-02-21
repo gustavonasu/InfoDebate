@@ -1,8 +1,10 @@
 module Status
-  module ModelStatus 
+  module ModelStatus
+    include Callbacks
   
     def self.included(base)
       base.extend(ClassMethods)
+      base.extend(Callbacks)
     end
     
     STATUS = { :active => 1,
@@ -39,24 +41,25 @@ module Status
     # Metodos de instância alteração de status
     ModelStatus.all_status.each do |s|
       action = find_action(s)
-      define_method "do_#{action}" do
-        send(:status=, s)
+      define_method "#{action}" do
+        run_status_callbacks(s) { send(:status=, s) }
       end
-      alias_method "#{action}", "do_#{action}"
-    
-      define_method "do_#{action}!" do
-        send("do_#{action}")
-        save!
+      
+      define_method "#{action}!" do
+        ActiveRecord::Base.transaction do
+          send("#{action}")
+          save!
+        end
       end
-      alias_method "#{action}!", "do_#{action}!"
-    
+      
       define_method "#{s}?" do
         s == status
       end
     end
     
     # Disable destroy object
-    def destroy; do_delete! end
+    # TODO This options is hard coded as well as delete status.
+    def destroy; delete! end
     
     private
 
