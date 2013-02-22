@@ -58,6 +58,7 @@ module Status
       end
       
       def run_status_callbacks(status)
+        # TODO change this to pass old status, new status
         run_before_status_callbacks(status)
         yield
         run_after_status_callbacks(status)
