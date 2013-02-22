@@ -72,12 +72,24 @@ describe Comment do
         subject { @comment }
       end
       
-      Comment.valid_status.each do |status|
+      Comment.target_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @comment }
         end
         
         it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @comment }
+        end
+      end
+    end
+    
+    context "Untarget status" do
+      Comment.un_target_status.each do |status|
+        it_should_behave_like "un-target #{status} status validation" do
+          subject { @comment }
+        end
+        
+        it_should_behave_like "un-target #{status} status validation with persistence" do
           subject { @comment }
         end
       end
@@ -90,6 +102,18 @@ describe Comment do
         end
         
         it_should_behave_like "invalid #{status} status validation with persistence" do
+          subject { @comment }
+        end
+      end
+    end
+    
+    context "Terminal status" do
+      Comment.terminal_status.each do |status|
+        it_should_behave_like "terminal #{status} status validation" do
+          subject { @comment }
+        end
+        
+        it_should_behave_like "terminal #{status} status validation with persistence" do
           subject { @comment }
         end
       end

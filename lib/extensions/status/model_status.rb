@@ -70,12 +70,17 @@ module Status
     private
 
       def status=(s)
-        raise InvalidStatus unless valid_status? s
+        validate_status_change(s)
         write_attribute :status, find_status_value(s)
       end
-    
-      def valid_status?(s)
-        return self.valid_status.count(s) > 0
+      
+      def validate_status_change(s)
+        raise InvalidStatusError if self.invalid_status.include?(s)
+        raise Un_TargetStatusError if self.un_target_status.include?(s)
+        curr_status = find_status(read_attribute(:status))
+        if self.terminal_status.include?(curr_status) && s != curr_status
+          raise TerminalStatusError
+        end
       end
   end
 end

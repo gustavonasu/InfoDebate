@@ -7,7 +7,6 @@ module ModelHelper
       it "should change status to #{status}" do
         subject.send(subject.find_action(status))
         assert_status_change(subject, status)
-        
       end
     end
     
@@ -19,15 +18,43 @@ module ModelHelper
       end
     end
     
+    shared_examples_for "un-target #{status} status validation" do
+      it "should not change status to un-target #{status}" do
+        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::Un_TargetStatusError)
+      end
+    end
+    
+    shared_examples_for "un-target #{status} status validation with persistence" do
+      it "should not change status to un-target #{status} with !" do
+        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::Un_TargetStatusError)
+      end
+    end
+    
     shared_examples_for "invalid #{status} status validation" do
-      it "should not change status to #{status}" do
-        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::InvalidStatus)
+      it "should not change status to invalid #{status}" do
+        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::InvalidStatusError)
       end
     end
     
     shared_examples_for "invalid #{status} status validation with persistence" do
-      it "should not change status to #{status}" do
-        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::InvalidStatus)
+      it "should not change status to invalid #{status} with !" do
+        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::InvalidStatusError)
+      end
+    end
+    
+    shared_examples_for "terminal #{status} status validation" do
+      it "should not change status from terminal status" do
+        set_terminal_status(subject)
+        action = subject.find_action(subject.target_status.first)
+        expect { subject.send(action) }.to raise_error(Status::TerminalStatusError)
+      end
+    end
+    
+    shared_examples_for "terminal #{status} status validation with persistence" do
+      it "should not change status from terminal status" do
+        set_terminal_status(subject)
+        action = subject.find_action(subject.target_status.first)
+        expect { subject.send("#{action}!") }.to raise_error(Status::TerminalStatusError)
       end
     end
   end
@@ -57,6 +84,11 @@ module ModelHelper
       obj.invalid_status.each do |another_status|
         obj.send("#{another_status}?").should be_false
       end
+    end
+    
+    def set_terminal_status(obj)
+      action = obj.find_action(obj.terminal_status.first)
+      obj.send(action)
     end
 end
 

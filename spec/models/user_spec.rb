@@ -192,12 +192,24 @@ describe User do
         subject { @user }
       end
       
-      User.valid_status.each do |status|
+      User.target_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @user }
         end
         
         it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @user }
+        end
+      end
+    end
+    
+    context "Untarget status" do
+      User.un_target_status.each do |status|
+        it_should_behave_like "un-target #{status} status validation" do
+          subject { @user }
+        end
+        
+        it_should_behave_like "un-target #{status} status validation with persistence" do
           subject { @user }
         end
       end
@@ -210,6 +222,18 @@ describe User do
         end
         
         it_should_behave_like "invalid #{status} status validation with persistence" do
+          subject { @user }
+        end
+      end
+    end
+    
+    context "Terminal status" do
+      User.terminal_status.each do |status|
+        it_should_behave_like "terminal #{status} status validation" do
+          subject { @user }
+        end
+        
+        it_should_behave_like "terminal #{status} status validation with persistence" do
           subject { @user }
         end
       end

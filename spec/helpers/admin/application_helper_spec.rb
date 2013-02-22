@@ -101,7 +101,7 @@ describe Admin::ApplicationHelper do
       end
       
       it "with user pendig" do
-        @user.pending!
+        @user.send("write_attribute", "status", @user.find_status_value(:pending))
         actions = helper.generate_status_change_actions(@user, "user")
         assert_generated_status_change_actions actions, :pending
       end

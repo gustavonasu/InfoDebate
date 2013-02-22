@@ -66,7 +66,7 @@ describe Forum do
         subject { @forum }
       end
       
-      Forum.valid_status.each do |status|
+      Forum.target_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @forum }
         end
@@ -102,6 +102,18 @@ describe Forum do
       end
     end
     
+    context "Untarget status" do
+      Forum.un_target_status.each do |status|
+        it_should_behave_like "un-target #{status} status validation" do
+          subject { @forum }
+        end
+        
+        it_should_behave_like "un-target #{status} status validation with persistence" do
+          subject { @forum }
+        end
+      end
+    end
+    
     context "Invalid status" do
       Forum.invalid_status.each do |status|
         it_should_behave_like "invalid #{status} status validation" do
@@ -109,6 +121,18 @@ describe Forum do
         end
         
         it_should_behave_like "invalid #{status} status validation with persistence" do
+          subject { @forum }
+        end
+      end
+    end
+    
+    context "Terminal status" do
+      Forum.terminal_status.each do |status|
+        it_should_behave_like "terminal #{status} status validation" do
+          subject { @forum }
+        end
+        
+        it_should_behave_like "terminal #{status} status validation with persistence" do
           subject { @forum }
         end
       end

@@ -71,12 +71,24 @@ describe Complaint do
         subject { @complaint }
       end
       
-      Complaint.valid_status.each do |status|
+      Complaint.target_status.each do |status|
         it_should_behave_like "valid #{status} status validation" do
           subject { @complaint }
         end
         
         it_should_behave_like "valid #{status} status validation with persistence" do
+          subject { @complaint }
+        end
+      end
+    end
+    
+    context "Untarget status" do
+      Complaint.un_target_status.each do |status|
+        it_should_behave_like "un-target #{status} status validation" do
+          subject { @complaint }
+        end
+        
+        it_should_behave_like "un-target #{status} status validation with persistence" do
           subject { @complaint }
         end
       end
@@ -89,6 +101,18 @@ describe Complaint do
         end
         
         it_should_behave_like "invalid #{status} status validation with persistence" do
+          subject { @complaint }
+        end
+      end
+    end
+    
+    context "Terminal status" do
+      Complaint.terminal_status.each do |status|
+        it_should_behave_like "terminal #{status} status validation" do
+          subject { @complaint }
+        end
+        
+        it_should_behave_like "terminal #{status} status validation with persistence" do
           subject { @complaint }
         end
       end
