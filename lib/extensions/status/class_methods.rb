@@ -14,14 +14,20 @@ module Status
     end
     
     def target_status
-      valid_status - un_target_status - terminal_status
+      valid_status - un_target_status
     end
+    
+    # Default Un-target status is empty
+    def un_target_status; [] end 
     
     def def_un_target_status(*status_param)
       define_singleton_method :un_target_status do
         status_param
       end
     end
+    
+    # Default Terminal status is empty
+    def terminal_status; [] end
     
     def def_terminal_status(*status_param)
       define_singleton_method :terminal_status do

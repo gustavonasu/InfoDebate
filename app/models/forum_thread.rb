@@ -32,7 +32,6 @@ class ForumThread < ActiveRecord::Base
   
   # Define configurações de status
   def_valid_status :active, :inactive, :deleted
-  def_un_target_status :pending
   def_terminal_status :deleted
   def_initial_status_proc :init_status
   
