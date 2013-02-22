@@ -31,7 +31,12 @@ module Status
     def target_status; self.class.target_status end
     def un_target_status; self.class.un_target_status end
     def terminal_status; self.class.terminal_status end
-    def status; find_status(read_attribute(:status)) end
+    
+    def status
+      s = find_status(read_attribute(:status))
+      self.status = s = run_initial_status_callback if s.nil?
+      s
+    end
     
     # Metodos helper de instância
     def find_action(status); self.class.find_action(status) end

@@ -36,10 +36,7 @@ class Comment < ActiveRecord::Base
   def_valid_status :active, :inactive, :pending, :banned, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  
-  after_initialize do
-    self.active if new_record? # default status is active
-  end
+  def_initial_status :active
   
   def self.term_search_fields
     [:body]

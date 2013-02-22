@@ -28,13 +28,11 @@ class Forum < ActiveRecord::Base
   def_valid_status :active, :inactive, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  
+  def_initial_status :active
+    
   # Define callbacks para alteração de status
   def_before_status_change :inactive, :deleted, :exec_status_change
   
-  after_initialize do
-    self.active if new_record? # default status is active
-  end
   
   def self.term_search_fields
     [:name, :description]

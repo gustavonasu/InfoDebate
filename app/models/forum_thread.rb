@@ -34,19 +34,7 @@ class ForumThread < ActiveRecord::Base
   def_valid_status :active, :inactive, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  
-  after_initialize do
-    self.active if new_record? # default status is active
-    update_status(forum)
-  end
-  
-  
-  alias_method :original_forum=, :forum=
-  def forum=(new_forum)
-    update_status(new_forum)
-    self.original_forum = new_forum
-  end
-  
+  def_initial_status_proc :init_status
   
   def self.term_search_fields
     [:name, :description]
@@ -58,7 +46,8 @@ class ForumThread < ActiveRecord::Base
   
   private
   
-    def update_status(forum)
-      self.inactive if !forum.nil? && !forum.active?
+    def init_status
+      return :inactive if !forum.nil? && !forum.active?
+      :active
     end
 end

@@ -27,8 +27,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :username, :presence => true, :length => { :in => 3..30 },
                        :uniqueness => { :case_sensitive => false }
-  validates :email, :presence => true,
-                    :email => true,
+  validates :email, :presence => true, :email => true,
                     :uniqueness => { :case_sensitive => false }
   validates :password, :length => { :in => 6..40 },
                        :confirmation => true, :if => :validate_password?
@@ -42,10 +41,7 @@ class User < ActiveRecord::Base
   def_valid_status :active, :inactive, :pending, :banned, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  
-  after_initialize do
-    self.active if new_record? # default status is active
-  end
+  def_initial_status :active
   
   def self.term_search_fields
     [:name, :username, :email]
