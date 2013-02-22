@@ -216,7 +216,7 @@ describe Admin::ComplaintsController do
     end
     
     context "Valid status" do
-      Complaint.valid_status.reject{|s| s == :deleted}.each do |status|
+      Complaint.target_status.each do |status|
         it_should_behave_like "valid #{status} status change" do
           subject { @complaint }
         end

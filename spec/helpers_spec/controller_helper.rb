@@ -43,7 +43,7 @@ module ControllerHelper
     end
   end
   
-  Status::ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+  Status::ModelStatus.all_status.each do |status|
     shared_examples_for "valid #{status} status change" do
       it "should change status to #{status}" do
         execute_and_validate_status_change(subject, status)
@@ -53,7 +53,7 @@ module ControllerHelper
     end
   end
   
-  Status::ModelStatus.all_status.reject{|s| s == :deleted}.each do |status|
+  Status::ModelStatus.all_status.each do |status|
     shared_examples_for "invalid #{status} status change" do
       it "should change status to #{status}" do
         execute_and_validate_status_change(subject, status)

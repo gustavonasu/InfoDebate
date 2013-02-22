@@ -13,6 +13,11 @@ module Status
       all_status - valid_status
     end
     
+    def target_status_for(status)
+      return [] if terminal_status.include?(status)
+      target_status - [status]
+    end
+    
     def target_status
       valid_status - un_target_status
     end

@@ -28,6 +28,7 @@ module Status
     def all_status; self.class.all_status end
     def valid_status; self.class.valid_status end
     def invalid_status; self.class.invalid_status end
+    def target_status_for(status); self.class.target_status_for(status) end
     def target_status; self.class.target_status end
     def un_target_status; self.class.un_target_status end
     def terminal_status; self.class.terminal_status end

@@ -234,7 +234,7 @@ describe Admin::UsersController do
     end
     
     context "Valid status" do
-      User.valid_status.reject{|s| s == :deleted}.each do |status|
+      User.target_status.each do |status|
         it_should_behave_like "valid #{status} status change" do
           subject { @user }
         end

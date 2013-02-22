@@ -226,7 +226,7 @@ describe Admin::ForumThreadsController do
 
   describe "CHANGE_STATUS request" do
     context "Valid status" do
-      ForumThread.valid_status.reject{|s| s == :deleted}.each do |status|
+      ForumThread.target_status.each do |status|
         it_should_behave_like "valid #{status} status change" do
           subject { @forum_thread }
         end

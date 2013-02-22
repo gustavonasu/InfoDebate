@@ -83,13 +83,10 @@ describe Admin::ApplicationHelper do
         @ban_map = {:label => t(:ban, :scope => :status_action), :type => "danger",
                     :path => change_status_admin_user_path(@user, :status_action => "ban"),
                     :confirmation_msg => t(:confirmation_msg)}
-        @pending_map = {:label => t(:pending, :scope => :status_action), :type => "warning",
-                        :path => change_status_admin_user_path(@user, :status_action => "pending"),
-                        :confirmation_msg => t(:confirmation_msg)}
         @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
                        :path => change_status_admin_user_path(@user, :status_action => "active")}
         @status_maps = {:delete => @delete_map, :inactive => @inactive_map, :active => @active_map,
-                        :pending => @pending_map, :ban => @ban_map}
+                        :ban => @ban_map}
       end
     
       it "with user active" do

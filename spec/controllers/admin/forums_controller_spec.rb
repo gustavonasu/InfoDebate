@@ -194,7 +194,7 @@ describe Admin::ForumsController do
     end
     
     context "Valid status" do
-      Forum.valid_status.reject{|s| s == :deleted}.each do |status|
+      Forum.target_status.each do |status|
         it_should_behave_like "valid #{status} status change" do
           subject { @forum }
         end
