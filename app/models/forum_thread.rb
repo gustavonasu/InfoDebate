@@ -15,7 +15,7 @@
 
 class ForumThread < ActiveRecord::Base
   include Status::ModelStatus
-  extend StandardModelSearch
+  include Search::StandardModelSearch
   
   attr_accessible :content_id, :description, :name, :url
   
@@ -30,17 +30,17 @@ class ForumThread < ActiveRecord::Base
   
   default_scope where("status != #{find_status_value(:deleted)}")
   
-  # Define configurações de status
+  # Define configurations for status machine
   def_valid_status :active, :inactive, :deleted
   def_terminal_status :deleted
   def_initial_status_proc :init_status
   
-  def self.term_search_fields
-    [:name, :description]
-  end
+  # Define search configurations
+  def_default_status_for_search :active
+  def_default_search_fields :name, :description
   
-  def self.extended_search(options)
-    ["forum_id = :forum_id", {:forum_id => options[:forum_id]}] unless options[:forum_id].blank?
+  def_extended_search do |options|
+    [{:query => "forum_id = :forum_id", :params => {:forum_id => options[:forum_id]}}] unless options[:forum_id].blank?
   end
   
   private

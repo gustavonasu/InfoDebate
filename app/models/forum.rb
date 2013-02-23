@@ -12,7 +12,7 @@
 
 class Forum < ActiveRecord::Base
   include Status::ModelStatus
-  extend StandardModelSearch
+  include Search::StandardModelSearch
   
   attr_accessible :description, :name
 
@@ -24,18 +24,17 @@ class Forum < ActiveRecord::Base
   
   default_scope where("status != #{find_status_value(:deleted)}")
   
-  # Define configurações de status
+  # Define configurations for status machine
   def_valid_status :active, :inactive, :deleted
   def_terminal_status :deleted
   def_initial_status :active
     
-  # Define callbacks para alteração de status
+  # Define callbacks for status change actions
   def_before_status_change :inactive, :deleted, :exec_status_change
   
-  
-  def self.term_search_fields
-    [:name, :description]
-  end
+  # Define search configurations
+  def_default_status_for_search :active
+  def_default_search_fields :name, :description
   
   private
     def exec_status_change(action)

@@ -11,13 +11,19 @@ module Status
                :inactive => 2,
                :banned => 3,
                :pending => 4,
-               :deleted => 5 }
+               :deleted => 5,
+               :approved => 6,
+               :rejected => 7,
+               :spam => 8 }
     
     STATUS_ACTION_MAP = { :active => :active,
                           :inactive => :inactive,
                           :banned => :ban,
                           :pending => :pending,
-                          :deleted => :delete }
+                          :deleted => :delete,
+                          :approved => :approve,
+                          :rejected => :reject,
+                          :spam => :spam }
     
     def self.all_status; STATUS.keys end
     def self.find_action(status); STATUS_ACTION_MAP[status.to_sym] end

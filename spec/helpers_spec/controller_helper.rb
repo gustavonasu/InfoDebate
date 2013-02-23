@@ -30,15 +30,16 @@ module ControllerHelper
     end
     
     it "assigns right instances searching by q" do
-      instance.class.term_search_fields.each do |attr|
+      instance.class.default_search_fields.each do |attr|
         get :index, {:q => instance.read_attribute(attr)}
         assigns(instances_symbol).should eq([instance])
       end
     end
     
     it "assigns right instances searching by status" do
-      instance.inactive!
-      get :index, {:status => 'inactive'}
+      status = instance.target_status.find {|s| s != instance.status}
+      instance.send("#{instance.find_action(status)}!")
+      get :index, {:status => status}
       assigns(instances_symbol).should eq([instance])
     end
   end
@@ -63,9 +64,10 @@ module ControllerHelper
     end
   end
   
-  def execute_and_validate_status_change(obj, status)
-    obj.inactive! unless obj.inactive?
-    get :change_status, {:id => obj.id, :status_action => obj.find_action(status)}
+  def execute_and_validate_status_change(obj, s)
+    status = obj.target_status.find {|s| s != obj.status}
+    obj.send(obj.find_action(status))
+    get :change_status, {:id => obj.id, :status_action => obj.find_action(s)}
     obj.should redirect_to(:action => :show)
   end
 end

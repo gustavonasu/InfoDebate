@@ -24,7 +24,16 @@ module Admin::ApplicationHelper
                                       :include_param_action => true, :confirmation => true},
                              :delete => {:default_map => {:type => "danger", :method => "delete"}, 
                                          :path_pattern => 'admin_#{resource_name}_path',
-                                         :confirmation => true}}
+                                         :confirmation => true},
+                             :approve => {:default_map => {:type => "info"},
+                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
+                                          :include_param_action => true},
+                             :reject => {:default_map => {:type => "danger"},
+                                         :path_pattern => 'change_status_admin_#{resource_name}_path',
+                                         :include_param_action => true},
+                             :spam => {:default_map => {:type => "danger"},
+                                       :path_pattern => 'change_status_admin_#{resource_name}_path',
+                                       :include_param_action => true} }
                              
   
   def generate_status_change_actions(obj, resource_name)

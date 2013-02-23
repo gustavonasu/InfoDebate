@@ -16,7 +16,7 @@
 
 class Comment < ActiveRecord::Base
   include Status::ModelStatus
-  extend StandardModelSearch
+  include Search::StandardModelSearch
     
   attr_accessible :body, :dislike, :like
   
@@ -32,27 +32,22 @@ class Comment < ActiveRecord::Base
   
   default_scope where("status != #{find_status_value(:deleted)}")
   
-  # Define configurações de status
-  def_valid_status :active, :inactive, :pending, :banned, :deleted
+  # Define configurations for status machine
+  def_valid_status :approved, :rejected, :pending, :spam, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  def_initial_status :active
+  def_initial_status :approved
   
-  def self.term_search_fields
-    [:body]
-  end
+  # Define search configurations
+  def_default_status_for_search :approved
+  def_default_search_fields :body
   
-  def self.extended_search(options)
-    query = ""
-    query_params = {}
-    unless options[:thread_id].blank?
-      query = "thread_id = :thread_id"
-      query_params = {:thread_id => options[:thread_id]}
-    end
-    unless options[:user_id].blank?
-      query = append_query(query, "user_id = :user_id")
-      query_params.merge!(:user_id => options[:user_id])
-    end
-    [query, query_params] 
-  end
+  def_extended_search do |options|
+    list = []
+    list << {:query => "thread_id = :thread_id",
+             :params => {:thread_id => options[:thread_id]}} unless options[:thread_id].blank?
+     list << {:query => "user_id = :user_id",
+              :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
+     list
+  end  
 end

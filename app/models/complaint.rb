@@ -13,7 +13,7 @@
 
 class Complaint < ActiveRecord::Base
   include Status::ModelStatus
-  extend StandardModelSearch
+  include Search::StandardModelSearch
     
   attr_accessible :body
   
@@ -27,28 +27,22 @@ class Complaint < ActiveRecord::Base
   
   default_scope where("status != #{find_status_value(:deleted)}")
   
-  # Define configurações de status
-  def_valid_status :active, :inactive, :pending, :deleted
+  # Define configurations for status machine
+  def_valid_status :approved, :rejected, :pending, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  def_initial_status :active
+  def_initial_status :approved
   
-  def self.term_search_fields
-    [:body]
+  # Define search configurations
+  def_default_status_for_search :approved
+  def_default_search_fields :body
+  
+  def_extended_search do |options|
+    list = []
+    list << {:query => "comment_id = :comment_id",
+             :params => {:comment_id => options[:comment_id]}} unless options[:comment_id].blank?
+     list << {:query => "user_id = :user_id",
+              :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
+     list
   end
-  
-  def self.extended_search(options)
-    query = ""
-    query_params = {}
-    unless options[:comment_id].blank?
-      query = "comment_id = :comment_id"
-      query_params = {:comment_id => options[:comment_id]}
-    end
-    unless options[:user_id].blank?
-      query = append_query(query, "user_id = :user_id")
-      query_params.merge!(:user_id => options[:user_id])
-    end
-    [query, query_params] 
-  end
-  
 end

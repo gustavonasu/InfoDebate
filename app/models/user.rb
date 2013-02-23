@@ -15,7 +15,7 @@
 
 class User < ActiveRecord::Base
   include Status::ModelStatus
-  extend StandardModelSearch
+  include Search::StandardModelSearch
     
   attr_accessor :password
   attr_accessible :name, :username, :email, :password, :password_confirmation
@@ -37,15 +37,15 @@ class User < ActiveRecord::Base
   
   default_scope where("status != #{find_status_value(:deleted)}")
   
-  # Define configurações de status
+  # Define configurations for status machine
   def_valid_status :active, :inactive, :pending, :banned, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
   def_initial_status :active
   
-  def self.term_search_fields
-    [:name, :username, :email]
-  end
+  # Define search configurations
+  def_default_status_for_search :active
+  def_default_search_fields :name, :username, :email
   
   def self.authenticate(username, submitted_password)
     user = first(:conditions => {:username => username})

@@ -38,15 +38,16 @@ module StandardSearchHelper
     end
     
     it "should return correctly searching by fields" do
-      type.term_search_fields.each do |field|
+      type.default_search_fields.each do |field|
         results = type.search({:term => subject.read_attribute(field)})
         results.should include(subject)
       end
     end
     
     it "should return correctly searching by status" do
-      subject.inactive!
-      results = type.search({:status => :inactive})
+      status = subject.target_status.find {|s| s != subject.status}
+      subject.send("#{subject.find_action(status)}!")
+      results = type.search({:status => status})
       results.should include(subject)
     end
   end
