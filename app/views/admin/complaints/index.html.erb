@@ -16,7 +16,8 @@
                   :comment_id => {:tag => :text_field_tag, :class => "input-medium search-query"},
                   :user_id => {:tag => :hidden_field_tag}} %>
 
-<%= render 'shared/admin/status_options', :status_options => Complaint.valid_status, :status_default => :active %>
+<%= render 'shared/admin/status_options', :status_options => Complaint.valid_status,
+           :status_default => Complaint.default_status_for_search %>
 
 <%= will_paginate %>
 

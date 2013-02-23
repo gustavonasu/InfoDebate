@@ -1,22 +1,31 @@
 pt-BR:
   status:
     active: "Ativo"
-    inactive: "Inativo"
+    inactive: "Inativado"
     banned: "Banido"
     pending: "Pendente"
     deleted: "Removido"
+    approved: "Aprovado"
+    rejected: "Rejeitado"
+    spam: "Spam"
   status_action:
     active: "Ativar"
     inactive: "Inativar"
     delete: "Apagar"
     pending: "Tornar Pendente"
     ban: "Banir"
+    approve: "Aprovar"
+    reject: "Rejeitar"
+    spam: "Spam"
   status_label:
     active: "Ativado"
     inactive: "Inativado"
     deleted: "Apagado"
     pending: "Pendente"
     banned: "Banido"
+    approved: "Aprovado"
+    rejected: "Rejeitado"
+    spam: "Spam"
   confirmation_msg: "Tem certeza que deseja prosseguir?"
   status_action_message:
       success: "Status foi atualizado com sucesso."

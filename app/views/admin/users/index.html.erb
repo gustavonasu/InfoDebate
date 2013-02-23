@@ -6,7 +6,8 @@
       :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
                          :status => {:tag => :hidden_field_tag} } %>
 
-<%= render 'shared/admin/status_options', :status_options => User.valid_status, :status_default => :active %>
+<%= render 'shared/admin/status_options', :status_options => User.valid_status,
+           :status_default => User.default_status_for_search %>
 
 <%= will_paginate %>
 
