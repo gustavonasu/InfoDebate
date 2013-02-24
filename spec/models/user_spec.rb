@@ -188,8 +188,7 @@ describe User do
     
     context "Valid status" do
       before do
-        forum = FactoryGirl.create(:forum)
-        thread = FactoryGirl.create(:forum_thread, :forum => forum)
+        thread = FactoryGirl.create(:forum_thread, :with_forum)
         comment = FactoryGirl.create(:comment, :thread => thread, :user => @user)
         @user.comments << comment
         @user.complaints << FactoryGirl.create(:complaint, :user => @user, :comment => comment)

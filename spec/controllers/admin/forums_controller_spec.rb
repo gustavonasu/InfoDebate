@@ -32,9 +32,7 @@ describe Admin::ForumsController do
     before do
       @forums = []
       10.times do
-        @forums << FactoryGirl.create(:forum,
-                                      :name => FactoryGirl.generate(:forum_name),
-                                      :description => FactoryGirl.generate(:forum_name))
+        @forums << FactoryGirl.create(:forum)
       end
     end
     

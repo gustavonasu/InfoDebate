@@ -19,9 +19,7 @@ describe Forum do
   def create_forums(total)
     forums = []
     total.times do |i|
-      forums << FactoryGirl.create(:forum,
-                              :name => FactoryGirl.generate(:forum_name),
-                              :description => FactoryGirl.generate(:forum_name))
+      forums << FactoryGirl.create(:forum)
     end
     forums
   end
@@ -189,10 +187,7 @@ describe Forum do
       before do
         @threads = []
         10.times do |n|
-          @threads << FactoryGirl.create( :forum_thread,
-                                          :forum => @forum,
-                                          :content_id => n,
-                                          :url => FactoryGirl.generate(:content_url))
+          @threads << FactoryGirl.create( :forum_thread, :forum => @forum)
         end
         @thread = @threads[-1]
       end

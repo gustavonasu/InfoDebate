@@ -37,10 +37,7 @@ describe ForumThread do
   def create_threads(total, forum)
     threads = []
     total.times do |n|
-      threads << FactoryGirl.create(:forum_thread,
-                                    :name => FactoryGirl.generate(:thread_name),
-                                    :description => FactoryGirl.generate(:thread_name),
-                                    :forum => forum)
+      threads << FactoryGirl.create(:forum_thread, :forum => forum)
     end
     threads
   end

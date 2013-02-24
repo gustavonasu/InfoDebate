@@ -23,8 +23,7 @@ describe Comment do
     @attrs = { 
       :body => "Comment"
     }
-    @forum = FactoryGirl.create(:forum)
-    @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+    @thread = FactoryGirl.create(:forum_thread, :with_forum)
     @user = FactoryGirl.create(:user)
   end
   
@@ -38,7 +37,7 @@ describe Comment do
   def create_comments(total)
     comments = []
     total.times do
-      thread = FactoryGirl.create(:forum_thread, :forum => @forum)
+      thread = FactoryGirl.create(:forum_thread, :with_forum)
       user = FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
                                        :username => FactoryGirl.generate(:username),
                                        :email => FactoryGirl.generate(:email))

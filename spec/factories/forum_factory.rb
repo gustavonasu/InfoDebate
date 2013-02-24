@@ -12,30 +12,11 @@
 
 FactoryGirl.define do
   factory :forum do |forum|
-    forum.name "Forum Name"
-    forum.description "Forum Description"
+    forum.name { generate(:forum_name) }
+    forum.description { generate(:random_string) }
   end
   
   sequence :forum_name do |n|
     "Forum #{n}"
-  end
-  
-  URL_PATTERN = 'http://content.com/content/#{content_id}'
-  
-  factory :forum_thread do |thread|
-    thread.name "Thread Name"
-    thread.description "Thread Description"
-    content_id = 1
-    thread.content_id content_id
-    thread.url Kernel.eval("\"" + URL_PATTERN + "\"")
-    thread.forum :forum
-  end
-  
-  sequence :thread_name do |n|
-    "Thread #{n}"
-  end
-  
-  sequence :content_url do |n|
-    "http://infodebate.com/content/#{n}"
   end
 end
