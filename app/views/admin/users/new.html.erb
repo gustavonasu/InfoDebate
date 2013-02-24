@@ -1,5 +1,5 @@
 <%= render 'shared/admin_title_options', :title => "Novo Usuário",
-           :options => [ {:label => "Back", :path => admin_users_path, :type => "info"} ] %>
+           :options => [ {:label => "Voltar", :path => admin_users_path, :type => "info"} ] %>
 
 <%= form_for([:admin, @user], :html => {:class => "form-horizontal"}) do |f| %>
   <%= render 'fields', :f => f %>

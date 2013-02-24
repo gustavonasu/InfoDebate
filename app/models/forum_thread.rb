@@ -20,7 +20,7 @@ class ForumThread < ActiveRecord::Base
   attr_accessible :content_id, :description, :name, :url
   
   belongs_to :forum
-  has_many :comments
+  has_many :comments, :foreign_key => :thread_id, :autosave => true
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :description, :length => { :maximum => 255 }
@@ -35,6 +35,9 @@ class ForumThread < ActiveRecord::Base
   def_terminal_status :deleted
   def_initial_status_proc :init_status
   
+  # Define callbacks for status change actions
+  def_before_status_change :inactive, :deleted, :exec_status_change
+  
   # Define search configurations
   def_default_status_for_search :active
   def_default_search_fields :name, :description
@@ -48,5 +51,11 @@ class ForumThread < ActiveRecord::Base
     def init_status
       return :inactive if !forum.nil? && !forum.active?
       :active
+    end
+    
+    def exec_status_change(old_status, new_status, action)
+      s = new_status
+      s = :rejected if new_status == :inactive
+      comments.update_all(:status => find_status_value(s))
     end
 end

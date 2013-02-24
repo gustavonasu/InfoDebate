@@ -57,22 +57,22 @@ module Status
         end
       end
       
-      def run_status_callbacks(status)
+      def run_status_callbacks(s)
         # TODO change this to pass old status, new status
-        run_before_status_callbacks(status)
+        run_before_status_callbacks(s)
         yield
-        run_after_status_callbacks(status)
+        run_after_status_callbacks(s)
       end
       
-      def run_before_status_callbacks(status)
-        self.class._before_status_callbacks[status].each do |method|
-          send(method, find_action(status))
+      def run_before_status_callbacks(s)
+        self.class._before_status_callbacks[s].each do |method|
+          send(method, status, s, find_action(s))
         end
       end
       
-      def run_after_status_callbacks(status)
-        self.class._after_status_callbacks[status].each do |method|
-          send(method, find_action(status))
+      def run_after_status_callbacks(s)
+        self.class._after_status_callbacks[s].each do |method|
+          send(method, status, s, find_action(s))
         end
       end
   end

@@ -23,7 +23,7 @@ class Comment < ActiveRecord::Base
   belongs_to :thread, :class_name => "ForumThread"
   belongs_to :user
   
-  has_many :complaints
+  has_many :complaints, :autosave => true
   
   validates :body, :presence => true, :length => { :maximum => 4000 }
   validates :status, :presence => true
@@ -38,6 +38,9 @@ class Comment < ActiveRecord::Base
   def_terminal_status :deleted
   def_initial_status :approved
   
+  # Define callbacks for status change actions
+  def_before_status_change :deleted, :exec_status_change
+  
   # Define search configurations
   def_default_status_for_search :approved
   def_default_search_fields :body
@@ -46,8 +49,13 @@ class Comment < ActiveRecord::Base
     list = []
     list << {:query => "thread_id = :thread_id",
              :params => {:thread_id => options[:thread_id]}} unless options[:thread_id].blank?
-     list << {:query => "user_id = :user_id",
+    list << {:query => "user_id = :user_id",
               :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
-     list
-  end  
+    list
+  end
+  
+  private
+    def exec_status_change(old_status, new_status, action)
+      complaints.update_all(:status => find_status_value(new_status))
+    end
 end

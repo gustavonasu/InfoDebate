@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
   attr_accessible :name, :username, :email, :password, :password_confirmation
   attr_readonly :username
   
-  has_many :comments
-  has_many :complaints
+  has_many :comments, :autosave => true
+  has_many :complaints, :autosave => true
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :username, :presence => true, :length => { :in => 3..30 },
@@ -43,6 +43,9 @@ class User < ActiveRecord::Base
   def_terminal_status :deleted
   def_initial_status :active
   
+  # Define callbacks for status change actions
+  def_before_status_change :banned, :inactive, :deleted, :exec_status_change
+  
   # Define search configurations
   def_default_status_for_search :active
   def_default_search_fields :name, :username, :email
@@ -57,6 +60,13 @@ class User < ActiveRecord::Base
   end
   
   private
+    
+    def exec_status_change(old_status, new_status, action)
+      s = new_status
+      s = :rejected if [:inactive, :banned].include? new_status
+      comments.update_all(:status => find_status_value(s))
+      complaints.update_all(:status => find_status_value(s)) unless [:inactive, :banned].include? new_status
+    end
     
     def validate_password?
       new_record? ||

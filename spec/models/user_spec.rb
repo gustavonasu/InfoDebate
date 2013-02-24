@@ -187,6 +187,13 @@ describe User do
     end
     
     context "Valid status" do
+      before do
+        forum = FactoryGirl.create(:forum)
+        thread = FactoryGirl.create(:forum_thread, :forum => forum)
+        comment = FactoryGirl.create(:comment, :thread => thread, :user => @user)
+        @user.comments << comment
+        @user.complaints << FactoryGirl.create(:complaint, :user => @user, :comment => comment)
+      end
       
       it_should_behave_like "define status methods" do
         subject { @user }
@@ -199,6 +206,48 @@ describe User do
         
         it_should_behave_like "valid #{status} status validation with persistence" do
           subject { @user }
+        end
+      end
+      
+      it "should cascade deletion to comments and complaints using destroy" do
+        @user.destroy
+        assert_delete_cascade(@user)
+      end
+      
+      it "should cascade deletion to comments and complaints using delete" do
+        @user.delete!
+        assert_delete_cascade(@user)
+      end
+      
+      it "should cascade reject to comments using ban" do
+        init_complaint_status = @user.complaints.first.status
+        @user.ban!
+        @user.comments.each do |comment|
+          Comment.find(comment.id).should be_rejected
+        end
+        @user.complaints.each do |complaint|
+          Complaint.find(complaint.id).status.should eq(init_complaint_status)
+        end
+      end
+      
+      it "should cascade reject to comments using inactive" do
+        init_complaint_status = @user.complaints.first.status
+        @user.inactive!
+        @user.comments.each do |comment|
+          Comment.find(comment.id).should be_rejected
+        end
+        @user.complaints.each do |complaint|
+          Complaint.find(complaint.id).status.should eq(init_complaint_status)
+        end
+      end
+      
+      def assert_delete_cascade(user)
+        User.unscoped.find(user.id).should be_deleted
+        user.comments.each do |comment|
+          Comment.unscoped.find(comment.id).should be_deleted
+        end
+        user.complaints.each do |complaint|
+          Complaint.unscoped.find(complaint.id).should be_deleted
         end
       end
     end

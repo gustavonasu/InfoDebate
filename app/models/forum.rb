@@ -37,7 +37,7 @@ class Forum < ActiveRecord::Base
   def_default_search_fields :name, :description
   
   private
-    def exec_status_change(action)
+    def exec_status_change(old_status, new_status, action)
       threads.each {|thread| thread.send(action) }
     end
 end

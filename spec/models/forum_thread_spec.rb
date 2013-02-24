@@ -107,6 +107,11 @@ describe ForumThread do
     end
     
     context "Valid status" do
+      before do
+        @thread.save
+        @thread.comments << FactoryGirl.create(:comment, :thread => @thread, :user => FactoryGirl.create(:user))
+        @thread.save!
+      end
       
       it_should_behave_like "define status methods" do
         subject { @thread }
@@ -119,6 +124,31 @@ describe ForumThread do
         
         it_should_behave_like "valid #{status} status validation with persistence" do
           subject { @thread }
+        end
+      end
+      
+      it "should cascade deletion to comment using destroy" do
+        @thread.destroy
+        assert_delete_cascade(@thread)
+      end
+      
+      it "should cascade deletion to comment using delete" do
+        @thread.delete!
+        assert_delete_cascade(@thread)
+      end
+      
+      it "should cascade reject to comment using inactive" do
+        @thread.inactive!
+        ForumThread.unscoped.find(@thread.id).should be_inactive
+        @thread.comments.each do |c|
+          Comment.unscoped.find(c.id).should be_rejected
+        end
+      end
+      
+      def assert_delete_cascade(thread)
+        ForumThread.unscoped.find(thread.id).should be_deleted
+        thread.comments.each do |c|
+          Comment.unscoped.find(c.id).should be_deleted
         end
       end
     end

@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-
 class Admin::CommentsController < Admin::AdminController
 
   before_filter :init_obj_for_change_status, :only => [:change_status]

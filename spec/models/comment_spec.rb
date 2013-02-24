@@ -67,6 +67,13 @@ describe Comment do
     end
     
     context "Valid status" do
+      before do
+        @comment.save
+        @comment.complaints << FactoryGirl.create(:complaint,
+                                                  :comment => @comment,
+                                                  :user => @user)
+        @comment.save!
+      end
       
       it_should_behave_like "define status methods" do
         subject { @comment }
@@ -79,6 +86,23 @@ describe Comment do
         
         it_should_behave_like "valid #{status} status validation with persistence" do
           subject { @comment }
+        end
+      end
+      
+      it "should cascade deletion to comment using destroy" do
+        @comment.destroy
+        assert_delete_cascade(@comment)
+      end
+      
+      it "should cascade deletion to comment using delete" do
+        @comment.delete!
+        assert_delete_cascade(@comment)
+      end
+      
+      def assert_delete_cascade(comment)
+        Comment.unscoped.find(comment.id).should be_deleted
+        comment.complaints.each do |c|
+          Complaint.unscoped.find(c.id).should be_deleted
         end
       end
     end
