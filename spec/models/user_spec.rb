@@ -181,29 +181,23 @@ describe User do
     end
   end
   
-  describe "Status validation" do
+  describe "Model Status" do
     before do
-      @user = User.create!(@attrs)
+      @user = FactoryGirl.create(:user)
     end
     
-    context "Valid status" do
+    it_should_behave_like "define status methods" do
+      subject { @user }
+    end
+    
+    context "Status Trasition" do
+      it_should_behave_like "status validation", User, :user
+    end
+      
+    context "Cascades validations" do
       before do
         @user.comments << FactoryGirl.create(:comment, :with_thread, :user => @user)
         @user.complaints << FactoryGirl.create(:complaint, :with_comment, :user => @user)
-      end
-      
-      it_should_behave_like "define status methods" do
-        subject { @user }
-      end
-      
-      User.target_status.each do |status|
-        it_should_behave_like "valid #{status} status validation" do
-          subject { @user }
-        end
-        
-        it_should_behave_like "valid #{status} status validation with persistence" do
-          subject { @user }
-        end
       end
       
       it "should cascade deletion to comments and complaints using destroy" do
@@ -249,51 +243,11 @@ describe User do
       end
     end
     
-    context "Untarget status" do
-      User.un_target_status.each do |status|
-        it_should_behave_like "un-target #{status} status validation" do
-          subject { @user }
-        end
-        
-        it_should_behave_like "un-target #{status} status validation with persistence" do
-          subject { @user }
-        end
+    describe "Delete User" do
+      it_should_behave_like "destroy ModelStatus instance" do
+        subject { @user }
+        let(:type) { User }
       end
-    end
-    
-    context "Invalid status" do
-      User.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status validation" do
-          subject { @user }
-        end
-        
-        it_should_behave_like "invalid #{status} status validation with persistence" do
-          subject { @user }
-        end
-      end
-    end
-    
-    context "Terminal status" do
-      User.terminal_status.each do |status|
-        it_should_behave_like "terminal #{status} status validation" do
-          subject { @user }
-        end
-        
-        it_should_behave_like "terminal #{status} status validation with persistence" do
-          subject { @user }
-        end
-      end
-    end
-  end
-  
-  describe "Object deletion" do
-    before do
-      @user = User.create!(@attrs)
-    end
-    
-    it_should_behave_like "destroy ModelStatus instance" do
-      subject { @user }
-      let(:type) { User }
     end
   end
   

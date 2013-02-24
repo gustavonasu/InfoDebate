@@ -24,9 +24,11 @@ FactoryGirl.define do
     trait :with_forum do
       association :forum, :factory => :forum, :strategy => :create
     end
+    
+    factory :full_forum_thread, traits: [:with_forum]
   end
   
   sequence :thread_name do |n|
     "Thread #{n}"
-  end  
+  end
 end

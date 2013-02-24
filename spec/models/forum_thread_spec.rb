@@ -97,47 +97,37 @@ describe ForumThread do
     end
   end
   
-  describe "Status validation" do
+  describe "Model Status" do
     before do
-      @thread = ForumThread.new(@attrs)
-      @thread.forum = FactoryGirl.create(:forum)
+      @thread = FactoryGirl.create(:full_forum_thread)
     end
     
-    context "Valid status" do
+    it_should_behave_like "define status methods" do
+      subject { @thread }
+    end
+      
+    context "Status Trasition" do
+      it_should_behave_like "status validation", ForumThread, :full_forum_thread
+    end
+      
+    context "Cascades validations" do
       before do
-        @thread.save
         comment = FactoryGirl.create(:comment, :with_user, :thread => @thread)
-        complaint = FactoryGirl.create(:complaint, :with_user, :comment => comment)
-        comment.complaints << complaint
-        comment.save!
+        comment.complaints << FactoryGirl.create(:complaint, :with_user, :comment => comment)
         @thread.comments << comment
         @thread.save!
-      end
-      
-      it_should_behave_like "define status methods" do
-        subject { @thread }
-      end
-      
-      ForumThread.target_status.each do |status|
-        it_should_behave_like "valid #{status} status validation" do
-          subject { @thread }
-        end
-        
-        it_should_behave_like "valid #{status} status validation with persistence" do
-          subject { @thread }
-        end
       end
       
       it "should cascade deletion to comment using destroy" do
         @thread.destroy
         assert_delete_cascade(@thread)
       end
-      
+    
       it "should cascade deletion to comment using delete" do
         @thread.delete!
         assert_delete_cascade(@thread) 
       end
-      
+    
       it "should cascade reject to comment using inactive" do
         @thread.inactive!
         ForumThread.unscoped.find(@thread.id).should be_inactive
@@ -145,7 +135,7 @@ describe ForumThread do
           Comment.unscoped.find(c.id).should be_rejected
         end
       end
-      
+    
       def assert_delete_cascade(thread)
         ForumThread.unscoped.find(thread.id).should be_deleted
         thread.comments.each do |comment|
@@ -157,54 +147,14 @@ describe ForumThread do
       end
     end
     
-    context "Untarget status" do
-      ForumThread.un_target_status.each do |status|
-        it_should_behave_like "un-target #{status} status validation" do
-          subject { @thread }
-        end
-        
-        it_should_behave_like "un-target #{status} status validation with persistence" do
-          subject { @thread }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      ForumThread.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status validation" do
-          subject { @thread }
-        end
-        
-        it_should_behave_like "invalid #{status} status validation with persistence" do
-          subject { @thread }
-        end
-      end
-    end
-    
-    context "Terminal status" do
-      ForumThread.terminal_status.each do |status|
-        it_should_behave_like "terminal #{status} status validation" do
-          subject { @thread }
-        end
-        
-        it_should_behave_like "terminal #{status} status validation with persistence" do
-          subject { @thread }
-        end
+    describe "Delete Thread" do
+      it_should_behave_like "destroy ModelStatus instance" do
+        subject { @thread }
+        let(:type) { ForumThread }
       end
     end
   end
   
-  describe "Object deletion" do
-    before do
-      @thread = create_thread(@attrs)
-      @thread.save()
-    end
-    
-    it_should_behave_like "destroy ModelStatus instance" do
-      subject { @thread }
-      let(:type) { ForumThread }
-    end
-  end
   
   describe "Search" do
     context "Forum relationship" do

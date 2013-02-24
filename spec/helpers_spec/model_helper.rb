@@ -2,59 +2,55 @@
 
 module ModelHelper
   
-  Status::ModelStatus.all_status.each do |status|
-    shared_examples_for "valid #{status} status validation" do
-      it "should change status to #{status}" do
-        subject.send(subject.find_action(status))
-        assert_status_change(subject, status)
+  shared_examples_for "status validation" do |clazz, factory_symbol|
+    before do
+      @obj = FactoryGirl.create(factory_symbol)
+    end
+    
+    clazz.target_status.each do |status|
+      it "should change status to target '#{status}' status" do
+        @obj.send(subject.find_action(status))
+        assert_status_change(@obj, status)
+      end
+      
+      it "should change status to target '#{status}' status with action!" do
+        @obj.send("#{subject.find_action(status)}!")
+        assert_status_change(@obj, status)
+        @obj.reload.status.should eq(status)
       end
     end
     
-    shared_examples_for "valid #{status} status validation with persistence" do
-      it "should change status to #{status}" do
-        subject.send("#{subject.find_action(status)}!")
-        assert_status_change(subject, status)
-        subject.reload.status.should eq(status)
+    clazz.un_target_status.each do |status|
+      it "should not change status to un-target '#{status}' status" do
+        expect { @obj.send(@obj.find_action(status)) }.to raise_error(Status::Un_TargetStatusError)
+      end
+      
+      it "should not change status to un-target '#{status}' status with action!" do
+        expect { @obj.send("#{@obj.find_action(status)}!") }.to raise_error(Status::Un_TargetStatusError)
       end
     end
     
-    shared_examples_for "un-target #{status} status validation" do
-      it "should not change status to un-target #{status}" do
-        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::Un_TargetStatusError)
+    clazz.terminal_status.each do |status|
+      it "should not change status from terminal '#{status}' status" do
+        set_terminal_status(@obj)
+        action = @obj.find_action(@obj.target_status.first)
+        expect { @obj.send(action) }.to raise_error(Status::TerminalStatusError)
       end
-    end
-    
-    shared_examples_for "un-target #{status} status validation with persistence" do
-      it "should not change status to un-target #{status} with !" do
-        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::Un_TargetStatusError)
-      end
-    end
-    
-    shared_examples_for "invalid #{status} status validation" do
-      it "should not change status to invalid #{status}" do
-        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::InvalidStatusError)
-      end
-    end
-    
-    shared_examples_for "invalid #{status} status validation with persistence" do
-      it "should not change status to invalid #{status} with !" do
-        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::InvalidStatusError)
-      end
-    end
-    
-    shared_examples_for "terminal #{status} status validation" do
-      it "should not change status from terminal status" do
-        set_terminal_status(subject)
-        action = subject.find_action(subject.target_status.first)
-        expect { subject.send(action) }.to raise_error(Status::TerminalStatusError)
-      end
-    end
-    
-    shared_examples_for "terminal #{status} status validation with persistence" do
-      it "should not change status from terminal status" do
+      
+      it "should not change status from terminal '#{status}' status with action!" do
         set_terminal_status(subject)
         action = subject.find_action(subject.target_status.first)
         expect { subject.send("#{action}!") }.to raise_error(Status::TerminalStatusError)
+      end
+    end
+    
+    clazz.invalid_status.each do |status|
+      it "should not change status to invalid '#{status}' status" do
+        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::InvalidStatusError)
+      end
+      
+      it "should not change status to invalid '#{status}' status with action!" do
+        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::InvalidStatusError)
       end
     end
   end

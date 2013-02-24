@@ -52,74 +52,24 @@ describe Complaint do
     end
   end
 
-  describe "Status validation" do
+  describe "Model Status" do
     before do
-      @complaint = create_complaint
+      @complaint = FactoryGirl.create(:full_complaint)
     end
     
-    context "Valid status" do
-      
-      it_should_behave_like "define status methods" do
+    it_should_behave_like "define status methods" do
+      subject { @user }
+    end
+    
+    context "Status Trasition" do
+      it_should_behave_like "status validation", Complaint, :full_complaint
+    end
+    
+    describe "Object deletion" do
+      it_should_behave_like "destroy ModelStatus instance" do
         subject { @complaint }
+        let(:type) { Complaint }
       end
-      
-      Complaint.target_status.each do |status|
-        it_should_behave_like "valid #{status} status validation" do
-          subject { @complaint }
-        end
-        
-        it_should_behave_like "valid #{status} status validation with persistence" do
-          subject { @complaint }
-        end
-      end
-    end
-    
-    context "Untarget status" do
-      Complaint.un_target_status.each do |status|
-        it_should_behave_like "un-target #{status} status validation" do
-          subject { @complaint }
-        end
-        
-        it_should_behave_like "un-target #{status} status validation with persistence" do
-          subject { @complaint }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      Complaint.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status validation" do
-          subject { @complaint }
-        end
-        
-        it_should_behave_like "invalid #{status} status validation with persistence" do
-          subject { @complaint }
-        end
-      end
-    end
-    
-    context "Terminal status" do
-      Complaint.terminal_status.each do |status|
-        it_should_behave_like "terminal #{status} status validation" do
-          subject { @complaint }
-        end
-        
-        it_should_behave_like "terminal #{status} status validation with persistence" do
-          subject { @complaint }
-        end
-      end
-    end
-  end
-
-  describe "Object deletion" do
-    before do
-      @complaint = create_complaint
-      @complaint.save!
-    end
-    
-    it_should_behave_like "destroy ModelStatus instance" do
-      subject { @complaint }
-      let(:type) { Complaint }
     end
   end
   

@@ -25,5 +25,7 @@ FactoryGirl.define do
     trait :with_thread do
       association :thread, :factory => [:forum_thread, :with_forum], :strategy => :create
     end
+    
+    factory :full_comment, traits: [:with_user, :with_thread]
   end
 end

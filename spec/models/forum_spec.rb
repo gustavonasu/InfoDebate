@@ -50,29 +50,22 @@ describe Forum do
     end
   end
   
-  describe "Status validation" do
+  describe "Model Status" do
     before do
       @forum = Forum.create(@attrs)
-      @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
-      @forum.threads << @thread
+      @forum.threads << FactoryGirl.create(:forum_thread, :forum => @forum)
       @forum.save!
     end
     
-    context "Valid status" do
-      
-      it_should_behave_like "define status methods" do
-        subject { @forum }
-      end
-      
-      Forum.target_status.each do |status|
-        it_should_behave_like "valid #{status} status validation" do
-          subject { @forum }
-        end
-        
-        it_should_behave_like "valid #{status} status validation with persistence" do
-          subject { @forum }
-        end
-      end
+    it_should_behave_like "define status methods" do
+      subject { @forum }
+    end
+    
+    context "Status Trasition" do
+      it_should_behave_like "status validation", Forum, :forum
+    end
+    
+    context "Cascades validations" do
       
       it "should cascade inactive action to threads" do
         @forum.inactive!
@@ -100,39 +93,10 @@ describe Forum do
       end
     end
     
-    context "Untarget status" do
-      Forum.un_target_status.each do |status|
-        it_should_behave_like "un-target #{status} status validation" do
-          subject { @forum }
-        end
-        
-        it_should_behave_like "un-target #{status} status validation with persistence" do
-          subject { @forum }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      Forum.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status validation" do
-          subject { @forum }
-        end
-        
-        it_should_behave_like "invalid #{status} status validation with persistence" do
-          subject { @forum }
-        end
-      end
-    end
-    
-    context "Terminal status" do
-      Forum.terminal_status.each do |status|
-        it_should_behave_like "terminal #{status} status validation" do
-          subject { @forum }
-        end
-        
-        it_should_behave_like "terminal #{status} status validation with persistence" do
-          subject { @forum }
-        end
+    context "Delete forum" do
+      it_should_behave_like "destroy ModelStatus instance" do
+        subject { @forum }
+        let(:type) { Forum }
       end
     end
   end
@@ -148,65 +112,6 @@ describe Forum do
       forum.delete
       forum.save
       Forum.all.length.should eq(@num_forums - 1)
-    end
-  end
-  
-  describe "Object deletion" do
-    before do
-      @forum = Forum.create!(@attrs)
-      @thread = FactoryGirl.create(:forum_thread, :forum => @forum)
-      @forum.threads << @thread
-      @forum.save!
-    end
-    
-    it_should_behave_like "destroy ModelStatus instance" do
-      subject { @forum }
-      let(:type) { Forum }
-    end
-  end
-  
-  describe "Threads relationship" do
-    before do
-      @forum = Forum.create!(@attrs)
-      @threds_attrs = { :name => "Sample Thread",
-                        :description => "Thread Description",
-                        :url => "http://infodebate.com/article/1",
-                        :content_id => 2}
-    end
-    
-    context "Thread creation" do
-      it "should create thread instance" do
-        thread = @forum.threads.create(@threds_attrs)
-        thread.id.should_not be_nil
-        thread.active?.should be_true
-        thread.forum.should eq(@forum)
-      end
-    end
-    
-    context "Thread searches" do
-      before do
-        @threads = []
-        10.times do |n|
-          @threads << FactoryGirl.create( :forum_thread, :forum => @forum)
-        end
-        @thread = @threads[-1]
-      end
-      
-      it "should return all threads" do
-        @forum.threads.all.should eq(@threads)
-      end
-      
-      it "should search by forum_id" do
-        @forum.threads.find_all_by_forum_id(@forum).should eq(@threads)
-      end
-      
-      it "should search by content_id" do
-        @forum.threads.find_by_content_id(@thread.content_id).should eq(@thread)
-      end
-      
-      it "should search by url" do
-        @forum.threads.find_by_url(@thread.url).should eq(@thread)
-      end
     end
   end
   
