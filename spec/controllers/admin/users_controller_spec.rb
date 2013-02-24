@@ -37,10 +37,7 @@ describe Admin::UsersController do
   def create_users(total)
     users = []
     total.times do
-      users << FactoryGirl.create(:user, 
-                                  :name => FactoryGirl.generate(:name),
-                                  :username => FactoryGirl.generate(:username),
-                                  :email => FactoryGirl.generate(:email))
+      users << FactoryGirl.create(:user)
     end
     users
   end

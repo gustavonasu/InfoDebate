@@ -47,9 +47,7 @@ describe Admin::ComplaintsController do
     complaints = []
     total.times do
       thread = FactoryGirl.create(:forum_thread, :with_forum)
-      user = FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
-                                       :username => FactoryGirl.generate(:username),
-                                       :email => FactoryGirl.generate(:email))
+      user = FactoryGirl.create(:user)
       comment = FactoryGirl.create(:comment, :thread => thread, :user => user)
       complaints << FactoryGirl.create(:complaint, :body => FactoryGirl.generate(:text_complaint),
                                                    :comment => comment, :user => user)

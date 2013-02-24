@@ -304,9 +304,7 @@ describe User do
        @num_users = 30
        @users = []
        @num_users.times do
-         @users << FactoryGirl.create(:user, :name => FactoryGirl.generate(:name),
-                                             :username => FactoryGirl.generate(:username),
-                                             :email => FactoryGirl.generate(:email))
+         @users << FactoryGirl.create(:user)
        end
        @user = @users[-1]
      end
