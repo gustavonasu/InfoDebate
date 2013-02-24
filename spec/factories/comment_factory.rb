@@ -16,18 +16,14 @@
 
 FactoryGirl.define do
   factory :comment do |comment|
-    comment.body "Comment Text"
-  end
-  
-  sequence :text_comment do |n|
-    "Comment Text #{n}"
-  end
-  
-  factory :complaint do |complaint|
-    complaint.body "Complaint Text"
-  end
-  
-  sequence :text_complaint do |n|
-    "Complaint Text #{n}"
+    comment.body { generate(:random_text) }
+    
+    trait :with_user do
+      association :user, :factory => :user, :strategy => :create
+    end
+    
+    trait :with_thread do
+      association :thread, :factory => [:forum_thread, :with_forum], :strategy => :create
+    end
   end
 end

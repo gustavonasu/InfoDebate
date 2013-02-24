@@ -106,9 +106,8 @@ describe ForumThread do
     context "Valid status" do
       before do
         @thread.save
-        user = FactoryGirl.create(:user)
-        comment = FactoryGirl.create(:comment, :thread => @thread, :user => user)
-        complaint = FactoryGirl.create(:complaint, :comment => comment, :user => user)
+        comment = FactoryGirl.create(:comment, :with_user, :thread => @thread)
+        complaint = FactoryGirl.create(:complaint, :with_user, :comment => comment)
         comment.complaints << complaint
         comment.save!
         @thread.comments << comment

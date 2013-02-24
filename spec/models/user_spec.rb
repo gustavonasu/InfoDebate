@@ -188,10 +188,8 @@ describe User do
     
     context "Valid status" do
       before do
-        thread = FactoryGirl.create(:forum_thread, :with_forum)
-        comment = FactoryGirl.create(:comment, :thread => thread, :user => @user)
-        @user.comments << comment
-        @user.complaints << FactoryGirl.create(:complaint, :user => @user, :comment => comment)
+        @user.comments << FactoryGirl.create(:comment, :with_thread, :user => @user)
+        @user.complaints << FactoryGirl.create(:complaint, :with_comment, :user => @user)
       end
       
       it_should_behave_like "define status methods" do

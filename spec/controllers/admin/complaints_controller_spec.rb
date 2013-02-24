@@ -23,9 +23,8 @@ describe Admin::ComplaintsController do
 
   before do
     @attrs = {:body => "Complaint text"}
-    thread = FactoryGirl.create(:forum_thread, :with_forum)
     @user = FactoryGirl.create(:user)
-    @comment = FactoryGirl.create(:comment, :thread => thread, :user => @user)
+    @comment = FactoryGirl.create(:comment, :with_thread, :user => @user)
   end
   
   def valid_attributes(attrs = @attrs, comment = @comment, user = @user)
@@ -46,12 +45,7 @@ describe Admin::ComplaintsController do
   def create_complaints(total)
     complaints = []
     total.times do
-      thread = FactoryGirl.create(:forum_thread, :with_forum)
-      user = FactoryGirl.create(:user)
-      comment = FactoryGirl.create(:comment, :thread => thread, :user => user)
-      complaints << FactoryGirl.create(:complaint, :body => FactoryGirl.generate(:text_complaint),
-                                                   :comment => comment, :user => user)
-      
+      complaints << FactoryGirl.create(:complaint, :with_comment, :with_user)
     end
     complaints
   end

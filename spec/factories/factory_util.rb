@@ -16,4 +16,6 @@ FactoryGirl.define do
   end
   
   sequence(:random_name) {|n| Faker::Name.name }
+  
+  sequence(:random_text) {|n| Faker::Lorem.paragraph }
 end

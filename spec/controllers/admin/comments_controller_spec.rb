@@ -45,10 +45,7 @@ describe Admin::CommentsController do
   def create_comments(total)
     comments = []
     total.times do
-      thread = FactoryGirl.create(:forum_thread, :with_forum)
-      user = FactoryGirl.create(:user)
-      comments << FactoryGirl.create(:comment, :body => FactoryGirl.generate(:text_comment),
-                                               :thread => thread, :user => user)
+      comments << FactoryGirl.create(:comment, :with_thread, :with_user)
     end
     comments
   end

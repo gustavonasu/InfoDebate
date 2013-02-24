@@ -37,10 +37,7 @@ describe Comment do
   def create_comments(total)
     comments = []
     total.times do
-      thread = FactoryGirl.create(:forum_thread, :with_forum)
-      user = FactoryGirl.create(:user)
-      comments << FactoryGirl.create(:comment, :body => FactoryGirl.generate(:text_comment),
-                                               :thread => thread, :user => user)
+      comments << FactoryGirl.create(:comment, :with_thread, :with_user)
     end
     comments
   end
@@ -66,9 +63,7 @@ describe Comment do
     context "Valid status" do
       before do
         @comment.save
-        @comment.complaints << FactoryGirl.create(:complaint,
-                                                  :comment => @comment,
-                                                  :user => @user)
+        @comment.complaints << FactoryGirl.create(:complaint, :with_user, :comment => @comment)
         @comment.save!
       end
       
