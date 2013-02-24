@@ -109,7 +109,12 @@ describe ForumThread do
     context "Valid status" do
       before do
         @thread.save
-        @thread.comments << FactoryGirl.create(:comment, :thread => @thread, :user => FactoryGirl.create(:user))
+        user = FactoryGirl.create(:user)
+        comment = FactoryGirl.create(:comment, :thread => @thread, :user => user)
+        complaint = FactoryGirl.create(:complaint, :comment => comment, :user => user)
+        comment.complaints << complaint
+        comment.save!
+        @thread.comments << comment
         @thread.save!
       end
       
@@ -134,7 +139,7 @@ describe ForumThread do
       
       it "should cascade deletion to comment using delete" do
         @thread.delete!
-        assert_delete_cascade(@thread)
+        assert_delete_cascade(@thread) 
       end
       
       it "should cascade reject to comment using inactive" do
@@ -147,8 +152,11 @@ describe ForumThread do
       
       def assert_delete_cascade(thread)
         ForumThread.unscoped.find(thread.id).should be_deleted
-        thread.comments.each do |c|
-          Comment.unscoped.find(c.id).should be_deleted
+        thread.comments.each do |comment|
+          Comment.unscoped.find(comment.id).should be_deleted
+          comment.complaints.each do |complaint|
+            Complaint.unscoped.find(complaint.id).should be_deleted
+          end
         end
       end
     end

@@ -22,7 +22,7 @@ class Forum < ActiveRecord::Base
   validates :description, :length => { :maximum => 255 }
   validates :status, :presence => true
   
-  default_scope where("status != #{find_status_value(:deleted)}")
+  default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   # Define configurations for status machine
   def_valid_status :active, :inactive, :deleted

@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
   validates :user_id, :presence => true
   validates :thread_id, :presence => true
   
-  default_scope where("status != #{find_status_value(:deleted)}")
+  default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   # Define configurations for status machine
   def_valid_status :approved, :rejected, :pending, :spam, :deleted

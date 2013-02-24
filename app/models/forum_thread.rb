@@ -21,6 +21,7 @@ class ForumThread < ActiveRecord::Base
   
   belongs_to :forum
   has_many :comments, :foreign_key => :thread_id, :autosave => true
+  has_many :complaints, :through => :comments
   
   validates :name, :presence => true, :length => { :maximum => 100 }
   validates :description, :length => { :maximum => 255 }
@@ -28,7 +29,7 @@ class ForumThread < ActiveRecord::Base
   validates :url, :length => { :maximum => 500 }
   validates :forum_id, :presence => true
   
-  default_scope where("status != #{find_status_value(:deleted)}")
+  default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   # Define configurations for status machine
   def_valid_status :active, :inactive, :deleted
@@ -56,6 +57,7 @@ class ForumThread < ActiveRecord::Base
     def exec_status_change(old_status, new_status, action)
       s = new_status
       s = :rejected if new_status == :inactive
+      complaints.update_all(:status => find_status_value(s)) if new_status != :inactive
       comments.update_all(:status => find_status_value(s))
     end
 end

@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   
   before_validation :fix_password_validation, :encrypt_password
   
-  default_scope where("status != #{find_status_value(:deleted)}")
+  default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   # Define configurations for status machine
   def_valid_status :active, :inactive, :pending, :banned, :deleted

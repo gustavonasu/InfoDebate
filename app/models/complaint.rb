@@ -25,7 +25,7 @@ class Complaint < ActiveRecord::Base
   validates :comment_id, :presence => true
   validates :user_id, :presence => true
   
-  default_scope where("status != #{find_status_value(:deleted)}")
+  default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   # Define configurations for status machine
   def_valid_status :approved, :rejected, :pending, :deleted
