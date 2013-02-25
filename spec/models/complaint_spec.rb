@@ -75,6 +75,13 @@ describe Complaint do
       it_should_behave_like "status validation", Complaint, :full_complaint
     end
     
+    context "Cascades validations" do
+      it "should cascade reject to comment using approve" do
+        @complaint.approve!
+        @complaint.comment.should be_rejected
+      end
+    end
+    
     describe "Object deletion" do
       it_should_behave_like "destroy ModelStatus instance" do
         subject { @complaint }

@@ -36,6 +36,9 @@ class ForumThread < ActiveRecord::Base
   def_terminal_status :deleted
   def_initial_status_proc :init_status
   
+  # Callback that allows to create subset for target_status depending on object state
+  def_contraints_to_target_status :target_status_constraint
+  
   # Define callbacks for status change actions
   def_before_status_change :inactive, :deleted, :exec_status_change
   
@@ -59,5 +62,10 @@ class ForumThread < ActiveRecord::Base
       s = :rejected if new_status == :inactive
       complaints.update_all(:status => find_status_value(s)) if new_status != :inactive
       comments.update_all(:status => find_status_value(s))
+    end
+    
+    def target_status_constraint(status)
+      return [:deleted] if !forum.nil? && !forum.active?
+      status
     end
 end

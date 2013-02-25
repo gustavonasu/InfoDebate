@@ -105,6 +105,20 @@ describe Comment do
         let(:type) { Comment }
       end
     end
+    
+    describe "Target status constraints" do
+      it "target_status should return deleted and spam when user is not active" do
+        comment = FactoryGirl.create(:full_comment)
+        comment.user.inactive!
+        comment.target_status.should =~ [:deleted, :spam]
+      end
+      
+      it "target_status should return deleted and spam when thread is not active" do
+        comment = FactoryGirl.create(:full_comment)
+        comment.thread.inactive!
+        comment.target_status.should =~ [:deleted, :spam]
+      end
+    end
   end
   
   describe "Customized search" do

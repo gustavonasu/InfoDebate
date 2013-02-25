@@ -34,14 +34,27 @@ module Status
     def all_status; self.class.all_status end
     def valid_status; self.class.valid_status end
     def invalid_status; self.class.invalid_status end
-    def target_status_for(status); self.class.target_status_for(status) end
-    def target_status; self.class.target_status end
-    def un_target_status; self.class.un_target_status end
     def terminal_status; self.class.terminal_status end
+    
+    def target_status_for(status)
+      find_target_status(self.class.target_status_for(status))
+    end
+    
+    def target_status
+      find_target_status(self.class.target_status)
+    end
+    
+    
+    def un_target_status
+      valid_status - target_status - terminal_status
+    end
     
     def status
       s = find_status(read_attribute(:status))
-      self.status = s = run_initial_status_callback if s.nil?
+      if s.nil?
+        s = run_initial_status_callback
+        update_status(s)
+      end
       s
     end
     
@@ -71,20 +84,33 @@ module Status
     
     # Disable destroy object
     # TODO This options is hard coded as well as delete status.
-    def destroy; delete! end
+    def destroy; delete! end    
     
     private
 
       def status=(s)
         validate_status_change(s)
+        update_status(s)
+      end
+      
+      def update_status(s)
         write_attribute :status, find_status_value(s)
       end
       
+      def find_target_status(status_list)
+        if self.respond_to?(:_contraints_to_target_status)
+          status_list = _contraints_to_target_status(status_list)
+          raise "Invalid target status" unless self.class.target_status & status_list == status_list
+        end
+        status_list
+      end
+      
       def validate_status_change(s)
-        raise InvalidStatusError if self.invalid_status.include?(s)
-        raise Un_TargetStatusError if self.un_target_status.include?(s)
         curr_status = find_status(read_attribute(:status))
-        if self.terminal_status.include?(curr_status) && s != curr_status
+        same_status = (s == curr_status)
+        raise InvalidStatusError if self.invalid_status.include?(s) && !same_status
+        raise Un_TargetStatusError if self.un_target_status.include?(s) && !same_status
+        if self.terminal_status.include?(curr_status) && !same_status
           raise TerminalStatusError
         end
       end

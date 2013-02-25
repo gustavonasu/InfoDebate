@@ -33,6 +33,9 @@ class Complaint < ActiveRecord::Base
   def_terminal_status :deleted
   def_initial_status_proc :init_status
   
+  # Define callbacks for status change actions
+  def_before_status_change :approved, :reject_comment
+  
   # Define search configurations
   def_default_status_for_search :approved
   def_default_search_fields :body
@@ -52,5 +55,9 @@ class Complaint < ActiveRecord::Base
       raise CreationModelError, I18n.t(:not_active_user, :scope => :model_creation) if (!user.nil? && !user.active?)
       return :rejected if (!comment.nil? && !comment.approved?)
       :approved
+    end
+    
+    def reject_comment(old_status, new_status, action)
+      comment.reject! if !comment.nil? && comment.approved?
     end
 end

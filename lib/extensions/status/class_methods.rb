@@ -40,6 +40,12 @@ module Status
       end
     end
     
+    def def_contraints_to_target_status(method)
+      define_method :_contraints_to_target_status do |status|
+        send(method, status)
+      end
+    end
+    
     def find_action(status)
       ModelStatus.find_action(status)
     end

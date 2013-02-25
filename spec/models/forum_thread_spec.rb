@@ -153,6 +153,14 @@ describe ForumThread do
         let(:type) { ForumThread }
       end
     end
+    
+    describe "Target status constraints" do
+      it "target_status should return deleted when forum is not active" do
+        thread = FactoryGirl.create(:full_forum_thread)
+        thread.forum.inactive!
+        thread.target_status.should =~ [:deleted]
+      end
+    end
   end
   
   
