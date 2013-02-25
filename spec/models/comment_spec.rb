@@ -44,6 +44,22 @@ describe Comment do
       comment = create_comment({:body => ""})
       comment.should_not be_valid
     end
+    
+    it "complaint should not be created when user is not active" do
+      user = FactoryGirl.create(:user)
+      user.inactive!
+      comment = FactoryGirl.build(:comment, :with_thread)
+      comment.user = user
+      expect { comment.save! }.to raise_error(CreationModelError)
+    end
+    
+    it "complaint should not be created when user is not active" do
+      thread = FactoryGirl.create(:full_forum_thread)
+      thread.inactive!
+      comment = FactoryGirl.build(:comment, :with_user)
+      comment.thread = thread
+      expect { comment.save! }.to raise_error(CreationModelError)
+    end
   end
   
   describe "Model Status" do

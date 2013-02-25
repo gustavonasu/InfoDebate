@@ -34,6 +34,9 @@ pt-BR:
       creation_success: "%{model} foi criado com sucesso."
       update_success: "%{model} foi atualizado com sucesso."
       deletion_success: "%{model} foi apagado com sucesso."
+  model_creation:
+      not_active_user: "Usuário não está ativado"
+      not_active_thread: "Thread não está ativado"
   date:
     abbr_day_names:
     - Dom

@@ -31,7 +31,7 @@ class Complaint < ActiveRecord::Base
   def_valid_status :approved, :rejected, :pending, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  def_initial_status :approved
+  def_initial_status_proc :init_status
   
   # Define search configurations
   def_default_status_for_search :approved
@@ -45,4 +45,12 @@ class Complaint < ActiveRecord::Base
               :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
      list
   end
+  
+  private
+  
+    def init_status
+      raise CreationModelError, I18n.t(:not_active_user, :scope => :model_creation) if (!user.nil? && !user.active?)
+      return :rejected if (!comment.nil? && !comment.approved?)
+      :approved
+    end
 end

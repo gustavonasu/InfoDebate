@@ -1,0 +1,2 @@
+class CreationModelError < Exception
+end

@@ -36,7 +36,7 @@ class Comment < ActiveRecord::Base
   def_valid_status :approved, :rejected, :pending, :spam, :deleted
   def_un_target_status :pending
   def_terminal_status :deleted
-  def_initial_status :approved
+  def_initial_status_proc :init_status
   
   # Define callbacks for status change actions
   def_before_status_change :deleted, :exec_status_change
@@ -52,6 +52,12 @@ class Comment < ActiveRecord::Base
     list << {:query => "user_id = :user_id",
               :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
     list
+  end
+  
+  def init_status
+    raise CreationModelError, I18n.t(:not_active_user, :scope => :model_creation) if (!user.nil? && !user.active?)
+    raise CreationModelError, I18n.t(:not_active_thread, :scope => :model_creation) if (!thread.nil? && !thread.active?)
+    :approved
   end
   
   private

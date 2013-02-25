@@ -41,6 +41,25 @@ describe Complaint do
       complaint = create_complaint({:body => ""})
       complaint.should_not be_valid
     end
+    
+    it "complaint should not be created when user is not active" do
+      user = FactoryGirl.create(:user)
+      user.inactive!
+      complaint = FactoryGirl.build(:complaint, :with_comment)
+      complaint.user = user
+      expect { complaint.save! }.to raise_error(CreationModelError)
+    end
+    
+    it "complaint should be created as reject comment is not approved" do
+      [:reject!, :spam!].each do |action|
+        comment = FactoryGirl.create(:full_comment)
+        comment.send(action)
+        complaint = FactoryGirl.build(:complaint, :with_user)
+        complaint.comment = comment
+        complaint.save!
+        complaint.should be_rejected
+      end
+    end
   end
 
   describe "Model Status" do
