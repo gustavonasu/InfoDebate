@@ -16,14 +16,6 @@ describe Forum do
   include ModelHelper
   include StandardSearchHelper
   
-  def create_forums(total)
-    forums = []
-    total.times do |i|
-      forums << FactoryGirl.create(:forum)
-    end
-    forums
-  end
-  
   before do
     @attrs = { 
       :name => "Sample Forum",
@@ -104,7 +96,7 @@ describe Forum do
   describe "Status Search" do
     before do
       @num_forums = 30
-      @forums = create_forums(@num_forums)
+      @forums = FactoryGirl.create_list(:forum, @num_forums)
     end
     
     it "default search should ignored deleted forums" do
@@ -118,7 +110,7 @@ describe Forum do
   describe "Customized search" do
     before do
       @num_forums = 30
-      @forums = create_forums(@num_forums)
+      @forums = FactoryGirl.create_list(:forum, @num_forums)
       @forum = @forums[-1]
     end
     

@@ -34,19 +34,11 @@ describe Admin::UsersController do
      :password_confirmation => "secret"}
   end
   
-  def create_users(total)
-    users = []
-    total.times do
-      users << FactoryGirl.create(:user)
-    end
-    users
-  end
-  
   describe "GET index" do
-
+    
     describe "stardard validations" do
       before do
-        @users = create_users(10)
+        @users = FactoryGirl.create_list(:user, 10)
         @user = @users[-1]
       end
       
@@ -67,7 +59,7 @@ describe Admin::UsersController do
     
     describe "extra validations" do
       before do
-        create_users(35)
+        FactoryGirl.create_list(:user, 35)
       end
         
       it "should limit users length" do

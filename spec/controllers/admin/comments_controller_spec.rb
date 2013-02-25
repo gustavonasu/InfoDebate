@@ -42,17 +42,9 @@ describe Admin::CommentsController do
     comment
   end
   
-  def create_comments(total)
-    comments = []
-    total.times do
-      comments << FactoryGirl.create(:comment, :with_thread, :with_user)
-    end
-    comments
-  end
-
   describe "GET index" do
     before do
-      @comments = create_comments(10)
+      @comments = FactoryGirl.create_list(:full_comment, 10)
       @comment = @comments[-1]
     end
     

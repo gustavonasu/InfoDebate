@@ -254,10 +254,7 @@ describe User do
   describe "Customized search" do
      before do
        @num_users = 30
-       @users = []
-       @num_users.times do
-         @users << FactoryGirl.create(:user)
-       end
+       @users = FactoryGirl.create_list(:user, @num_users)
        @user = @users[-1]
      end
 

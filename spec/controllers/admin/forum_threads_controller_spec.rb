@@ -37,10 +37,7 @@ describe Admin::ForumThreadsController do
   describe "GET index" do
     before do
       @forum_threads = [@forum_thread]
-      10.times do
-        @forum_threads << FactoryGirl.create(:forum_thread,
-                                  :forum => @forum)
-      end
+      @forum_threads += FactoryGirl.create_list(:forum_thread, 10, :forum => @forum)
     end
     
     context "html request" do
@@ -125,14 +122,12 @@ describe Admin::ForumThreadsController do
       end
       
       it "assigns a newly created but unsaved admin_forum_thread as @forum_thread" do
-        # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
         post :create, @thread_map
         assigns(:forum_thread).should be_a_new(ForumThread)
       end
 
       it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
         post :create, @thread_map
         response.should render_template("new")
@@ -153,10 +148,6 @@ describe Admin::ForumThreadsController do
     
     describe "with valid params" do
       it "updates the requested admin_forum_thread" do
-        # Assuming there are no other admin_forum_threads in the database, this
-        # specifies that the ForumThread created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
         ForumThread.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, @update_map.merge(create_thread_map({'these' => 'params'}))
       end
@@ -178,14 +169,12 @@ describe Admin::ForumThreadsController do
       end
       
       it "assigns the admin_forum_thread as @forum_thread" do
-        # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
         put :update, @update_map.merge(@thread_map)
         assigns(:forum_thread).should eq(@forum_thread)
       end
 
       it "re-renders the 'edit' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
         ForumThread.any_instance.stub(:save).and_return(false)
         put :update, @update_map.merge(@thread_map)
         response.should render_template("edit")

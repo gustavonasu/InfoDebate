@@ -30,10 +30,7 @@ describe Admin::ForumsController do
 
   describe "GET index" do
     before do
-      @forums = []
-      10.times do
-        @forums << FactoryGirl.create(:forum)
-      end
+      @forums = FactoryGirl.create_list(:forum, 10)
     end
     
     context "html request" do

@@ -29,15 +29,6 @@ describe Complaint do
     complaint.save
     complaint
   end
-
-  def create_complaints(total)
-    complaints = []
-    total.times do
-      complaints << FactoryGirl.create(:complaint, :with_comment, :with_user)
-    end
-    complaints
-  end
-
   
   describe "Object creation" do
     
@@ -76,7 +67,7 @@ describe Complaint do
   describe "Customized search" do
     before do
       @num_complaints = 30
-      @complaints = create_complaints(@num_complaints)
+      @complaints = FactoryGirl.create_list(:full_complaint, @num_complaints)
       @complaint = @complaints[-1]
     end
     

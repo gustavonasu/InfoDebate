@@ -42,17 +42,9 @@ describe Admin::ComplaintsController do
     complaint
   end
   
-  def create_complaints(total)
-    complaints = []
-    total.times do
-      complaints << FactoryGirl.create(:complaint, :with_comment, :with_user)
-    end
-    complaints
-  end
-
   describe "GET index" do
     before do
-      @complaints = create_complaints(10)
+      @complaints = FactoryGirl.create_list(:full_complaint, 10)
       @complaint = @complaints[-1]
     end
     

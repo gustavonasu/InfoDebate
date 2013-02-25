@@ -34,14 +34,6 @@ describe Comment do
     comment
   end
   
-  def create_comments(total)
-    comments = []
-    total.times do
-      comments << FactoryGirl.create(:comment, :with_thread, :with_user)
-    end
-    comments
-  end
-  
   describe "Object creation" do
     it "should create a new instance given right attributes" do
       comment = create_comment
@@ -102,7 +94,7 @@ describe Comment do
   describe "Customized search" do
     before do
       @num_comments = 30
-      @comments = create_comments(@num_comments)
+      @comments = FactoryGirl.create_list(:full_comment, @num_comments)
       @comment = @comments[-1]
     end
     
