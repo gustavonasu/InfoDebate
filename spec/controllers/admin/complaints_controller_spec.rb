@@ -198,20 +198,8 @@ describe Admin::ComplaintsController do
       @complaint.save
     end
     
-    context "Valid status" do
-      Complaint.target_status.each do |status|
-        it_should_behave_like "valid #{status} status change" do
-          subject { @complaint }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      Complaint.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status change" do
-          subject { @complaint }
-        end
-      end
+    it_should_behave_like "status change validation", Complaint do
+      subject { @complaint }
     end
   end
 end

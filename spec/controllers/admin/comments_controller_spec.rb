@@ -201,20 +201,8 @@ describe Admin::CommentsController do
       @comment.save
     end
     
-    context "Valid status" do
-      Comment.target_status.each do |status|
-        it_should_behave_like "valid #{status} status change" do
-          subject { @comment }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      Comment.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status change" do
-          subject { @comment }
-        end
-      end
+    it_should_behave_like "status change validation", Comment do
+      subject { @comment }
     end
   end
 

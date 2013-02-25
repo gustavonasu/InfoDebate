@@ -222,20 +222,8 @@ describe Admin::UsersController do
       @user = User.create! valid_attributes
     end
     
-    context "Valid status" do
-      User.target_status.each do |status|
-        it_should_behave_like "valid #{status} status change" do
-          subject { @user }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      User.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status change" do
-          subject { @user }
-        end
-      end
+    it_should_behave_like "status change validation", User do
+      subject { @user }
     end
   end
 end

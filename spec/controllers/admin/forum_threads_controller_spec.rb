@@ -212,21 +212,8 @@ describe Admin::ForumThreadsController do
   end
 
   describe "CHANGE_STATUS request" do
-    context "Valid status" do
-      ForumThread.target_status.each do |status|
-        it_should_behave_like "valid #{status} status change" do
-          subject { @forum_thread }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      ForumThread.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status change" do
-          subject { @forum_thread }
-        end
-      end
+    it_should_behave_like "status change validation", ForumThread do
+      subject { @forum_thread }
     end
   end
-
 end

@@ -188,20 +188,8 @@ describe Admin::ForumsController do
       @forum = Forum.create! valid_attributes
     end
     
-    context "Valid status" do
-      Forum.target_status.each do |status|
-        it_should_behave_like "valid #{status} status change" do
-          subject { @forum }
-        end
-      end
-    end
-    
-    context "Invalid status" do
-      Forum.invalid_status.each do |status|
-        it_should_behave_like "invalid #{status} status change" do
-          subject { @forum }
-        end
-      end
+    it_should_behave_like "status change validation", Forum do
+      subject { @forum }
     end
   end
 end

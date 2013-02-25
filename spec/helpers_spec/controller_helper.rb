@@ -44,19 +44,17 @@ module ControllerHelper
     end
   end
   
-  Status::ModelStatus.all_status.each do |status|
-    shared_examples_for "valid #{status} status change" do
+  shared_examples_for "status change validation" do |clazz|
+    clazz.target_status.each do |status|
       it "should change status to #{status}" do
         execute_and_validate_status_change(subject, status)
         subject.reload.send("#{status}?").should be_true
         flash[:notice].should_not be_nil
       end
     end
-  end
-  
-  Status::ModelStatus.all_status.each do |status|
-    shared_examples_for "invalid #{status} status change" do
-      it "should change status to #{status}" do
+    
+    (clazz.invalid_status + clazz.un_target_status).each do |status|
+      it "should not change status to #{status}" do
         execute_and_validate_status_change(subject, status)
         subject.reload.send("#{status}?").should be_false
         flash[:error].should_not be_nil
