@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   
   # Define search configurations
   def_default_status_for_search :active
-  def_default_search_fields :name, :username, :email
+  def_default_search_fields :id => :integer, :name => :string, :username => :string, :email => :string
   
   def self.authenticate(username, submitted_password)
     user = first(:conditions => {:username => username})

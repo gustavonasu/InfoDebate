@@ -44,7 +44,7 @@ class ForumThread < ActiveRecord::Base
   
   # Define search configurations
   def_default_status_for_search :active
-  def_default_search_fields :name, :description
+  def_default_search_fields :id => :integer, :name => :string, :description => :string
   
   def_extended_search do |options|
     [{:query => "forum_id = :forum_id", :params => {:forum_id => options[:forum_id]}}] unless options[:forum_id].blank?

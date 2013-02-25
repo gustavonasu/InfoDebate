@@ -46,7 +46,7 @@ class Comment < ActiveRecord::Base
   
   # Define search configurations
   def_default_status_for_search :approved
-  def_default_search_fields :body
+  def_default_search_fields :id => :integer, :body => :string
   
   def_extended_search do |options|
     list = []

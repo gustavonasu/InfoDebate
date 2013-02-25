@@ -12,11 +12,7 @@
 
 FactoryGirl.define do
   factory :forum do |forum|
-    forum.name { generate(:forum_name) }
-    forum.description { generate(:random_string) }
-  end
-  
-  sequence :forum_name do |n|
-    "Forum #{n}"
+    forum.name { generate(:random_name) }
+    forum.description { generate(:random_text) }
   end
 end

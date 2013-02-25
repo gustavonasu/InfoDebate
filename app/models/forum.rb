@@ -34,7 +34,7 @@ class Forum < ActiveRecord::Base
   
   # Define search configurations
   def_default_status_for_search :active
-  def_default_search_fields :name, :description
+  def_default_search_fields :id => :integer, :name => :string, :description => :string
   
   private
     def exec_status_change(old_status, new_status, action)

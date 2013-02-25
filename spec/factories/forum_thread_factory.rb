@@ -16,8 +16,8 @@
 FactoryGirl.define do  
   
   factory :forum_thread do |thread|
-    thread.name { generate(:thread_name) }
-    thread.description { generate(:random_string) }
+    thread.name { generate(:random_name) }
+    thread.description { generate(:random_text) }
     thread.content_id { generate(:random_integer) }
     thread.url { generate(:random_url) }
     
@@ -26,9 +26,5 @@ FactoryGirl.define do
     end
     
     factory :full_forum_thread, traits: [:with_forum]
-  end
-  
-  sequence :thread_name do |n|
-    "Thread #{n}"
   end
 end

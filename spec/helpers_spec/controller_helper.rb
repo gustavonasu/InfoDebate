@@ -30,7 +30,7 @@ module ControllerHelper
     end
     
     it "assigns right instances searching by q" do
-      instance.class.default_search_fields.each do |attr|
+      instance.class.default_search_fields.keys.each do |attr|
         get :index, {:q => instance.read_attribute(attr)}
         assigns(instances_symbol).should eq([instance])
       end

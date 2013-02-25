@@ -14,18 +14,25 @@ module Search
         end
       end
       
-      def def_default_search_fields(*default_fields)
+      def def_default_search_fields(default_fields)
         define_singleton_method :default_search_fields do
           default_fields
         end
         
-        define_singleton_method :create_default_query_by_term do
+        define_singleton_method :create_default_query_by_term do |term|
           query = ""
-          default_fields.each_with_index do |field, index|
-            query += "upper(#{field}) like upper(:term)"
+          params = {}
+          default_fields.keys.each_with_index do |field, index|
+            if default_fields[field] == :integer
+              query += "#{field} = :#{field}"
+              params[field] = term
+            elsif default_fields[field] == :string
+              query += "upper(#{field}) like upper(:#{field})"
+              params[field] = "%#{term}%"
+            end
             query += " or " if default_fields.length - 1 > index
           end
-          "(#{query})"
+          return "(#{query})", params
         end
       end
       
@@ -50,10 +57,11 @@ module Search
       def search(options, page = 1, per_page = PER_PAGE)
         query = String.new
         query_params = {}
-                
+        
         unless options[:term].blank?
-          query.append_query create_default_query_by_term
-          query_params.merge!(:term => "%#{options[:term]}%")
+          q, qp = create_default_query_by_term options[:term]
+          query.append_query q
+          query_params.merge! qp
         end
         
         query.append_query "(status = :status)"
@@ -70,7 +78,7 @@ module Search
       
       def find_status_for_search(options)
         status = default_status_for_search
-        status = options[:status] if options[:status]
+        status = options[:status] unless options[:status].blank?
         find_status_value(status)
       end
       
