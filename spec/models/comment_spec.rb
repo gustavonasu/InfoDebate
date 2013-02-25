@@ -72,7 +72,9 @@ describe Comment do
     end
     
     context "Status Trasition" do
-      it_should_behave_like "status validation", Comment, :full_comment
+      it_should_behave_like "status validation", Comment do
+        subject { @comment }
+      end
     end
     
     context "Cascades validations" do

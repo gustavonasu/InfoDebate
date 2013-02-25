@@ -191,7 +191,9 @@ describe User do
     end
     
     context "Status Trasition" do
-      it_should_behave_like "status validation", User, :user
+      it_should_behave_like "status validation", User do
+        subject { @user }
+      end
     end
       
     context "Cascades validations" do

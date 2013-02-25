@@ -3,38 +3,34 @@
 module ModelHelper
   
   shared_examples_for "status validation" do |clazz, factory_symbol|
-    before do
-      @obj = FactoryGirl.create(factory_symbol)
-    end
-    
     clazz.target_status.each do |status|
       it "should change status to target '#{status}' status" do
-        @obj.send(subject.find_action(status))
-        assert_status_change(@obj, status)
+        subject.send(subject.find_action(status))
+        assert_status_change(subject, status)
       end
       
       it "should change status to target '#{status}' status with action!" do
-        @obj.send("#{subject.find_action(status)}!")
-        assert_status_change(@obj, status)
-        @obj.reload.status.should eq(status)
+        subject.send("#{subject.find_action(status)}!")
+        assert_status_change(subject, status)
+        subject.reload.status.should eq(status)
       end
     end
     
     clazz.un_target_status.each do |status|
       it "should not change status to un-target '#{status}' status" do
-        expect { @obj.send(@obj.find_action(status)) }.to raise_error(Status::Un_TargetStatusError)
+        expect { subject.send(subject.find_action(status)) }.to raise_error(Status::Un_TargetStatusError)
       end
       
       it "should not change status to un-target '#{status}' status with action!" do
-        expect { @obj.send("#{@obj.find_action(status)}!") }.to raise_error(Status::Un_TargetStatusError)
+        expect { subject.send("#{subject.find_action(status)}!") }.to raise_error(Status::Un_TargetStatusError)
       end
     end
     
     clazz.terminal_status.each do |status|
       it "should not change status from terminal '#{status}' status" do
-        set_terminal_status(@obj)
-        action = @obj.find_action(@obj.target_status.first)
-        expect { @obj.send(action) }.to raise_error(Status::TerminalStatusError)
+        set_terminal_status(subject)
+        action = subject.find_action(subject.target_status.first)
+        expect { subject.send(action) }.to raise_error(Status::TerminalStatusError)
       end
       
       it "should not change status from terminal '#{status}' status with action!" do

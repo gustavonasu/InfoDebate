@@ -34,14 +34,6 @@ describe ForumThread do
     thread
   end
   
-  def create_threads(total, forum)
-    threads = []
-    total.times do |n|
-      threads << FactoryGirl.create(:forum_thread, :forum => forum)
-    end
-    threads
-  end
-  
   describe "Object creation" do
     it "should create a valid new instance given right attributes" do
       thread = create_thread(@attrs)
@@ -107,7 +99,9 @@ describe ForumThread do
     end
       
     context "Status Trasition" do
-      it_should_behave_like "status validation", ForumThread, :full_forum_thread
+      it_should_behave_like "status validation", ForumThread do
+        subject { @thread }
+      end
     end
       
     context "Cascades validations" do
@@ -168,9 +162,9 @@ describe ForumThread do
     context "Forum relationship" do
       before do
         @forum = FactoryGirl.create(:forum)
-        @threads = create_threads(10, @forum)
+        @threads = FactoryGirl.create_list(:forum_thread, 10, :forum => @forum)
         @another_forum = FactoryGirl.create(:forum)
-        @another_threads = create_threads(10, @another_forum)
+        @another_threads = FactoryGirl.create_list(:forum_thread, 10, :forum => @another_forum)
       end
       
       it "should search by forum" do
@@ -189,7 +183,7 @@ describe ForumThread do
     before do
       @forum = FactoryGirl.create(:forum)
       @num_threads = 30
-      @threads = create_threads(@num_threads, @forum)
+      @threads = FactoryGirl.create_list(:forum_thread, @num_threads, :forum => @forum)
       @thread = @threads[-1]
     end
     

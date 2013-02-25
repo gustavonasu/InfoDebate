@@ -54,7 +54,9 @@ describe Forum do
     end
     
     context "Status Trasition" do
-      it_should_behave_like "status validation", Forum, :forum
+      it_should_behave_like "status validation", Forum do
+        subject { @forum }
+      end
     end
     
     context "Cascades validations" do

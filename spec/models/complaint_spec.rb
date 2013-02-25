@@ -65,6 +65,7 @@ describe Complaint do
   describe "Model Status" do
     before do
       @complaint = FactoryGirl.create(:full_complaint)
+      @complaint.approve!
     end
     
     it_should_behave_like "define status methods" do
@@ -72,7 +73,9 @@ describe Complaint do
     end
     
     context "Status Trasition" do
-      it_should_behave_like "status validation", Complaint, :full_complaint
+      it_should_behave_like "status validation", Complaint do
+        subject { @complaint }
+      end
     end
     
     context "Cascades validations" do

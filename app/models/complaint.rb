@@ -37,7 +37,7 @@ class Complaint < ActiveRecord::Base
   def_before_status_change :approved, :reject_comment
   
   # Define search configurations
-  def_default_status_for_search :approved
+  def_default_status_for_search :pending
   def_default_search_fields :body
   
   def_extended_search do |options|
@@ -54,7 +54,7 @@ class Complaint < ActiveRecord::Base
     def init_status
       raise CreationModelError, I18n.t(:not_active_user, :scope => :model_creation) if (!user.nil? && !user.active?)
       return :rejected if (!comment.nil? && !comment.approved?)
-      :approved
+      :pending
     end
     
     def reject_comment(old_status, new_status, action)

@@ -195,7 +195,7 @@ describe Admin::ComplaintsController do
   describe "CHANGE_STATUS request" do
     before do
       @complaint = create_complaint
-      @complaint.save
+      @complaint.approve!
     end
     
     it_should_behave_like "status change validation", Complaint do
