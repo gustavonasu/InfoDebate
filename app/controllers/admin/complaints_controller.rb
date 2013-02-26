@@ -9,6 +9,8 @@ class Admin::ComplaintsController < Admin::AdminController
     @complaints = Complaint.search({ :term => params[:q], 
                                      :comment_id => params[:comment_id],
                                      :user_id => params[:user_id],
+                                     :thread_id => params[:thread_id],
+                                     :forum_id => params[:forum_id],
                                      :status => params[:status]},
                                     params[:page])
     

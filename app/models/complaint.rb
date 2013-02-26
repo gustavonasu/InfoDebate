@@ -20,6 +20,8 @@ class Complaint < ActiveRecord::Base
   belongs_to :comment
   belongs_to :user
   
+  has_one :thread, :class_name => "ForumThread", :through => :comment
+  
   validates :body, :presence => true, :length => { :maximum => 4000 }
   validates :status, :presence => true
   validates :comment_id, :presence => true
@@ -38,15 +40,18 @@ class Complaint < ActiveRecord::Base
   
   # Define search configurations
   def_default_status_for_search :pending
-  def_default_search_fields :id => :integer, :body => :string
+  def_default_search_fields :id => :integer, :comment_id => :integer, :body => :string
+  def_joins_for_search :comment, :thread
   
   def_extended_search do |options|
     list = []
-    list << {:query => "comment_id = :comment_id",
-             :params => {:comment_id => options[:comment_id]}} unless options[:comment_id].blank?
-     list << {:query => "user_id = :user_id",
+    list << {:query => "#{table_name}.user_id = :user_id",
               :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
-     list
+    list << {:query => "comments.thread_id = :thread_id",
+             :params => {:thread_id => options[:thread_id]}} unless options[:thread_id].blank?
+    list << {:query => "forum_threads.forum_id = :forum_id",
+             :params => {:forum_id => options[:forum_id]}} unless options[:forum_id].blank?
+    list
   end
   
   private

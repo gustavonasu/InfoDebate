@@ -24,10 +24,10 @@ module Search
           params = {}
           default_fields.keys.each_with_index do |field, index|
             if default_fields[field] == :integer
-              query += "#{field} = :#{field}"
+              query += "#{table_name}.#{field} = :#{field}"
               params[field] = term
             elsif default_fields[field] == :string
-              query += "upper(#{field}) like upper(:#{field})"
+              query += "upper(#{table_name}.#{field}) like upper(:#{field})"
               params[field] = "%#{term}%"
             end
             query += " or " if default_fields.length - 1 > index
@@ -48,10 +48,19 @@ module Search
         end
       end
       
+      # Default joins is empty
+      def joins_for_search; [] end
+      
+      def def_joins_for_search(*joins)
+        define_singleton_method :joins_for_search do
+          joins
+        end
+      end
+      
       def search_by_name(name, page = 1, per_page = PER_PAGE)
         s = name.blank? ? "" : "%#{name}%"
         paginate :per_page => per_page, :page => page,
-                 :conditions => ['upper(name) like upper(?)', s]
+                 :conditions => ["upper(#{table_name}.name) like upper(?)", s]
       end
       
       def search(options, page = 1, per_page = PER_PAGE)
@@ -64,7 +73,7 @@ module Search
           query_params.merge! qp
         end
         
-        query.append_query "(status = :status)"
+        query.append_query "(#{table_name}.status = :status)"
         query_params.merge!({:status => find_status_for_search(options)})
         
         if(self.respond_to?(:extended_search))
@@ -72,7 +81,7 @@ module Search
           query.append_query q
           query_params.merge! qp
         end
-        paginate :per_page => per_page, :page => page,
+        paginate :per_page => per_page, :page => page, :joins => joins_for_search,
                  :conditions => [query, query_params]
       end
       

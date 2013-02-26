@@ -55,18 +55,18 @@ describe Admin::ComplaintsController do
     end
     
     describe "Special search cases" do
-      it "assigns complaints searching by comment_id" do
-        get :index, {:comment_id => @complaint.comment.id}
-        assigns(:complaints).should eq([@complaint])
-      end
-      
       it "assigns complaints searching by user_id" do
         get :index, {:user_id => @complaint.user.id}
         assigns(:complaints).should eq([@complaint])
       end
       
-      it "assigns complaints searching by comment_id and user_id" do
-        get :index, {:comment_id => @complaint.comment.id, :user_id => @complaint.user.id}
+      it "assigns complaints searching by thread_id" do
+        get :index, {:thread_id => @complaint.thread.id}
+        assigns(:complaints).should eq([@complaint])
+      end
+      
+      it "assigns complaints searching by forum_id" do
+        get :index, {:forum_id => @complaint.thread.forum_id}
         assigns(:complaints).should eq([@complaint])
       end
     end

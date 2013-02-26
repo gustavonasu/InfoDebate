@@ -7,7 +7,7 @@ FactoryGirl.define do
   
   sequence(:random_email) {|n| Faker::Internet.email }
   
-  sequence(:random_username) {|n| Faker::Internet.safe_email.truncate(30) }
+  sequence(:random_username) {|n| "#{Faker::Internet.user_name}_#{n}" }
   
   sequence(:random_name) {|n| Faker::Name.name }
   

@@ -105,6 +105,24 @@ describe Complaint do
       let(:type) { Complaint }
       let(:num_instances) { @num_complaints }
     end
+    
+    context "Special search cases" do
+      
+      it "should return correctly searching by user" do
+        results = Complaint.search({:user_id => @complaint.user_id})
+        results.should eq([@complaint])
+      end
+      
+      it "should return correctly searching by thread" do
+        results = Complaint.search({:thread_id => @complaint.thread.id})
+        results.should eq([@complaint])
+      end
+      
+      it "should return correctly searching by forum" do
+        results = Complaint.search({:forum_id => @complaint.thread.forum_id})
+        results.should eq([@complaint])
+      end
+    end
   end
 
 end

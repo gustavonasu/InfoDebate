@@ -1,8 +1,27 @@
 <%= render 'shared/admin_title_options', :title => "Lista de Reclamações" %>
 <%= render 'shared/status_message' %>
 
+<% forum = Forum.find_by_id(params[:forum_id]) %>
+<% forum_path = admin_forum_path(forum) unless forum.blank? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "forum_id",
+     :label => "Forum",
+     :obj => forum,
+     :index_path => admin_forums_path,
+     :show_path => forum_path %>
+
+<% thread = ForumThread.find_by_id(params[:thread_id]) %>
+<% thread_path = admin_forum_thread_path(thread) unless thread.blank? %>
+<%= render 'shared/admin/select2_js_template',
+     :field_name => "thread_id",
+     :label => "Thread",
+     :obj => thread,
+     :index_path => admin_forum_threads_path,
+     :show_path => thread_path %>
+
+
 <% user = User.find_by_id(params[:user_id]) %>
-<% user_path = admin_user_path(user) unless user.nil? %>
+<% user_path = admin_user_path(user) unless user.blank? %>
 <%= render 'shared/admin/select2_js_template',
      :field_name => "user_id",
      :label => "Usuário",
@@ -13,7 +32,8 @@
 <%= render 'shared/admin/search_form', :path => admin_complaints_path,
       :fields => {:q => {:tag => :text_field_tag, :class => "input-medium search-query"},
                   :status => {:tag => :hidden_field_tag},
-                  :comment_id => {:tag => :text_field_tag, :class => "input-medium search-query"},
+                  :forum_id => {:tag => :hidden_field_tag},
+                  :thread_id => {:tag => :hidden_field_tag},
                   :user_id => {:tag => :hidden_field_tag}} %>
 
 <%= render 'shared/admin/status_options', :status_options => Complaint.valid_status,

@@ -32,7 +32,7 @@ module ControllerHelper
     it "assigns right instances searching by q" do
       instance.class.default_search_fields.keys.each do |attr|
         get :index, {:q => instance.read_attribute(attr)}
-        assigns(instances_symbol).should eq([instance])
+        assigns(instances_symbol).should include(instance)
       end
     end
     
@@ -40,7 +40,7 @@ module ControllerHelper
       status = instance.target_status.find {|s| s != instance.status}
       instance.send("#{instance.find_action(status)}!")
       get :index, {:status => status}
-      assigns(instances_symbol).should eq([instance])
+      assigns(instances_symbol).should include(instance)
     end
   end
   
