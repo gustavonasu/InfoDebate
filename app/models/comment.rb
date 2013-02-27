@@ -20,9 +20,12 @@ class Comment < ActiveRecord::Base
     
   attr_accessible :body, :dislike, :like
   
+  belongs_to :parent, :class_name => "Comment", :foreign_key => "parent_id"
   belongs_to :thread, :class_name => "ForumThread"
   belongs_to :user
   
+  has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id',
+           :order => 'created_at ASC', :dependent => :delete_all
   has_many :complaints, :autosave => true
   
   validates :body, :presence => true, :length => { :maximum => 4000 }
@@ -31,6 +34,13 @@ class Comment < ActiveRecord::Base
   validates :thread_id, :presence => true
   
   default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
+  
+  after_initialize do
+    unless parent_id.nil?
+      self.thread = parent.thread
+      self.user = parent.user
+    end
+  end
   
   # Define configurations for status machine
   def_valid_status :approved, :rejected, :pending, :spam, :deleted

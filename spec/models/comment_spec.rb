@@ -136,4 +136,21 @@ describe Comment do
       let(:num_instances) { @num_comments }
     end
   end
+  
+  describe "Recursive association" do
+    before do
+      @comment = FactoryGirl.create(:full_comment)
+    end
+    
+    it "should create child with same user and thread" do
+      body = "children body"
+      @comment.children.create(:body => body)
+      child = @comment.children[0]
+      child.should be_valid
+      child.body.should eq(body)
+      child.user.should eq(@comment.user)
+      child.thread.should eq(@comment.thread)
+      child.parent.should eq(@comment)
+    end
+  end
 end
