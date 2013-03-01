@@ -18,7 +18,7 @@ class Comment < ActiveRecord::Base
   include Status::ModelStatus
   include Search::StandardModelSearch
     
-  attr_accessible :body, :dislike, :like
+  attr_accessible :body, :dislike, :like, :user, :thread
   
   belongs_to :parent, :class_name => "Comment", :foreign_key => "parent_id"
   belongs_to :thread, :class_name => "ForumThread"
@@ -32,14 +32,19 @@ class Comment < ActiveRecord::Base
   validates :status, :presence => true
   validates :user_id, :presence => true
   validates :thread_id, :presence => true
+  validate :verify_thread_child
+  
+  def verify_thread_child
+    if child? && self.thread != parent.thread
+      errors.add(:thread_id, I18n.t(:invalid_comment_thread, :scope => [:errors, :messages]) ||
+                "Thread should be the same parent comment's thread")
+    end
+  end
   
   default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   after_initialize do
-    unless parent_id.nil?
-      self.thread = parent.thread
-      self.user = parent.user
-    end
+    self.thread = parent.thread if child?
   end
   
   # Define configurations for status machine
@@ -72,6 +77,8 @@ class Comment < ActiveRecord::Base
     raise CreationModelError, I18n.t(:not_active_thread, :scope => :model_creation) if (!thread.nil? && !thread.active?)
     :approved
   end
+  
+  def child?; !parent_id.nil? end
   
   private
     def exec_status_change(old_status, new_status, action)

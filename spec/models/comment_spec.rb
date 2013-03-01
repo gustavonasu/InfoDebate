@@ -142,13 +142,24 @@ describe Comment do
       @comment = FactoryGirl.create(:full_comment)
     end
     
-    it "should create child with same user and thread" do
+    it "should not allow child comment without user" do
+      @comment.children.create(:body => "text")
+      @comment.children[0].errors[:user_id].should cannot_be_blank
+    end
+    
+    it "should not allow create child comment with different thread of parent" do
+      @comment.children.build(:body => "text", :user => FactoryGirl.create(:user))
+      @comment.children[0].thread = FactoryGirl.create(:full_forum_thread)
+      @comment.children[0].should_not be_valid
+      @comment.children[0].errors[:thread_id].should must_has_same_parents_thread
+    end
+    
+    it "should create child with same parent's thread" do
       body = "children body"
-      @comment.children.create(:body => body)
+      @comment.children.create(:body => body, :user => FactoryGirl.create(:user))
       child = @comment.children[0]
-      child.should be_valid
+      child.should be_persisted
       child.body.should eq(body)
-      child.user.should eq(@comment.user)
       child.thread.should eq(@comment.thread)
       child.parent.should eq(@comment)
     end

@@ -121,3 +121,9 @@ RSpec::Matchers.define :invalid_email do
     actual.index{ |msg| msg =~ /não é um email válido/ }
   end
 end
+
+RSpec::Matchers.define :must_has_same_parents_thread do
+  match do |actual|
+    actual.index{ |msg| msg =~ /thread deve ser a mesma do comentário pai/ }
+  end
+end
