@@ -28,4 +28,24 @@ class Admin::AdminController < ApplicationController
     end
     redirect_to [:admin, @obj], message
   end
+  
+  def get_forum(forum_id)
+    return nil if forum_id.blank?
+    Forum.find(forum_id)
+  end
+  
+  def get_thread(thread_id)
+    return nil if thread_id.blank?
+    ForumThread.find(thread_id)
+  end
+  
+  def get_user(user_id)
+    return nil if user_id.blank?
+    User.find(user_id)
+  end
+  
+  def get_comment(comment_id)
+    return nil if comment_id.blank?
+    Comment.find(comment_id)
+  end
 end

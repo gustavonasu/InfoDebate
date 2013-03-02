@@ -2,6 +2,8 @@
 
 class Admin::CommentsController < Admin::AdminController
 
+  MASS_ATTR_EXCEPTIONS = [:thread_id, :user_id, :parent_id]
+
   before_filter :init_obj_for_change_status, :only => [:change_status]
   
   # GET /admin/comments
@@ -32,10 +34,10 @@ class Admin::CommentsController < Admin::AdminController
 
   # POST /admin/comments
   def create
-    @comment = Comment.new(params[:comment].except(:thread_id, :user_id, :parent_id))
-    @comment.thread = get_thread
-    @comment.user = get_user
-    @comment.parent = get_comment
+    @comment = Comment.new(params[:comment].except(*MASS_ATTR_EXCEPTIONS))
+    @comment.thread = get_thread params[:comment][:thread_id]
+    @comment.user = get_user params[:comment][:user_id] 
+    @comment.parent = get_comment params[:comment][:parent_id] 
     if @comment.save
       redirect_to [:admin, @comment], notice: t(:creation_success, scope: :action_messages, model: 'Comentário')
     else
@@ -46,10 +48,10 @@ class Admin::CommentsController < Admin::AdminController
   # PUT /admin/comments/1
   def update
     @comment = Comment.find(params[:id])
-    @comment.thread = get_thread
-    @comment.user = get_user
-    @comment.parent = get_comment
-    if @comment.update_attributes(params[:comment].except(:thread_id, :user_id, :parent_id))
+    @comment.thread = get_thread params[:comment][:thread_id]
+    @comment.user = get_user params[:comment][:user_id] 
+    @comment.parent = get_comment params[:comment][:parent_id] 
+    if @comment.update_attributes(params[:comment].except(*MASS_ATTR_EXCEPTIONS))
       redirect_to [:admin, @comment], notice: t(:update_success, scope: :action_messages, model: 'Comentário')
     else
       render action: "edit"
@@ -64,24 +66,6 @@ class Admin::CommentsController < Admin::AdminController
   end
   
   private
-    
-    def get_thread
-      thread_id = params[:comment][:thread_id] 
-      return nil if thread_id.blank?
-      ForumThread.find(thread_id)
-    end
-    
-    def get_user
-      user_id = params[:comment][:user_id] 
-      return nil if user_id.blank?
-      User.find(user_id)
-    end
-    
-    def get_comment
-      comment_id = params[:comment][:parent_id] 
-      return nil if comment_id.blank?
-      Comment.find(comment_id)
-    end
     
     def init_obj_for_change_status
       @obj = Comment.find(params[:id])

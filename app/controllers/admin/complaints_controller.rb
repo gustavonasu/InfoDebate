@@ -2,6 +2,8 @@
 
 class Admin::ComplaintsController < Admin::AdminController
 
+  MASS_ATTR_EXCEPTIONS = [:comment_id, :user_id]
+
   before_filter :init_obj_for_change_status, :only => [:change_status]
 
   # GET /admin/complaints
@@ -33,9 +35,9 @@ class Admin::ComplaintsController < Admin::AdminController
 
   # POST /admin/complaints
   def create
-    @complaint = Complaint.new(params[:complaint].except(:comment_id, :user_id))
-    @complaint.comment = get_comment
-    @complaint.user = get_user
+    @complaint = Complaint.new(params[:complaint].except(*MASS_ATTR_EXCEPTIONS))
+    @complaint.comment = get_comment params[:complaint][:comment_id]
+    @complaint.user = get_user params[:complaint][:user_id]
     if @complaint.save
       redirect_to [:admin, @complaint], notice: t(:creation_success, scope: :action_messages, model: 'Reclamação')
     else
@@ -46,7 +48,7 @@ class Admin::ComplaintsController < Admin::AdminController
   # PUT /admin/complaints/1
   def update
     @complaint = Complaint.find(params[:id])
-    if @complaint.update_attributes(params[:complaint].except(:comment_id, :user_id))
+    if @complaint.update_attributes(params[:complaint].except(*MASS_ATTR_EXCEPTIONS))
       redirect_to [:admin, @complaint], notice: t(:update_success, scope: :action_messages, model: 'Reclamação')
     else
       render action: "edit"
@@ -61,18 +63,6 @@ class Admin::ComplaintsController < Admin::AdminController
   end
   
   private
-  
-    def get_comment
-      comment_id = params[:complaint][:comment_id]
-      return nil if comment_id.blank?
-      Comment.find(comment_id)
-    end
-    
-    def get_user
-      user_id = params[:complaint][:user_id] 
-      return nil if user_id.blank?
-      User.find(user_id)
-    end
     
     def init_obj_for_change_status
       @obj = Complaint.find(params[:id])
