@@ -16,6 +16,13 @@ def make_comments
       comment.user = User.first(:offset => rand(User.count))
       comment.thread = thread
       comment.save!
+      
+      if comment.id % 2 == 0
+        rand(10).times {
+          comment.children.create(:body => Faker::Lorem.paragraph,
+                                  :user => User.first(:offset => rand(User.count)))
+        }
+      end
     }
   end
 end

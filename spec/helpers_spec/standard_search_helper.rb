@@ -39,8 +39,11 @@ module StandardSearchHelper
     
     it "should return correctly searching by fields" do
       type.default_search_fields.keys.each do |field|
-        results = type.search({:term => subject.read_attribute(field)})
-        results.should include(subject)
+        value_to_search = subject.read_attribute(field)
+        unless value_to_search.nil?
+          results = type.search({:term => subject.read_attribute(field)})
+          results.should include(subject)
+        end
       end
     end
     
