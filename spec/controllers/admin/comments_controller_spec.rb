@@ -73,7 +73,7 @@ describe Admin::CommentsController do
   end
 
   describe "GET show" do
-    it "assigns the requested admin_comment as @comment" do
+    it "assigns the requested comment as @comment" do
       comment = create_comment
       get :show, {:id => comment.to_param}
       assigns(:comment).should eq(comment)
@@ -81,14 +81,14 @@ describe Admin::CommentsController do
   end
 
   describe "GET new" do
-    it "assigns a new admin_comment as @comment" do
+    it "assigns a new comment as @comment" do
       get :new, {}
       assigns(:comment).should be_a_new(Comment)
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested admin_comment as @comment" do
+    it "assigns the requested comment as @comment" do
       comment = create_comment
       get :edit, {:id => comment.to_param}
       assigns(:comment).should eq(comment)
@@ -103,24 +103,40 @@ describe Admin::CommentsController do
         }.to change(Comment, :count).by(1)
       end
 
-      it "assigns a newly created admin_comment as @comment" do
+      it "assigns a newly created comment as @comment" do
         post :create, {:comment => valid_attributes}
         assigns(:comment).should be_a(Comment)
         assigns(:comment).should be_persisted
       end
+      
+      it "assigns a newly created child comment as @comment" do
+        parent = FactoryGirl.create(:full_comment, :thread => @thread)
+        post :create, {:comment => valid_attributes.merge(:parent_id => parent.id)}
+        assigns(:comment).should be_a(Comment)
+        assigns(:comment).should be_persisted
+        assigns(:comment).parent.should eq(parent)
+      end
 
-      it "redirects to the created admin_comment" do
+      it "redirects to the created comment" do
         post :create, {:comment => valid_attributes}
         response.should redirect_to([:admin, Comment.last])
       end
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved admin_comment as @comment" do
+      it "assigns a newly created but unsaved comment as @comment" do
         # Trigger the behavior that occurs when invalid params are submitted
         Comment.any_instance.stub(:save).and_return(false)
         post :create, {:comment => {}}
         assigns(:comment).should be_a_new(Comment)
+      end
+      
+      it "should not save child comment if parent has different thread" do
+        parent = FactoryGirl.create(:full_comment)
+        post :create, {:comment => valid_attributes.merge(:parent_id => parent.id)}
+        assigns(:comment).should be_a(Comment)
+        assigns(:comment).should_not be_persisted
+        assigns(:comment).errors[:parent_id].should_not be_nil
       end
 
       it "re-renders the 'new' template" do
@@ -134,9 +150,9 @@ describe Admin::CommentsController do
 
   describe "PUT update" do
     describe "with valid params" do
-      it "updates the requested admin_comment" do
+      it "updates the requested comment" do
         comment = create_comment
-        # Assuming there are no other admin_comments in the database, this
+        # Assuming there are no other comments in the database, this
         # specifies that the Comment created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
@@ -144,13 +160,13 @@ describe Admin::CommentsController do
         put :update, {:id => comment.to_param, :comment => {'these' => 'params'}}
       end
 
-      it "assigns the requested admin_comment as @comment" do
+      it "assigns the requested comment as @comment" do
         comment = create_comment
         put :update, {:id => comment.to_param, :comment => valid_attributes}
         assigns(:comment).should eq(comment)
       end
 
-      it "redirects to the admin_comment" do
+      it "redirects to the comment" do
         comment = create_comment
         put :update, {:id => comment.to_param, :comment => valid_attributes}
         response.should redirect_to([:admin, comment])
@@ -158,7 +174,7 @@ describe Admin::CommentsController do
     end
 
     describe "with invalid params" do
-      it "assigns the admin_comment as @comment" do
+      it "assigns the comment as @comment" do
         comment = create_comment
         # Trigger the behavior that occurs when invalid params are submitted
         Comment.any_instance.stub(:save).and_return(false)
@@ -182,14 +198,14 @@ describe Admin::CommentsController do
       @comment.save
     end
     
-    it "destroys the requested admin_comment" do
+    it "destroys the requested comment" do
       expect {
         delete :destroy, {:id => @comment.to_param}
       }.to change(Comment, :count).by(-1)
       @comment.reload.should be_deleted
     end
     
-    it "redirects to the admin_comments list" do
+    it "redirects to the comments list" do
       delete :destroy, {:id => @comment.to_param}
       response.should redirect_to(admin_comments_url)
     end

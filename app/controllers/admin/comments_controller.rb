@@ -32,9 +32,10 @@ class Admin::CommentsController < Admin::AdminController
 
   # POST /admin/comments
   def create
-    @comment = Comment.new(params[:comment].except(:thread_id, :user_id))
+    @comment = Comment.new(params[:comment].except(:thread_id, :user_id, :parent_id))
     @comment.thread = get_thread
     @comment.user = get_user
+    @comment.parent = get_comment
     if @comment.save
       redirect_to [:admin, @comment], notice: t(:creation_success, scope: :action_messages, model: 'Comentário')
     else
@@ -47,7 +48,8 @@ class Admin::CommentsController < Admin::AdminController
     @comment = Comment.find(params[:id])
     @comment.thread = get_thread
     @comment.user = get_user
-    if @comment.update_attributes(params[:comment].except(:thread_id, :user_id))
+    @comment.parent = get_comment
+    if @comment.update_attributes(params[:comment].except(:thread_id, :user_id, :parent_id))
       redirect_to [:admin, @comment], notice: t(:update_success, scope: :action_messages, model: 'Comentário')
     else
       render action: "edit"
@@ -73,6 +75,12 @@ class Admin::CommentsController < Admin::AdminController
       user_id = params[:comment][:user_id] 
       return nil if user_id.blank?
       User.find(user_id)
+    end
+    
+    def get_comment
+      comment_id = params[:comment][:parent_id] 
+      return nil if comment_id.blank?
+      Comment.find(comment_id)
     end
     
     def init_obj_for_change_status

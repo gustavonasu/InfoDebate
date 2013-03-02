@@ -16,8 +16,6 @@
      :index_path => admin_users_path,
      :show_path => user_path %>
 
-
-
 <%= render 'shared/error_messages', :object => f.object %>
 <% unless f.object.new_record? %>
   <%= render 'shared/field_show', :label => "Id", :value => f.object.id %>
@@ -26,4 +24,5 @@
 
 <%= render 'shared/field', :f => f, :field_name => :thread_id %>
 <%= render 'shared/field', :f => f, :field_name => :user_id %>
+<%= render 'shared/field', :f => f, :field_name => :parent_id %>
 <%= render 'shared/field', :f => f, :field_name => :body %>
