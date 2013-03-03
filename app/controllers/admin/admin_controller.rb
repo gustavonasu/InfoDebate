@@ -26,7 +26,10 @@ class Admin::AdminController < ApplicationController
     rescue Status::InvalidStatusError, Status::Un_TargetStatusError, Status::TerminalStatusError => e
       message = {flash: {error: t(:invalid, :scope => :status_action_message)}}
     end
-    redirect_to [:admin, @obj], message
+    respond_to do |format|
+      format.html { redirect_to [:admin, @obj], message }
+      format.js
+    end
   end
   
   def get_forum(forum_id)

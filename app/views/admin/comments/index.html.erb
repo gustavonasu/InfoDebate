@@ -30,21 +30,9 @@
 
 <%= will_paginate %>
 
-<table class="table table-hover">
-  <tr>
-    <th>Id</th>
-    <th>Thread</th>
-    <th>Usuário</th>
-    <th>Status</th>
-    <th>Comentário</th>
-    <th>Data de Criação</th>
-    <th></th>
-  </tr>
-  <% if @comments.empty? %>
-    <tr><td colspan="7">Nenhum Comentário foi encontrado.</td></tr>
-  <% else %>
+<div>
+<ul class="item-list">
     <%= render @comments %>
-  <% end %>
-</table>
-
+</ul>
+</div>
 <%= will_paginate %>

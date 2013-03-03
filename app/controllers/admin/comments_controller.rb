@@ -62,7 +62,10 @@ class Admin::CommentsController < Admin::AdminController
   def destroy
     @comment = Comment.find(params[:id])
     @comment.destroy
-    redirect_to admin_comments_url, notice: t(:deletion_success, scope: :action_messages, model: 'Comentário')
+    respond_to do |format|
+      format.html { redirect_to admin_comments_url, notice: t(:deletion_success, scope: :action_messages, model: 'Comentário') }
+      format.js { @obj = @comment; render "change_status" }
+    end
   end
   
   private

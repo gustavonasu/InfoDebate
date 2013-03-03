@@ -1,12 +1,27 @@
-<tr>
-  <td><%= comment.id %></td>
-  <td><%= comment.thread.name %></td>
-  <td><%= comment.user.name %></td>
-  <td><%= t comment.status, :scope => 'status' %></td>
-  <td><%= comment.body %></td>
-  <td><%= l comment.created_at, :format => :short %></td>
-  <td>
-    <%= render 'shared/table_action', :action => "show", :path => admin_comment_path(comment) %>
-    <%= render 'shared/table_action', :action => "delete", :path => admin_comment_path(comment) %>
-  </td>
-</tr>
+<li class="item" id="item_<%= comment.id %>">
+  <div class="item-body">
+    <h4 class="item-heading"><%= comment.user.name %></h4>
+    <span class="item-heading username">
+      <b><%= comment.user.username %></b>
+    </span>
+    <span class="item-heading time">
+      <b><%= time_ago_in_words(comment.created_at) %></b>
+    </span>
+    <p class="item-text"><%= comment.body %></p>
+    <div class="item-body-footer">
+      <spam class="item-footer">
+        ID: <%= comment.id %>
+      </spam>
+      <spam class="item-footer">
+        Thread: <a href="<%= admin_forum_thread_path(comment.thread) %>"><%= comment.thread.name %></a>
+      </spam>
+      <spam class="item-footer-right">
+        <a href="<%= admin_comment_path(comment) %>" class="item-footer">Detalhes</a>
+        <% generate_status_change_actions(comment, :comment).each do |action| %>
+          <%= link_to action[:label], action[:path], :remote => true, :"data-confirm" => action[:confirmation_msg],
+                      :"data-method" => action[:method] %>
+        <% end %>
+      </spam>
+    </div>
+  </div>
+</li>

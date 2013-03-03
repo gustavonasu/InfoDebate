@@ -47,3 +47,62 @@ div.controls label {
 .btn-status {
 	margin-bottom: 10px;
 }
+
+
+// Lista de Comentários e Reclamações
+
+.item-list {
+  @extend .media-list;
+  border-top: 1px solid gray;
+  border-bottom: 0px;
+}
+
+.item {
+  @extend .media;
+  border-bottom: 1px solid gray;
+  margin-top: 0px;
+  padding: 10px 10px 10px 10px;
+}
+
+.item_changed {
+  background-color: lightyellow;
+}
+
+.item_changed_msg {
+  
+}
+
+.item-body {
+  @extend .media-body;
+}
+
+.item-heading {
+  @extend .media-heading;
+  display: inline;
+}
+
+.item-heading.username {
+  color: gray;
+}
+
+.item-heading.time {
+  color: gray;
+  float: right;
+  margin: 0px;
+}
+
+.item-text {
+  margin-top: 5px;
+}
+
+.item-body-footer {
+
+}
+
+.item-footer {
+  padding-right: 5px;
+}
+
+.item-footer-right {
+  float: right;
+}
