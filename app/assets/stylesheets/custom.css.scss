@@ -79,6 +79,7 @@ div.controls label {
 .item-heading {
   @extend .media-heading;
   display: inline;
+  padding-right: 5px;
 }
 
 .item-heading.username {

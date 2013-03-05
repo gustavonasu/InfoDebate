@@ -20,6 +20,10 @@ class Admin::CommentsController < Admin::AdminController
   # GET /admin/comments/1.json
   def show
     @comment = Comment.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /admin/comments/new

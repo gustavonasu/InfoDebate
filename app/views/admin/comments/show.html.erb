@@ -4,21 +4,4 @@
 
 <%= render 'shared/status_message' %>
 
-<div class="form-horizontal">
-  <%= render 'shared/field_show', :label => "Id", :value => @comment.id %>
-  <%= render 'shared/field_show', :label => "Status", :value => t(@comment.status, :scope => :status_label) %>
-  <%= render 'shared/field_show', :label => "Thread", 
-                                  :value => "#{@comment.thread.name} (Id: #{@comment.thread.id})",
-                                  :link => admin_forum_thread_path(@comment.thread) %>
-  <%= render 'shared/field_show', :label => "Usuário",
-                                  :value => "#{@comment.user.name} (Id: #{@comment.user.id})",
-                                  :link => admin_user_path(@comment.user) %>
-  <% unless @comment.parent.nil? %>
-    <%= render 'shared/field_show', :label => "Comentário Pai",
-                                    :value => "#{@comment.parent.body.first(40)} (Id: #{@comment.parent.id})",
-                                    :link => admin_comment_path(@comment.parent) %>
-  <% end %>
-  <%= render 'shared/field_show', :label => "Texto", :value => @comment.body %>
-  <%= render 'shared/field_show', :label => "Criado em", :value => l(@comment.created_at) %>
-  <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@comment.updated_at) %>
-</div>
+<%= render 'show' %>

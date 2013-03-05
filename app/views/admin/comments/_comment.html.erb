@@ -1,9 +1,12 @@
 <li class="item" id="item_<%= comment.id %>">
   <div class="item-body">
-    <h4 class="item-heading"><%= comment.user.name %></h4>
+    <h4 class="item-heading"> <a href="<%= admin_user_path(comment.user) %>"><%= comment.user.name %></a></h4>
     <span class="item-heading username">
       <b><%= comment.user.username %></b>
     </span>
+    <spam class="item-heading">
+      Thread: <a href="<%= admin_forum_thread_path(comment.thread) %>"><%= comment.thread.name %></a>
+    </spam>
     <span class="item-heading time">
       <b><%= time_ago_in_words(comment.created_at) %></b>
     </span>
@@ -12,14 +15,25 @@
       <spam class="item-footer">
         ID: <%= comment.id %>
       </spam>
-      <spam class="item-footer">
-        Thread: <a href="<%= admin_forum_thread_path(comment.thread) %>"><%= comment.thread.name %></a>
-      </spam>
+      <%= link_to "Pré-visualizar", admin_comment_path(comment), :remote => true, :class => "item-footer",
+           data: { toggle: "modal", target: "#admin-modal" } %>
+      <% unless comment.parent.nil? %>
+        <%= link_to "Comentário Pai", admin_comment_path(comment), :remote => true, :class => "item-footer",
+             data: { toggle: "modal", target: "#admin-modal" } %>
+      <% end %>
+      <% unless comment.children.empty? %>
+        <%= link_to "Respostas", admin_comment_path(comment), :remote => true, :class => "item-footer",
+             data: { toggle: "modal", target: "#admin-modal" } %>
+      <% end %>
+      <% unless comment.complaints.empty? %>
+        <%= link_to "Reclamações", admin_comment_path(comment), :remote => true, :class => "item-footer",
+             data: { toggle: "modal", target: "#admin-modal" } %>
+      <% end %>
       <spam class="item-footer-right">
         <a href="<%= admin_comment_path(comment) %>" class="item-footer">Detalhes</a>
         <% generate_status_change_actions(comment, :comment).each do |action| %>
           <%= link_to action[:label], action[:path], :remote => true, :"data-confirm" => action[:confirmation_msg],
-                      :"data-method" => action[:method] %>
+                      :"data-method" => action[:method], :class => "item-footer" %>
         <% end %>
       </spam>
     </div>
