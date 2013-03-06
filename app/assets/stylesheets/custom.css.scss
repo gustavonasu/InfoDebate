@@ -69,7 +69,7 @@ div.controls label {
 }
 
 .item_changed_msg {
-  
+  color: green;
 }
 
 .item-body {
@@ -80,10 +80,15 @@ div.controls label {
   @extend .media-heading;
   display: inline;
   padding-right: 5px;
+  a {
+    color: black;
+    text-decoration: underline;
+  }
 }
 
 .item-heading.username {
   color: gray;
+  line-height: 30px;
 }
 
 .item-heading.time {
@@ -102,8 +107,20 @@ div.controls label {
 
 .item-footer {
   padding-right: 5px;
+  
 }
+
+.item-footer.info { color: darkgreen; }
+
+.item-footer.danger { color: red; }
 
 .item-footer-right {
   float: right;
+}
+
+// Modal 
+
+.modal {
+    width: 800px;
+    left: 40%;
 }
