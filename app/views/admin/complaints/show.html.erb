@@ -7,12 +7,12 @@
 <div class="form-horizontal">
   <%= render 'shared/field_show', :label => "Id", :value => @complaint.id %>
   <%= render 'shared/field_show', :label => "Status", :value => t(@complaint.status, :scope => :status_label) %>
-  <%= render 'shared/field_show', :label => "Id Comentário", 
-                                  :value => "#{@complaint.comment.id}",
-                                  :link => admin_comment_path(@complaint.comment) %>
+  <%= render 'shared/field_show', :label => "Id do Comentário",
+                                  :link => link_to("#{@complaint.comment.id}", 
+                                                   admin_comment_path(@complaint.comment)) %>
   <%= render 'shared/field_show', :label => "Usuário",
-                                  :value => "#{@complaint.user.name} (Id: #{@complaint.user.id})",
-                                  :link => admin_user_path(@complaint.user) %>
+                                  :link => link_to("#{@complaint.user.name} (Id: #{@complaint.user.id})",
+                                                   admin_user_path(@complaint.user)) %>
   <%= render 'shared/field_show', :label => "Texto", :value => @complaint.body %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@complaint.created_at) %>
   <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@complaint.updated_at) %>

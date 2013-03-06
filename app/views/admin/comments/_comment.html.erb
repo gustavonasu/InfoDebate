@@ -21,7 +21,7 @@
       <%= link_to "Pré-visualizar", admin_comment_path(comment), :remote => true, :class => "item-footer preview",
            data: { toggle: "modal", target: "#admin-modal" } %>
       <% unless comment.parent.nil? %>
-        <%= link_to "Resposta a", admin_comment_path(comment), :remote => true, :class => "item-footer parents",
+        <%= link_to "Comentários Pai", admin_comment_path(comment), :remote => true, :class => "item-footer parents",
              data: { toggle: "modal", target: "#admin-modal" } %>
       <% end %>
       <% unless comment.children.empty? %>

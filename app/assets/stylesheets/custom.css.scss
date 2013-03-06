@@ -18,9 +18,20 @@
 	margin: 0 0 20px 0;
 }
 
-div.controls label {
-	padding-top: 5px;
+div.controls {
+  label { 
+    padding-top: 5px;
+    a { 
+      padding: 0px; 
+      display: inline;
+    }
+  }
+  a { 
+    padding-top: 5px; 
+    display: block;
+  }
 }
+
 
 #logo {
 	text-indent: -9999px;
