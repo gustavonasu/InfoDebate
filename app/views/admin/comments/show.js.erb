@@ -1,2 +1,3 @@
 $(".modal-body-content").html("<%= escape_javascript render(:partial => 'show') %>");
-$("#admin-modal").show();
+$(".modal-title").html("Pré-visualização de Comentário");
+$(".modal-actions").html("<%= escape_javascript link_to('Visualizar >>', admin_comment_path(@comment)) %>");

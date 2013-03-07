@@ -8,7 +8,7 @@
                                   :link => link_to("#{@comment.user.name} (Id: #{@comment.user.id})", 
                                                    admin_user_path(@comment.user)) %>
   <% unless @comment.parent.nil? %>
-    <%= render 'shared/field_show', :label => "Comentário Pai",
+    <%= render 'shared/field_show', :label => "Resposta a",
                                     :link => link_to("#{@comment.parent.body.first(40)} (Id: #{@comment.parent.id})",
                                                      admin_comment_path(@comment.parent), :remote => true,
                                                      data: { toggle: "modal", target: "#admin-modal" }) %>
