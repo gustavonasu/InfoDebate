@@ -22,12 +22,12 @@ class Admin::AdminController < ApplicationController
   def change_status
     begin
       @obj.send("#{params[:status_action]}!")
-      message = {notice: t(:success, :scope => :status_action_message)}
+      flash[:notice] = t(:success, :scope => :status_action_message)
     rescue Status::InvalidStatusError, Status::Un_TargetStatusError, Status::TerminalStatusError => e
-      message = {flash: {error: t(:invalid, :scope => :status_action_message)}}
+      flash[:error] = t(:invalid, :scope => :status_action_message)
     end
     respond_to do |format|
-      format.html { redirect_to [:admin, @obj], message }
+      format.html { redirect_to [:admin, @obj] }
       format.js
     end
   end

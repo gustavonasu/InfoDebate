@@ -1,3 +1,4 @@
 $("#item_<%= @obj.id %>").addClass("item_changed")
 $("#item_<%= @obj.id %>").prepend("<strong class=\"item_changed_msg\">Este comentário foi marcado como <%= t(@obj.status, :scope => :status_label) %></strong>")
 $("#item_<%= @obj.id %>").fadeOut(1700)
+$("#item_<%= @obj.id %>").addClass("item_changed")

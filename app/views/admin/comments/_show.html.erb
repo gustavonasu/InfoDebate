@@ -1,3 +1,9 @@
+<% opened_from_modal ||= false %>
+<% data_map = { toggle: "modal", target: "#admin-modal" } %>
+<% data_map = {} if opened_from_modal %>
+
+<%= render 'shared/status_message' %>
+
 <div class="form-horizontal">
   <%= render 'shared/field_show', :label => "Id", :value => @comment.id %>
   <%= render 'shared/field_show', :label => "Status", :value => t(@comment.status, :scope => :status_label) %>
@@ -11,7 +17,7 @@
     <%= render 'shared/field_show', :label => "Resposta a",
                                     :link => link_to("#{@comment.parent.body.first(40)} (Id: #{@comment.parent.id})",
                                                      admin_comment_path(@comment.parent), :remote => true,
-                                                     data: { toggle: "modal", target: "#admin-modal" }) %>
+                                                     data: data_map) %>
   <% end %>
   <%= render 'shared/field_show', :label => "Texto", :value => simple_format(@comment.body) %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@comment.created_at) %>

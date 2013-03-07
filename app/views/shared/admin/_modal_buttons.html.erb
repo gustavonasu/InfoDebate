@@ -1,12 +1,22 @@
-$(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('Visualizar', 
-                                                  Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj),
-                                                  :class => 'btn btn-info') %>");
+<% path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>
+$(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', path, :remote => true,
+                                                                        :class => 'hidden reloadlink') %>");
+$(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visualizar', path,
+                                                                        :class => 'btn btn-info reloadlink') %>");
 <% generate_status_change_actions(obj, resource_name).each do |action| %>
-$(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to(action[:label], action[:path],
+  <% data_map = { :confirm => action[:confirmation_msg],
+                  :method => action[:method] }
+     if action[:method] == "delete"
+       data_map.merge! :dismiss => "modal"
+     else
+       data_map.merge! :modal => "reload"
+     end
+  %>
+  $(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to(action[:label], action[:path],
                                                                  :class => "btn btn-#{action[:type]}",
                                                                  :remote => true,
-                                                                 :data => {
-                                                                   :confirm => action[:confirmation_msg],
-                                                                   :method => action[:method],
-                                                                   :dismiss => 'modal' } ) %>");
+                                                                 :data => data_map ) %>");
 <% end %>
+$('a[data-modal=reload]').bind('ajax:success', function(evt, data, status, xhr){
+  $('a.reloadlink').click()
+});
