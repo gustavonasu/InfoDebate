@@ -1,0 +1,12 @@
+$(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('Visualizar', 
+                                                  Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj),
+                                                  :class => 'btn btn-info') %>");
+<% generate_status_change_actions(obj, resource_name).each do |action| %>
+$(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to(action[:label], action[:path],
+                                                                 :class => "btn btn-#{action[:type]}",
+                                                                 :remote => true,
+                                                                 :data => {
+                                                                   :confirm => action[:confirmation_msg],
+                                                                   :method => action[:method],
+                                                                   :dismiss => 'modal' } ) %>");
+<% end %>
