@@ -44,7 +44,7 @@ class Comment < ActiveRecord::Base
   default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
   
   after_initialize do
-    self.thread = parent.thread if child?
+    self.thread = parent.thread if child? && !parent.nil?
   end
   
   # Define configurations for status machine
