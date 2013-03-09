@@ -221,5 +221,11 @@ describe Admin::CommentsController do
       subject { @comment }
     end
   end
-
+  
+  describe "GET show_modal" do
+    it_should_behave_like "show_modal validation" do
+      subject { create_comment }
+      let(:request_variable) { :comment }
+    end
+  end
 end

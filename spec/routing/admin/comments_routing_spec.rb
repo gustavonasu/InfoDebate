@@ -35,5 +35,9 @@ describe Admin::CommentsController do
       get("/admin/comments/1/change_status/active").should route_to("admin/comments#change_status",
                                                                     :id => "1", :status_action => 'active')
     end
+    
+    it "routes to #show_modal" do
+      get("/admin/comments/1/show_modal").should route_to("admin/comments#show_modal", :id => "1")
+    end
   end
 end

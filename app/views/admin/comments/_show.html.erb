@@ -9,15 +9,16 @@
   <%= render 'shared/field_show', :label => "Status", :value => t(@comment.status, :scope => :status_label) %>
   <%= render 'shared/field_show', :label => "Thread", 
                                   :link => link_to("#{@comment.thread.name} (Id: #{@comment.thread.id})",
-                                                   admin_forum_thread_path(@comment.thread)) %>
+                                                   show_modal_admin_forum_thread_path(@comment.thread),
+                                                    :remote => true, data: data_map) %>
   <%= render 'shared/field_show', :label => "Usuário",
                                   :link => link_to("#{@comment.user.name} (Id: #{@comment.user.id})", 
                                                    admin_user_path(@comment.user)) %>
   <% unless @comment.parent.nil? %>
     <%= render 'shared/field_show', :label => "Resposta a",
                                     :link => link_to("#{@comment.parent.body.first(40)} (Id: #{@comment.parent.id})",
-                                                     admin_comment_path(@comment.parent), :remote => true,
-                                                     data: data_map) %>
+                                                     show_modal_admin_comment_path(@comment.parent),
+                                                     :remote => true, data: data_map) %>
   <% end %>
   <%= render 'shared/field_show', :label => "Texto", :value => simple_format(@comment.body) %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@comment.created_at) %>

@@ -17,11 +17,15 @@ class Admin::CommentsController < Admin::AdminController
   end
 
   # GET /admin/comments/1
-  # GET /admin/comments/1.json
   def show
     @comment = Comment.find(params[:id])
+  end
+
+  # GET /admin/comments/1/show_modal
+  def show_modal
+    @comment = Comment.find(params[:id])
     respond_to do |format|
-      format.html
+      format.html { head :not_found }
       format.js
     end
   end
@@ -66,10 +70,7 @@ class Admin::CommentsController < Admin::AdminController
   def destroy
     @comment = Comment.find(params[:id])
     @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to admin_comments_url, notice: t(:deletion_success, scope: :action_messages, model: 'Comentário') }
-      format.js { @obj = @comment; render "change_status" }
-    end
+    redirect_to admin_comments_url, notice: t(:deletion_success, scope: :action_messages, model: 'Comentário')
   end
   
   private

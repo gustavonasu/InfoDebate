@@ -35,5 +35,9 @@ describe Admin::ForumThreadsController do
       get("/admin/forum_threads/1/change_status/active").should route_to("admin/forum_threads#change_status",
                                                                     :id => "1", :status_action => 'active')
     end
+    
+    it "routes to #show_modal" do
+      get("/admin/forum_threads/1/show_modal").should route_to("admin/forum_threads#show_modal", :id => "1")
+    end
   end
 end

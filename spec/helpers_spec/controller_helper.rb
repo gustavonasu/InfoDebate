@@ -68,4 +68,17 @@ module ControllerHelper
     get :change_status, {:id => obj.id, :status_action => obj.find_action(s)}
     obj.should redirect_to(:action => :show)
   end
+  
+  shared_examples_for "show_modal validation" do
+    it "assigns the requested object and return js format" do
+      xhr :get, :show_modal, {:id => subject.to_param}
+      assigns(request_variable).should eq(subject)
+      response.content_type.should == Mime::JS
+    end
+    
+    it "should return not_found to html format" do
+      get :show_modal, {:id => subject.to_param}
+      response.should be_not_found
+    end
+  end
 end

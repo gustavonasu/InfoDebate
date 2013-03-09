@@ -216,4 +216,11 @@ describe Admin::ForumThreadsController do
       subject { @forum_thread }
     end
   end
+  
+  describe "GET show_modal" do
+    it_should_behave_like "show_modal validation" do
+      subject { @forum_thread }
+      let(:request_variable) { :forum_thread }
+    end
+  end
 end

@@ -18,10 +18,11 @@
         <strong>ID: <%= comment.id %></strong>
       </spam>
       <%= link_to "Visualizar", admin_comment_path(comment), :class => "item-footer view" %>
-      <%= link_to "Pré-visualizar", admin_comment_path(comment), :remote => true, :class => "item-footer preview",
+      <%= link_to "Pré-visualizar", show_modal_admin_comment_path(comment), :remote => true, :class => "item-footer preview",
            data: { toggle: "modal", target: "#admin-modal" } %>
       <% unless comment.parent.nil? %>
-        <%= link_to "Resposta a", admin_comment_path(comment.parent), :remote => true, :class => "item-footer parents",
+        <%= link_to "Respondendo a", show_modal_admin_comment_path(comment.parent), 
+             :remote => true, :class => "item-footer parents",
              data: { toggle: "modal", target: "#admin-modal" } %>
       <% end %>
       <% unless comment.children.empty? %>

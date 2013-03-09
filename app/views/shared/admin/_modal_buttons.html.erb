@@ -1,14 +1,13 @@
-<% path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>
-$(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', path, :remote => true,
+<% show_modal_path = Rails.application.routes.url_helpers.send("show_modal_admin_#{resource_name}_path", obj) %>
+$(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', show_modal_path, :remote => true,
                                                                         :class => 'hidden reloadlink') %>");
-$(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visualizar', path,
+<% show_path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>
+$(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visualizar', show_path,
                                                                         :class => 'btn btn-info reloadlink') %>");
 <% generate_status_change_actions(obj, resource_name).each do |action| %>
   <% data_map = { :confirm => action[:confirmation_msg],
                   :method => action[:method] }
-     if action[:method] == "delete"
-       data_map.merge! :dismiss => "modal"
-     else
+     if action[:method] != "delete"
        data_map.merge! :modal => "reload"
      end
   %>

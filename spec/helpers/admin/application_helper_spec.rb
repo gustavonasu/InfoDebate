@@ -49,8 +49,9 @@ describe Admin::ApplicationHelper do
     context "Forum model" do
       before do
         @forum = FactoryGirl.create(:forum)
-        @delete_map = {:label => t(:delete, :scope => :status_action), :path => admin_forum_path(@forum), :type => "danger", 
-                       :method => "delete", :confirmation_msg => t(:confirmation_msg)}
+        @delete_map = {:label => t(:delete, :scope => :status_action),
+                       :path => change_status_admin_forum_path(@forum, :status_action => "delete"),
+                       :type => "danger", :confirmation_msg => t(:confirmation_msg)}
         @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
                          :path => change_status_admin_forum_path(@forum, :status_action => "inactive"), 
                          :confirmation_msg => t(:confirmation_msg)}
@@ -75,8 +76,9 @@ describe Admin::ApplicationHelper do
     context "User model" do
       before do
         @user = FactoryGirl.create(:user)
-        @delete_map = {:label => t(:delete, :scope => :status_action), :path => admin_user_path(@user), :type => "danger", 
-                       :method => "delete", :confirmation_msg => t(:confirmation_msg)}
+        @delete_map = {:label => t(:delete, :scope => :status_action), 
+                       :path => change_status_admin_user_path(@user, :status_action => "delete"),
+                       :type => "danger", :confirmation_msg => t(:confirmation_msg)}
         @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
                          :path => change_status_admin_user_path(@user, :status_action => "inactive"),
                          :confirmation_msg => t(:confirmation_msg)}

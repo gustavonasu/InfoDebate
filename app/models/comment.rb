@@ -35,7 +35,7 @@ class Comment < ActiveRecord::Base
   validate :verify_thread_child
   
   def verify_thread_child
-    if child? && self.thread != parent.thread
+    if child? && !parent.nil? && self.thread != parent.thread
       errors.add(:thread_id, I18n.t(:invalid_comment_thread, :scope => [:errors, :messages]) ||
                 "Thread should be the same parent comment's thread")
     end

@@ -35,5 +35,9 @@ describe Admin::UsersController do
       get("/admin/users/1/change_status/active").should route_to("admin/users#change_status",
                                                                     :id => "1", :status_action => 'active')
     end
+    
+    it "routes to #show_modal" do
+      get("/admin/users/1/show_modal").should route_to("admin/users#show_modal", :id => "1")
+    end
   end
 end

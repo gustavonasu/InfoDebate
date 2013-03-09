@@ -26,6 +26,15 @@ class Admin::ForumThreadsController < Admin::AdminController
       format.js { render :json => parse_for_js_response(@forum_thread) }
     end
   end
+  
+  # GET /admin/forum_threads/1/show_modal
+  def show_modal
+    @forum_thread = ForumThread.find(params[:id])
+    respond_to do |format|
+      format.html { head :not_found }
+      format.js
+    end
+  end
 
   # GET /admin/forum_threads/new
   def new

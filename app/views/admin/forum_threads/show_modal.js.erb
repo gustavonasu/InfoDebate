@@ -1,0 +1,3 @@
+$(".modal-body-content").html("<%= escape_javascript render('show', :opened_from_modal => true) %>");
+$(".modal-title").html("Pré-visualização de Thread");
+<%= render "shared/admin/modal_buttons", :obj => @forum_thread, :resource_name => :forum_thread %>
