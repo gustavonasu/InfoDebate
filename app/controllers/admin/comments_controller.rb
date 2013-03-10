@@ -76,6 +76,6 @@ class Admin::CommentsController < Admin::AdminController
   private
     
     def init_obj_for_change_status
-      @obj = Comment.find(params[:id])
+      @obj = Comment.find_by_id(params[:id])
     end
 end

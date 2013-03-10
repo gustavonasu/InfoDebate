@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Admin::AdminController < ApplicationController
   
   # TODO Avaliar se é necessário criar um módulo (qual??) para acomodar esses métodos
@@ -22,13 +24,22 @@ class Admin::AdminController < ApplicationController
   def change_status
     begin
       @obj.send("#{params[:status_action]}!")
-      flash[:notice] = t(:success, :scope => :status_action_message)
+      notice = t(:success, :scope => :status_action_message)
     rescue Status::InvalidStatusError, Status::Un_TargetStatusError, Status::TerminalStatusError => e
-      flash[:error] = t(:invalid, :scope => :status_action_message)
+      error = t(:invalid, :scope => :status_action_message)
+    rescue Exception => e
+      error = "Ocorreu um error na requisição"
     end
     respond_to do |format|
-      format.html { redirect_to [:admin, @obj] }
-      format.js
+      format.html do
+        flash[:notice] = notice
+        flash[:error] = error
+        redirect_to [:admin, @obj]
+      end
+      format.js do
+        request[:notice] = notice
+        request[:error] = error
+      end
     end
   end
   

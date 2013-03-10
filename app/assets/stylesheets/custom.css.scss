@@ -138,3 +138,25 @@ div.controls {
 
 .extra-buttons { display: inline; }
 .extra-buttons * { display: inline; }
+
+// Define fixed alert for success and error
+.fixed-alert {
+  position: fixed;
+  top: 5%;
+  width: 80%;
+  left: 10%;
+  z-index: 9999;
+  display: none;
+}
+
+.fixed-sucess-alert {
+  @extend .alert;
+  @extend .alert-success;
+  @extend .fixed-alert;
+}
+
+.fixed-error-alert {
+  @extend .alert;
+  @extend .alert-error;
+  @extend .fixed-alert;
+}
