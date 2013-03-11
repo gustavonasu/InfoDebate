@@ -1,6 +1,8 @@
 function reloadItemList() {
   var form = $('.searchForm');
   var action = form.attr('action');
-  var formdata = form.serialize();
-  $.get(action + '.js', formdata);
+  if(action !== undefined) {
+    var formdata = form.serialize();
+    $.get(action + '.js', formdata);
+  }
 }

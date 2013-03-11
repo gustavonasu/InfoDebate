@@ -22,6 +22,15 @@ class Admin::UsersController < Admin::AdminController
     end
   end
 
+  # GET /admin/users/1/show_modal
+  def show_modal
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html { head :not_found }
+      format.js
+    end
+  end
+
   # GET /users/new
   def new
     @user = User.new

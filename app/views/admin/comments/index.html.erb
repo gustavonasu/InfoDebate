@@ -28,8 +28,6 @@
 <%= render 'shared/admin/status_options', :status_options => Comment.valid_status,
            :status_default => Comment.default_status_for_search %>
 
-<%= render 'shared/admin/fixed_status_message' %>
-
 <%= will_paginate %>
 <div>
 <ul class="item-list">
