@@ -5,16 +5,7 @@
                        generate_status_change_actions(@forum, :forum) +
                        [ {:label => "Voltar", :path => admin_forums_path, :type => "info"} ] %>
 
-<%= render 'shared/status_message' %>
-
-<div class="form-horizontal">
-  <%= render 'shared/field_show', :label => "Id", :value => @forum.id %>
-  <%= render 'shared/field_show', :label => "Nome", :value => @forum.name %>
-  <%= render 'shared/field_show', :label => "Status", :value => t(@forum.status, :scope => :status_label) %>
-  <%= render 'shared/field_show', :label => "Descrição", :value => @forum.description %>
-  <%= render 'shared/field_show', :label => "Criado em", :value => l(@forum.created_at) %>
-  <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@forum.updated_at) %>
-</div>
+<%= render 'show' %>
 
 <% unless @forum.threads.empty? %>
 <div>

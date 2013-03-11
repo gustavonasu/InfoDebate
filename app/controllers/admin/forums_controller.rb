@@ -23,6 +23,15 @@ class Admin::ForumsController < Admin::AdminController
     end
   end
 
+  # GET /admin/forums/1/show_modal
+  def show_modal
+    @forum = Forum.find(params[:id])
+    respond_to do |format|
+      format.html { head :not_found }
+      format.js
+    end
+  end
+
   # GET /admin/forums/new
   def new
     @forum = Forum.new

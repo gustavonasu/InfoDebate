@@ -192,4 +192,11 @@ describe Admin::ForumsController do
       subject { @forum }
     end
   end
+  
+  describe "GET show_modal" do
+    it_should_behave_like "show_modal validation" do
+      subject { Forum.create! valid_attributes }
+      let(:request_variable) { :forum }
+    end
+  end
 end
