@@ -7,13 +7,17 @@ class Admin::CommentsController < Admin::AdminController
   before_filter :init_obj_for_change_status, :only => [:change_status]
   
   # GET /admin/comments
-  # GET /admin/comments.json
+  # GET /admin/comments.js
   def index
     @comments = Comment.search({ :term => params[:q], 
                                  :thread_id => params[:thread_id],
                                  :user_id => params[:user_id],
                                  :status => params[:status]},
                                params[:page])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /admin/comments/1

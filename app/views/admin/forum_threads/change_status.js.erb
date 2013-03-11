@@ -1,1 +1,13 @@
-window.location.reload(true);
+<% unless request[:notice].nil? %>
+  $(".fixed-sucess-alert > .message").html("<%= escape_javascript request[:notice] %>");
+  $(".fixed-sucess-alert").show().fadeOut(2000);
+  <% if @obj.deleted? %>
+    $("#admin-modal").modal('hide');
+  <% end %>
+  reloadItemList();
+<% end %>
+
+<% unless request[:error].nil? %>
+  $(".fixed-error-alert > .message").html("<%= escape_javascript request[:error] %>")
+  $(".fixed-error-alert").show()
+<% end %>
