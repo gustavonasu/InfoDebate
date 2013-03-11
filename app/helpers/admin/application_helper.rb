@@ -50,6 +50,13 @@ module Admin::ApplicationHelper
     actions
   end
   
+  def modal_data_map(opened_from_modal)
+    opened_from_modal ||= false
+    data_map = { toggle: "modal", target: "#admin-modal" }
+    data_map = {} if opened_from_modal
+    data_map
+  end
+  
   private
     
     def build_action_label(action)
