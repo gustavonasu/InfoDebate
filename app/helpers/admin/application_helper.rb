@@ -57,6 +57,10 @@ module Admin::ApplicationHelper
     data_map
   end
   
+  def javascript(*files)
+    content_for(:head) { javascript_include_tag(*files) }
+  end
+  
   private
     
     def build_action_label(action)
