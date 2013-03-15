@@ -39,5 +39,10 @@ describe Admin::ComplaintsController do
     it "routes to #show_modal" do
       get("/admin/complaints/1/show_modal").should route_to("admin/complaints#show_modal", :id => "1")
     end
+    
+    it "routes to #change_status with call_from" do
+      get("/admin/complaints/1/change_status/active/complaint_list").should route_to("admin/complaints#change_status",
+                                                      :id => "1", :status_action => 'active', :call_from => 'complaint_list')
+    end
   end
 end

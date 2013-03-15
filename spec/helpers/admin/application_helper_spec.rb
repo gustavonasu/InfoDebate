@@ -57,19 +57,18 @@ describe Admin::ApplicationHelper do
                          :confirmation_msg => t(:confirmation_msg)}
         @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
                        :path => change_status_admin_forum_path(@forum, :status_action => "active")}
+        @status_maps = {:delete => @delete_map, :inactive => @inactive_map, :active => @active_map}
       end
     
       it "with forum active" do
         actions = helper.generate_status_change_actions(@forum, "forum")
-        actions.should include(@delete_map)
-        actions.should include(@inactive_map)
+        assert_generated_status_change_actions @status_maps, actions, :active
       end
       
       it "with forum inactive" do
         @forum.inactive!
         actions = helper.generate_status_change_actions(@forum, "forum")
-        actions.should include(@delete_map)
-        actions.should include(@active_map)
+        assert_generated_status_change_actions @status_maps, actions, :inactive
       end
     end
     
@@ -93,26 +92,43 @@ describe Admin::ApplicationHelper do
     
       it "with user active" do
         actions = helper.generate_status_change_actions(@user, "user")
-        assert_generated_status_change_actions actions, :active
+        assert_generated_status_change_actions @status_maps, actions, :active
       end
       
       it "with user inactive" do
         @user.inactive!
         actions = helper.generate_status_change_actions(@user, "user")
-        assert_generated_status_change_actions actions, :inactive
+        assert_generated_status_change_actions @status_maps, actions, :inactive
       end
       
       it "with user pendig" do
         @user.send("write_attribute", "status", @user.find_status_value(:pending))
         actions = helper.generate_status_change_actions(@user, "user")
-        assert_generated_status_change_actions actions, :pending
+        assert_generated_status_change_actions @status_maps, actions, :pending
+      end
+    end
+    
+    context "Comment model with call_from param" do
+      before do
+        @call_from = "comment_list"
+        @comment = FactoryGirl.create(:comment, :with_user, :with_thread)
+        @approved_map = {:label => t(:approve, :scope => :status_action), :type => "info",
+                         :path => change_status_admin_comment_path(@comment, :status_action => "approve",
+                         :call_from => @call_from)}
+        @status_maps = {:active => @approved_map}
       end
       
-      def assert_generated_status_change_actions(actions, curr_action)
-        @status_maps.each do |action, map|
-          actions.should_not include(map) if action == curr_action
-          actions.should include(map) if action != curr_action
-        end
+      it "with comment reject" do
+        @comment.reject!
+        actions = helper.generate_status_change_actions(@comment, "comment", @call_from)
+        assert_generated_status_change_actions @status_maps, actions, :inactive
+      end
+    end
+    
+    def assert_generated_status_change_actions(status_maps, actions, curr_action)
+      status_maps.each do |action, map|
+        actions.should_not include(map) if action == curr_action
+        actions.should include(map) if action != curr_action
       end
     end
   end

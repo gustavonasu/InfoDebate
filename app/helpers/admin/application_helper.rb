@@ -9,6 +9,17 @@ module Admin::ApplicationHelper
     url += "?" if !url.include?("?")
     url += "status=#{status}"
   end
+
+  def modal_data_map(opened_from_modal)
+    opened_from_modal ||= false
+    data_map = { toggle: "modal", target: "#admin-modal" }
+    data_map = {} if opened_from_modal
+    data_map
+  end
+  
+  def javascript(*files)
+    content_for(:head) { javascript_include_tag(*files) }
+  end
   
   ACTION_CONFIG_BY_STATUS = {:active => {:default_map => {:type => "info"}, 
                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
@@ -36,30 +47,20 @@ module Admin::ApplicationHelper
                                        :include_param_action => true} }
                              
   
-  def generate_status_change_actions(obj, resource_name)
+  def generate_status_change_actions(obj, resource_name, call_from = nil)
     actions = []
     obj.target_status_for(obj.status).each do |status|
       action = obj.find_action(status)
       action_config = ACTION_CONFIG_BY_STATUS[action]
       action_map = action_config[:default_map]
       action_map.merge! build_action_label(action)
-      action_map.merge! build_action_path(obj, action, resource_name)
+      action_map.merge! build_action_path(obj, action, resource_name, call_from)
       action_map.merge! build_action_confirmation() if action_config[:confirmation] == true
       actions << action_map
     end
     actions
   end
   
-  def modal_data_map(opened_from_modal)
-    opened_from_modal ||= false
-    data_map = { toggle: "modal", target: "#admin-modal" }
-    data_map = {} if opened_from_modal
-    data_map
-  end
-  
-  def javascript(*files)
-    content_for(:head) { javascript_include_tag(*files) }
-  end
   
   private
     
@@ -67,10 +68,12 @@ module Admin::ApplicationHelper
       {:label => t(action, :scope => :status_action)}
     end
     
-    def build_action_path(obj, action, resource_name)
+    def build_action_path(obj, action, resource_name, call_from)
       path_pattern = ACTION_CONFIG_BY_STATUS[action][:path_pattern]
       path_name = Kernel.eval("\"" + path_pattern + "\"")
-      params = {:status_action => action} if ACTION_CONFIG_BY_STATUS[action][:include_param_action] == true
+      params = {}
+      params.merge!(:status_action => action) if ACTION_CONFIG_BY_STATUS[action][:include_param_action] == true
+      params.merge!(:call_from => call_from) unless call_from.nil?
       path = Rails.application.routes.url_helpers.send(path_name, obj, params)
       {:path => path}
     end

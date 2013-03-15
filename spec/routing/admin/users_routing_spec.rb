@@ -36,6 +36,11 @@ describe Admin::UsersController do
                                                                     :id => "1", :status_action => 'active')
     end
     
+    it "routes to #change_status with call_from" do
+      get("/admin/users/1/change_status/active/user_list").should route_to("admin/users#change_status",
+                                                      :id => "1", :status_action => 'active', :call_from => 'user_list')
+    end
+    
     it "routes to #show_modal" do
       get("/admin/users/1/show_modal").should route_to("admin/users#show_modal", :id => "1")
     end

@@ -4,7 +4,8 @@ $(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', show
 <% show_path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>
 $(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visualizar', show_path,
                                                                         :class => 'btn btn-info reloadlink') %>");
-<% generate_status_change_actions(obj, resource_name).each do |action| %>
+<% call_from ||= nil %>
+<% generate_status_change_actions(obj, resource_name, call_from).each do |action| %>
   <% data_map = { :confirm => action[:confirmation_msg],
                   :method => action[:method] }
      if action[:method] != "delete"

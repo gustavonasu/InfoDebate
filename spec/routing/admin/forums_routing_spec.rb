@@ -39,5 +39,11 @@ describe Admin::ForumsController do
     it "routes to #show_modal" do
       get("/admin/forums/1/show_modal").should route_to("admin/forums#show_modal", :id => "1")
     end
+    
+    it "routes to #change_status with call_from" do
+      get("/admin/forums/1/change_status/active/forum_list").should route_to("admin/forums#change_status",
+                                                      :id => "1", :status_action => 'active', :call_from => 'forum_list')
+    end
+    
   end
 end
