@@ -36,13 +36,14 @@ describe Admin::CommentsController do
                                                                     :id => "1", :status_action => 'active')
     end
     
-    it "routes to #show_modal" do
-      get("/admin/comments/1/show_modal").should route_to("admin/comments#show_modal", :id => "1")
-    end
-    
     it "routes to #change_status with call_from" do
       get("/admin/comments/1/change_status/active/comment_list").should route_to("admin/comments#change_status",
                                                       :id => "1", :status_action => 'active', :call_from => 'comment_list')
+    end
+    
+    it "routes to #show_modal" do
+      get("/admin/comments/1/show_modal/comment_list").should route_to("admin/comments#show_modal", :id => "1",
+                                                                    :call_from => "comment_list")
     end
   end
 end

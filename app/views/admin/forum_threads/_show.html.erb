@@ -2,6 +2,9 @@
 
 <%= render 'shared/status_message' %>
 
+<% call_from = params[:call_from] %>
+<% call_from ||= 'forum_show' %>
+
 <div class="form-horizontal">
   <%= render 'shared/field_show', :label => "Id", :value => @forum_thread.id %>
   <%= render 'shared/field_show', :label => "Nome", :value => @forum_thread.name %>
@@ -9,7 +12,7 @@
   <%= render 'shared/field_show', :label => "Descrição", :value => @forum_thread.description %>
   <%= render 'shared/field_show', :label => "Forum", 
                                   :link => link_to("#{@forum_thread.forum.name} (Id: #{@forum_thread.forum.id})", 
-                                                   show_modal_admin_forum_path(@forum_thread.forum),
+                                                   show_modal_admin_forum_path(@forum_thread.forum, :call_from => call_from),
                                                     :remote => true, data: modal_data_map(opened_from_modal)) %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@forum_thread.created_at) %>
   <%= render 'shared/field_show', :label => "Atualizado em", :value => l(@forum_thread.updated_at) %>
