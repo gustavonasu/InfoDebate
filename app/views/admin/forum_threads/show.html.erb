@@ -3,4 +3,6 @@
                        generate_status_change_actions(@forum_thread, :forum_thread) +
                        [ {:label => "Voltar", :path => admin_forum_threads_path, :type => "info"} ] %>
 
-<%= render 'show' %>
+<%= render 'shared/status_message' %>
+
+<%= render 'show_fields' %>

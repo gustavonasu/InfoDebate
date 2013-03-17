@@ -4,7 +4,7 @@
   <% if @obj.deleted? %>
     $("#admin-modal").modal('hide');
   <% end %>
-  reloadItemList();
+  reloadPage();
 <% end %>
 
 <% unless request[:error].nil? %>

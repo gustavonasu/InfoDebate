@@ -1,4 +1,4 @@
-function reloadItemList() {
+function reloadPage() {
   var form = $('.searchForm');
   var action = form.attr('action');
   if(action !== undefined) {

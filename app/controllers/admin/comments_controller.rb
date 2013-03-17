@@ -21,11 +21,17 @@ class Admin::CommentsController < Admin::AdminController
   end
 
   # GET /admin/comments/1
+  # GET /admin/comments/1.js
   def show
     @comment = Comment.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
-  # GET /admin/comments/1/show_modal
+  # GET /admin/comments/1/show_modal/call_from
+  # GET /admin/comments/1/show_modal/call_from.js
   def show_modal
     @comment = Comment.find(params[:id])
     respond_to do |format|

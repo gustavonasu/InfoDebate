@@ -5,7 +5,9 @@
                        generate_status_change_actions(@forum, :forum) +
                        [ {:label => "Voltar", :path => admin_forums_path, :type => "info"} ] %>
 
-<%= render 'show' %>
+<%= render 'shared/status_message' %>
+
+<%= render 'show_fields' %>
 
 <% unless @forum.threads.empty? %>
 <div>
