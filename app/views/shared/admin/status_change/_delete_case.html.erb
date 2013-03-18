@@ -1,0 +1,5 @@
+<% unless request[:notice].nil? %>
+  <% if @obj.deleted? %>
+    $("#admin-modal").modal('hide');
+  <% end %>
+<% end %>

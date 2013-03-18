@@ -34,7 +34,7 @@
              data: { toggle: "modal", target: "#admin-modal" } %>
       <% end %>
       <spam class="item-footer-right">
-        <% generate_status_change_actions(comment, :comment).each do |action| %>
+        <% generate_status_change_actions(comment, :comment, :comment_list).each do |action| %>
           <strong><%= link_to action[:label], action[:path], :remote => true, :"data-confirm" => action[:confirmation_msg],
                       :"data-method" => action[:method], :class => "item-footer " + action[:type] %></strong>
         <% end %>

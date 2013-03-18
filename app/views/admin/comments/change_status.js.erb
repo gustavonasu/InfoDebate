@@ -1,15 +1,12 @@
-<% unless request[:notice].nil? %>
-  $(".fixed-success-alert > .message").html("<%= escape_javascript request[:notice] %>");
-  $(".fixed-success-alert").show().fadeOut(2000);
-  $("#comment_<%= @obj.id %>").addClass("item_changed");
-  $("#comment_<%= @obj.id %>").fadeOut(1700);
-  <% if @obj.deleted? %>
-    $("#admin-modal").modal('hide');
-  <% end %>
-  setTimeout('reloadPage()',1700);
-<% end %>
+<%= render 'shared/admin/status_change/fixed_alert' %>
+<%= render 'shared/admin/status_change/delete_case' %>
 
-<% unless request[:error].nil? %>
-  $(".fixed-error-alert > .message").html("<%= escape_javascript request[:error] %>")
-  $(".fixed-error-alert").show()
+<% unless request[:notice].nil? %>
+  <% if params[:call_from] == "comment_list" %>
+    $("#comment_<%= @obj.id %>").addClass("item_changed");
+    $("#comment_<%= @obj.id %>").fadeOut(1700);
+    setTimeout('reloadPage()',1700);
+  <% else %>
+    <%= render 'shared/admin/status_change/reload_page' %>
+  <% end %>
 <% end %>

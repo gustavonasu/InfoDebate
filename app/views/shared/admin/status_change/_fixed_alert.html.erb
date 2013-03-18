@@ -1,0 +1,8 @@
+<% unless request[:notice].nil? %>
+  $(".fixed-success-alert > .message").html("<%= escape_javascript request[:notice] %>");
+  $(".fixed-success-alert").show().fadeOut(2000);
+<% end %>
+<% unless request[:error].nil? %>
+  $(".fixed-error-alert > .message").html("<%= escape_javascript request[:error] %>")
+  $(".fixed-error-alert").show()
+<% end %>
