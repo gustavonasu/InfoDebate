@@ -2,14 +2,14 @@ module ControllerHelper
   
   shared_examples_for "Controller js Search" do
     it "response all as json" do
-      get :index, {:format => :js}
+      get :index, {:format => :json}
       result = subject.map{|obj| {:id => obj.id, :text => obj.name}}.as_json
       json_response.should eq(result)
     end
   
     it "response correct instance as json" do
       obj = subject[-1]
-      get :index, {:format => :js, :name => obj.name}
+      get :index, {:format => :json, :name => obj.name}
       json_response[0]["id"].should eq(obj.id)
       json_response[0]["text"].should eq(obj.name)
     end
@@ -17,7 +17,7 @@ module ControllerHelper
 
   shared_examples_for "Controller js Show" do
     it "response instance as json" do
-      get :show, {:id => subject.to_param, :format => :js}
+      get :show, {:id => subject.to_param, :format => :json}
       json_response["id"].should eq(subject.id)
       json_response["text"].should eq(subject.name)
     end

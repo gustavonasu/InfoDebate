@@ -1,6 +1,6 @@
 <% unless request[:notice].nil? %>
-  $(".fixed-sucess-alert > .message").html("<%= escape_javascript request[:notice] %>");
-  $(".fixed-sucess-alert").show().fadeOut(2000);
+  $(".fixed-success-alert > .message").html("<%= escape_javascript request[:notice] %>");
+  $(".fixed-success-alert").show().fadeOut(2000);
   <% if @obj.deleted? %>
     $("#admin-modal").modal('hide');
   <% end %>

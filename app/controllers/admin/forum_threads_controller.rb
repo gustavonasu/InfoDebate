@@ -13,21 +13,24 @@ class Admin::ForumThreadsController < Admin::AdminController
                                             :status => params[:status], :forum_id => params[:forum_id]},
                                             params[:page])
       }
-      format.js { render :json => parse_list_for_js_response(search_by_name(ForumThread)) }
+      format.json { render :json => parse_list_for_js_response(search_by_name(ForumThread)) }
     end
   end
 
   # GET /admin/forum_threads/1
   # GET /admin/forum_threads/1.json
+  # GET /admin/forum_threads/1.js
   def show
     @forum_thread = ForumThread.find(params[:id])
     respond_to do |format|
       format.html
-      format.js { render :json => parse_for_js_response(@forum_thread) }
+      format.json { render :json => parse_for_js_response(@forum_thread) }
+      format.js
     end
   end
   
-  # GET /admin/forum_threads/1/show_modal
+  # GET /admin/forum_threads/1/show_modal/call_from
+  # GET /admin/forum_threads/1/show_modal/call_from.js
   def show_modal
     @forum_thread = ForumThread.find(params[:id])
     respond_to do |format|
