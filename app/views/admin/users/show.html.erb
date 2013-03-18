@@ -1,8 +1,1 @@
-<%= render 'shared/admin_title_options', :title => "Visualização de Usuário",
-           :options => [ {:label => "Alterar", :path => edit_admin_user_path(@user), :type => "info"} ] +
-                       generate_status_change_actions(@user, :user) +
-                       [ {:label => "Voltar", :path => admin_users_path, :type => "info"} ] %>
-
-<%= render 'shared/status_message' %>
-
-<%= render 'show_fields' %>
+<%= render 'show' %>
