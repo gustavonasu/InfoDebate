@@ -1,1 +1,0 @@
-function reloadPage(){var e=$("#comment_path").val();$.get(e+".js")};
