@@ -87,6 +87,11 @@ div.controls {
   padding: 10px 10px 0px 10px;
 }
 
+.item {
+  &:hover { background-color: #EEEBEB; }
+}
+
+
 .item-heading {
   @extend .media-heading;
   display: inline;
@@ -113,22 +118,24 @@ div.controls {
 }
 
 .item-body-footer {
-  background-color: #EEEBEB;
+#  background-color: lightgrey;
   padding: 5px 5px 5px 5px;
 }
 
-.item-footer-id { margin: 0px 10px 0px 0px; }
+.item-footer-id {
+  margin: 0px 10px 0px 0px;
+}
 
 .item-footer-btn {
   @extend .btn;
   @extend .btn-mini;
 }
 
-.btn-view { @extend .btn-info; }
-.btn-preview { @extend .btn-info; }
-.btn-parent { @extend .btn-info; }
-.btn-answers { @extend .btn-info; }
-.btn-complaints { @extend .btn-info; }
+.btn-view { @extend .btn-primary; }
+.btn-preview { @extend .btn-primary; }
+.btn-parent { @extend .btn-primary; }
+.btn-answers { @extend .btn-primary; }
+.btn-complaints { @extend .btn-primary; }
 
 .item-footer.info { color: darkgreen; }
 
