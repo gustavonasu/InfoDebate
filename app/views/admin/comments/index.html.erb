@@ -1,5 +1,16 @@
 <% javascript 'admin/comments/index' %>
 
+<script type="text/javascript">
+    $(function () {
+        $('div.item-text').expander({
+            slicePoint: 1000,
+            expandSpeed: 100,
+            expandText: 'Veja Mais',
+            userCollapse: false
+        });
+    });
+</script>
+
 <%= render 'shared/admin_title_options', :title => "Lista de Comentários" %>
 <%= render 'shared/status_message' %>
 
