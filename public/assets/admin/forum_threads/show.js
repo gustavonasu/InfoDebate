@@ -1,0 +1,1 @@
+function reloadPage(){var e=$("#forum_thread_path").val();$.get(e+".js")};
