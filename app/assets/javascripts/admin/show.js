@@ -1,4 +1,4 @@
 function reloadPage() {
-  var path = $('#complaint_path').val()
+  var path = $('#model_path').val()
   $.get(path + '.js');
 }

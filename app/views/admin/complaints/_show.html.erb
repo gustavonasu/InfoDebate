@@ -1,4 +1,4 @@
-<% javascript 'admin/complaints/show' %>
+<% javascript 'admin/show' %>
 
 <%= render 'shared/admin_title_options', :title => "Visualização de Reclamação",
            :options => generate_status_change_actions(@complaint, :complaint) +
@@ -8,4 +8,4 @@
 
 <%= render 'show_fields' %>
 
-<%= hidden_field_tag 'complaint_path', admin_comment_path(@complaint) %>
+<%= hidden_field_tag 'model_path', admin_complaint_path(@complaint) %>

@@ -1,4 +1,4 @@
-<% javascript 'admin/comments/show' %>
+<% javascript 'admin/show' %>
 
 <%= render 'shared/admin_title_options', :title => "Visualização de Comentário",
            :options => generate_status_change_actions(@comment, :comment) +
@@ -8,4 +8,4 @@
 
 <%= render 'show_fields' %>
 
-<%= hidden_field_tag 'comment_path', admin_comment_path(@comment) %>
+<%= hidden_field_tag 'model_path', admin_comment_path(@comment) %>

@@ -1,4 +1,4 @@
-<% javascript 'admin/forum_threads/show' %>
+<% javascript 'admin/show' %>
 
 <%= render 'shared/admin_title_options', :title => "Visualização de Thread",
            :options => [ {:label => "Alterar", :path => edit_admin_forum_thread_path(@forum_thread), :type => "info"} ] +
@@ -9,4 +9,4 @@
 
 <%= render 'show_fields' %>
 
-<%= hidden_field_tag 'forum_thread_path', admin_forum_thread_path(@forum_thread) %>
+<%= hidden_field_tag 'model_path', admin_forum_thread_path(@forum_thread) %>
