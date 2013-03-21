@@ -1,7 +1,7 @@
 <%= render 'shared/admin_title_options', :title => "Atualização de Reclamação",
            :options => [ {:label => "Voltar", :path => admin_complaints_path, :type => "info"} ] %>
 
-<%= form_for([:admin, @complaints], :html => {:class => "form-horizontal"}) do |f| %>
+<%= form_for([:admin, @complaint], :html => {:class => "form-horizontal"}) do |f| %>
   <%= render 'fields', :f => f %>	
   <div class="controls"> 
     <%= f.submit "Salvar", :class => "btn btn-primary btn-large" %>

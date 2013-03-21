@@ -1,3 +1,16 @@
+<% javascript 'admin/comments/list' %>
+
+<script type="text/javascript">
+    $(function () {
+        $('div.item-text').expander({
+            slicePoint: 1000,
+            expandSpeed: 100,
+            expandText: 'Veja Mais',
+            userCollapse: false
+        });
+    });
+</script>
+
 <%= render 'shared/admin_title_options', :title => "Lista de Reclamações" %>
 <%= render 'shared/status_message' %>
 
@@ -41,21 +54,10 @@
 
 <%= will_paginate %>
 
-<table class="table table-hover">
-  <tr>
-    <th>Id</th>
-    <th>Id Comentário</th>
-    <th>Usuário</th>
-    <th>Status</th>
-    <th>Reclamação</th>
-    <th>Data de Criação</th>
-    <th></th>
-  </tr>
-  <% if @complaints.empty? %>
-    <tr><td colspan="7">Nenhuma Reclamação foi encontrada.</td></tr>
-  <% else %>
+<div>
+  <ul class="item-list">
     <%= render @complaints %>
-  <% end %>
-</table>
+  </ul>
+</div>
 
 <%= will_paginate %>

@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.expander
 //= require bootstrap
 //= require select2
+//= require jquery.expander

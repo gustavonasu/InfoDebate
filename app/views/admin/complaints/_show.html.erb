@@ -1,0 +1,11 @@
+<% javascript 'admin/complaints/show' %>
+
+<%= render 'shared/admin_title_options', :title => "Visualização de Reclamação",
+           :options => generate_status_change_actions(@complaint, :complaint) +
+                       [ {:label => "Voltar", :path => admin_complaints_path, :type => "info"} ] %>
+
+<%= render 'shared/status_message' %>
+
+<%= render 'show_fields' %>
+
+<%= hidden_field_tag 'complaint_path', admin_comment_path(@complaint) %>

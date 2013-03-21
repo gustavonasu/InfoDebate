@@ -19,10 +19,25 @@ class Admin::ComplaintsController < Admin::AdminController
   end
 
   # GET /admin/complaints/1
+  # GET /admin/complaints/1.js
   def show
     @complaint = Complaint.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
-
+  
+  # GET /admin/complaint/1/show_modal/call_from
+  # GET /admin/complaint/1/show_modal/call_from.js
+  def show_modal
+    @complaint = Complaint.find(params[:id])
+    respond_to do |format|
+      format.html { head :not_found }
+      format.js
+    end
+  end
+  
   # GET /admin/complaints/new
   def new
     @complaint = Complaint.new
