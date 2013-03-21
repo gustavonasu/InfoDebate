@@ -15,7 +15,10 @@ class Admin::ComplaintsController < Admin::AdminController
                                      :forum_id => params[:forum_id],
                                      :status => params[:status]},
                                     params[:page])
-    
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /admin/complaints/1
