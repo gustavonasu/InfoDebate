@@ -65,7 +65,9 @@ class ForumThread < ActiveRecord::Base
     end
     
     def target_status_constraint(status)
-      return [:deleted] if !forum.nil? && !forum.active?
+      if !forum.nil? && !forum.active?
+        [:active, :inactive].each {|s| status.delete(s) }
+      end
       status
     end
 end

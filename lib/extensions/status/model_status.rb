@@ -99,6 +99,7 @@ module Status
       
       def find_target_status(status_list)
         if self.respond_to?(:_contraints_to_target_status)
+          status_list.delete(self.status) # should not include the current status
           status_list = _contraints_to_target_status(status_list)
           raise "Invalid target status" unless self.class.target_status & status_list == status_list
         end

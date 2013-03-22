@@ -120,6 +120,13 @@ describe Comment do
         comment.thread.inactive!
         comment.target_status.should =~ [:deleted, :spam]
       end
+      
+      it "target_status should return deleted when thread is not active and comment is spam" do
+        comment = FactoryGirl.create(:full_comment)
+        comment.thread.inactive!
+        comment.spam!
+        comment.target_status.should =~ [:deleted]
+      end
     end
   end
   

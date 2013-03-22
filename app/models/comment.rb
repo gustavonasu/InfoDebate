@@ -86,9 +86,9 @@ class Comment < ActiveRecord::Base
     end
     
     def target_status_constraint(status)
-      constrained_status = [:spam, :deleted]
-      return constrained_status if !user.nil? && !user.active?
-      return constrained_status if !thread.nil? && !thread.active?
+      if ( (!user.nil? && !user.active?) || (!thread.nil? && !thread.active?) )
+        [:approved, :rejected].each {|s| status.delete(s) }
+      end
       status
     end
 end
