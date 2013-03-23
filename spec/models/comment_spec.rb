@@ -142,6 +142,14 @@ describe Comment do
       let(:type) { Comment }
       let(:num_instances) { @num_comments }
     end
+    
+    it "should be ordered by created_at desc" do
+      limit = 5
+      result = Comment.search({:term => "%"}, 1, limit)
+      @comments.sort_by { |c| c.created_at }.reverse!.first(limit).each_with_index do |c, index|
+        c.should eq(result[index])
+      end
+    end
   end
   
   describe "Recursive association" do

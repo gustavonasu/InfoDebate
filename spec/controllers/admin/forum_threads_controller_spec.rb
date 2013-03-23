@@ -112,7 +112,7 @@ describe Admin::ForumThreadsController do
 
       it "redirects to the created admin_forum_thread" do
         post :create, create_thread_map
-        response.should redirect_to([:admin, ForumThread.last])
+        response.should redirect_to([:admin, ForumThread.unscoped.last])
       end
     end
 

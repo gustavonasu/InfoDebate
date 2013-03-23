@@ -127,5 +127,13 @@ describe Forum do
       let(:type) { Forum }
       let(:num_instances) { @num_forums }
     end
+    
+    it "should be ordered by name" do
+      limit = 5
+      result = Forum.search({:term => "%"}, 1, limit)
+      @forums.sort_by { |f| f.name }.first(limit).each_with_index do |f, index|
+        f.should eq(result[index])
+      end
+    end
   end
 end

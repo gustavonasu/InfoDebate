@@ -42,6 +42,7 @@ class Comment < ActiveRecord::Base
   end
   
   default_scope where("#{table_name}.status != #{find_status_value(:deleted)}")
+  default_scope order("#{table_name}.created_at DESC")
   
   after_initialize do
     self.thread = parent.thread if child? && !parent.nil?

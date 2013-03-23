@@ -271,6 +271,14 @@ describe User do
        let(:type) { User }
        let(:num_instances) { @num_users }
      end
+     
+     it "should be ordered by name" do
+       limit = 5
+       result = User.search({:term => "%"}, 1, limit)
+       @users.sort_by { |u| u.name }.first(limit).each_with_index do |u, index|
+         u.should eq(result[index])
+       end
+     end
    end
   
   describe "Authentication" do

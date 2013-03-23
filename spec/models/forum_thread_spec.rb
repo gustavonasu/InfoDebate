@@ -168,13 +168,13 @@ describe ForumThread do
       end
       
       it "should search by forum" do
-        ForumThread.find_all_by_forum_id(@forum).should eq(@threads)
-        ForumThread.find_all_by_forum_id(@another_forum).should eq(@another_threads)
+        ForumThread.find_all_by_forum_id(@forum).sort.should eq(@threads.sort)
+        ForumThread.find_all_by_forum_id(@another_forum).sort.should eq(@another_threads.sort)
       end
     
       it "should return threads search by forum relationship" do
-        @forum.threads.all.should eql(@threads)
-        @another_forum.threads.all.should eql(@another_threads)
+        @forum.threads.all.sort.should eql(@threads.sort)
+        @another_forum.threads.all.sort.should eql(@another_threads.sort)
       end
     end
   end
@@ -197,6 +197,14 @@ describe ForumThread do
       subject { @thread }
       let(:type) { ForumThread }
       let(:num_instances) { @num_threads }
+    end
+    
+    it "should be ordered by name" do
+      limit = 5
+      result = ForumThread.search({:term => "%"}, 1, limit)
+      @threads.sort_by { |t| t.name }.first(limit).each_with_index do |t, index|
+        t.should eq(result[index])
+      end
     end
     
     context "Special search cases" do

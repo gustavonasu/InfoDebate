@@ -106,6 +106,14 @@ describe Complaint do
       let(:num_instances) { @num_complaints }
     end
     
+    it "should be ordered by created_at desc" do
+      limit = 5
+      result = Complaint.search({:term => "%"}, 1, limit)
+      @complaints.sort_by { |c| c.created_at }.reverse!.first(limit).each_with_index do |c, index|
+        c.should eq(result[index])
+      end
+    end
+    
     context "Special search cases" do
       
       it "should return correctly searching by user" do
