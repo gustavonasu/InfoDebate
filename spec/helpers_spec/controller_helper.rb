@@ -4,9 +4,7 @@ module ControllerHelper
     it "response all as json" do
       get :index, {:format => :json}
       result = subject.map{|obj| {:id => obj.id, :text => obj.name}}.as_json
-      sorted_result = result.sort {|a, b| a["id"] <=> b["id"] }
-      sorted_json_response = json_response.sort {|a, b| a["id"] <=> b["id"] }
-      sorted_json_response.should eq(sorted_result)
+      json_response.should =~ result
     end
   
     it "response correct instance as json" do
@@ -28,7 +26,7 @@ module ControllerHelper
   shared_examples_for "Controller Standard Search" do
     it "assigns all instances" do
       get :index, {}
-      assigns(instances_symbol).sort.should eq(instances.sort)
+      assigns(instances_symbol).should =~ instances
     end
     
     it "assigns right instances searching by q" do
