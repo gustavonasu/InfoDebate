@@ -31,7 +31,7 @@
     <th></th>
   </tr>
   <% if @forum_threads.empty? %>
-    <tr><td colspan="5">Nenhuma Thread foi encontrada.</td></tr>
+    <tr><td colspan="5"><%= t :forum_thread, :scope => :empty_list %></td></tr>
   <% else %>
     <%= render @forum_threads %>
   <% end %>

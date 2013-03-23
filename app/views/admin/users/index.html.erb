@@ -22,7 +22,7 @@
     <th></th>
   </tr>
   <% if @users.empty? %>
-    <tr><td colspan="7">Nenhum Usuário foi encontrado.</td></tr>
+    <tr><td colspan="7"><%= t :user, :scope => :empty_list %></td></tr>
   <% else %>
     <%= render @users %>
   <% end %>

@@ -44,7 +44,11 @@
 <%= will_paginate %>
 <div>
 <ul class="item-list">
+  <% if @comments.length > 0 %>
     <%= render @comments %>
+  <% else %>
+    <li class="item-empty"><%= t :comment, :scope => :empty_list %></li>
+  <% end %>
 </ul>
 </div>
 

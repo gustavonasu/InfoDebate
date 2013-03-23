@@ -56,7 +56,11 @@
 
 <div>
   <ul class="item-list">
+  <% if @complaints.length > 0 %>
     <%= render @complaints %>
+  <% else %>
+    <li class="item-empty"><%= t :complaint, :scope => :empty_list %></li>
+  <% end %>
   </ul>
 </div>
 

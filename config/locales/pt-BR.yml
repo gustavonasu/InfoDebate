@@ -34,6 +34,12 @@ pt-BR:
       creation_success: "%{model} foi criado com sucesso."
       update_success: "%{model} foi atualizado com sucesso."
       deletion_success: "%{model} foi apagado com sucesso."
+  empty_list:
+      forum: "Nenhum Forum foi encontrado."
+      forum_thread: "Nenhuma Thread foi encontrada."
+      user: "Nenhum Usuário foi encontrado."
+      comment: "Nenhum Comentário foi encontrado."
+      complaint: "Nenhuma Reclamação foi encontrada."
   model_creation:
       not_active_user: "Usuário não está ativado"
       not_active_thread: "Thread não está ativado"

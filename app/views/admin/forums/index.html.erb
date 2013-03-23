@@ -20,7 +20,7 @@
     <th></th>
   </tr>
   <% if @forums.empty? %>
-    <tr><td colspan="5">Nenhum Forum foi encontrado.</td></tr>
+    <tr><td colspan="5"><%= t :forum, :scope => :empty_list %></td></tr>
   <% else %>
     <%= render @forums %>
   <% end %>
