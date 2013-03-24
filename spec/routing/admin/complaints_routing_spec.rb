@@ -45,5 +45,9 @@ describe Admin::ComplaintsController do
       get("/admin/complaints/1/show_modal/complaint_list").should route_to("admin/complaints#show_modal", :id => "1",
                                                                             :call_from => "complaint_list")
     end
+    
+    it "routes to #answers" do
+      get("/admin/complaints/1/answers").should_not route_to("admin/complaints#answers", :id => "1")
+    end
   end
 end

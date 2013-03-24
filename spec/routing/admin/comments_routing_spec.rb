@@ -45,5 +45,9 @@ describe Admin::CommentsController do
       get("/admin/comments/1/show_modal/comment_list").should route_to("admin/comments#show_modal", :id => "1",
                                                                     :call_from => "comment_list")
     end
+    
+    it "routes to #answers" do
+      get("/admin/comments/1/answers").should route_to("admin/comments#answers", :id => "1")
+    end
   end
 end
