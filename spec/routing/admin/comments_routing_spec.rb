@@ -48,6 +48,7 @@ describe Admin::CommentsController do
     
     it "routes to #answers" do
       get("/admin/comments/1/answers").should route_to("admin/comments#answers", :id => "1")
+      get("/admin/comments/1/answers/divclass").should route_to("admin/comments#answers", :id => "1", :div_class => "divclass")
     end
   end
 end

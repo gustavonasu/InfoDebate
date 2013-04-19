@@ -1,0 +1,32 @@
+<% answersfor_class = "answersfor_#{answer.id}" %>
+<li class="item" id="answer_<%= answer.id %>">
+  <div class="item-body">
+    <h4 class="item-heading">
+      <%= link_to answer.thread.name, admin_forum_thread_path(answer.thread) %>
+    </h4>
+    <spam class="item-heading">
+      Usuário: <%= link_to answer.user.name, admin_user_path(answer.user) %>
+    </spam>
+    <span class="item-heading username">
+      <b><%= answer.user.username %></b>
+    </span>
+    <span class="item-heading time">
+      <b><%= time_ago_in_words(answer.created_at) %></b>
+    </span>
+    <div class="item-text">
+      <%= simple_format answer.body %>
+    </div>
+  </div>
+  <div class="item-body-footer">
+    <spam class="item-footer item-footer-id">
+      <strong>ID: <%= answer.id %></strong>
+    </spam>
+    <%= link_to "Visualizar", admin_comment_path(answer), :class => "item-footer-btn btn-view" %>
+    <% unless answer.children.empty? %>
+      <%= link_to "Ver Respostas", answers_admin_comment_path(answer, answersfor_class),
+                  :class => "item-footer-btn btn-view", :remote => true,
+                  :onclick => "javascript:$(this).remove();" %>
+    <% end %>
+  </div>
+  <div class="<%= answersfor_class %> item-answers"></div>
+</li>

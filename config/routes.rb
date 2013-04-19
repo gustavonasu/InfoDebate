@@ -5,7 +5,7 @@ InfoDebate::Application.routes.draw do
       member do
         get 'change_status/:status_action(/:call_from)', :action => 'change_status', :as => 'change_status'
         get 'show_modal/:call_from', :action => 'show_modal', :as => 'show_modal'
-        get 'answers', :controller => 'comments', :action => 'answers', :as => 'answers'
+        get 'answers(/:div_class)', :controller => 'comments', :action => 'answers', :as => 'answers'
       end
     end
   end

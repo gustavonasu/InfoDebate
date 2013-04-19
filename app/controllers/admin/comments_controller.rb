@@ -19,6 +19,13 @@ class Admin::CommentsController < Admin::AdminController
       format.js
     end
   end
+  
+  def answers
+    @answers = Comment.search({:parent_id => params[:id]}, params[:page], 10)
+    respond_to do |format|
+      format.js
+    end
+  end
 
   # GET /admin/comments/1
   # GET /admin/comments/1.js

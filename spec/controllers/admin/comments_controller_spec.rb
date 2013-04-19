@@ -228,4 +228,16 @@ describe Admin::CommentsController do
       let(:request_variable) { :comment }
     end
   end
+  
+  describe "GET answers" do
+    before do
+      @parent = FactoryGirl.create(:full_comment)
+      @comments = FactoryGirl.create_list(:full_comment, 15, :parent_id => @parent.id, :thread => @parent.thread)
+    end
+    
+    it "assigns comments searching by thread_id" do
+      get :answers, {:id => @parent.id, :format => 'js'}
+      (assigns(:answers) & @comments).should =~ assigns(:answers)
+    end
+  end
 end

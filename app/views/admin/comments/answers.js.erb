@@ -1,0 +1,14 @@
+<% if params[:div_class].nil? %>
+  $(".modal-body-content").html("<%= escape_javascript render :partial => 'answers' %>");
+  $(".modal-title").html("Pré-visualização de Comentário");
+<% else %>
+  $(".<%= params[:div_class] %>").html("<%= escape_javascript render :partial => 'answers' %>");
+<% end %>
+$(function () {
+    $('div.item-text').expander({
+        slicePoint: 1000,
+        expandSpeed: 100,
+        expandText: 'Veja Mais',
+        userCollapse: false
+    });
+});

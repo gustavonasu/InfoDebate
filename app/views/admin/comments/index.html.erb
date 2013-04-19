@@ -41,16 +41,6 @@
 <%= render 'shared/admin/status_options', :status_options => Comment.valid_status,
            :status_default => Comment.default_status_for_search %>
 
-<%= will_paginate %>
-<div>
-<ul class="item-list">
-  <% if @comments.length > 0 %>
-    <%= render @comments %>
-  <% else %>
-    <li class="item-empty"><%= t :comment, :scope => :empty_list %></li>
-  <% end %>
-</ul>
+<div class="index_list">
+  <%= render 'index_list' %>
 </div>
-
-<%= will_paginate %>
-

@@ -127,7 +127,7 @@ div.controls {
 }
 
 .item-footer-id {
-  margin: 0px 10px 0px 0px;
+  margin: 0px 10px 0px 5px;
 }
 
 .item-footer-btn {
@@ -147,6 +147,14 @@ div.controls {
 
 .item-footer-right {
   float: right;
+}
+
+.item-answers {
+  margin-left: 30px;
+}
+
+.item-answers .item-list .item {
+  margin-bottom: -1px;
 }
 
 // Modal 

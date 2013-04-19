@@ -66,10 +66,12 @@ class Comment < ActiveRecord::Base
   
   def_extended_search do |options|
     list = []
-    list << {:query => "thread_id = :thread_id",
+    list << {:query => "#{table_name}.thread_id = :thread_id",
              :params => {:thread_id => options[:thread_id]}} unless options[:thread_id].blank?
-    list << {:query => "user_id = :user_id",
+    list << {:query => "#{table_name}.user_id = :user_id",
               :params => {:user_id => options[:user_id]}} unless options[:user_id].blank?
+    list << {:query => "#{table_name}.parent_id = :parent_id",
+              :params => {:parent_id => options[:parent_id]}} unless options[:parent_id].blank?
     list
   end
   

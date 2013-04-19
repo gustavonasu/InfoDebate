@@ -31,7 +31,7 @@
            data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>
     <% unless comment.children.empty? %>
-      <%= link_to "Respostas", admin_comment_path(comment), :remote => true, :class => "item-footer-btn btn-answers",
+      <%= link_to "Respostas", answers_admin_comment_path(comment), :remote => true, :class => "item-footer-btn btn-answers",
            data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>
     <% unless comment.complaints.empty? %>
