@@ -20,6 +20,9 @@
     <spam class="item-footer item-footer-id">
       <strong>ID: <%= complaint.id %></strong>
     </spam>
+    <spam class="item-footer item-footer-id">
+      <strong>Status: <%= t complaint.status, :scope => :status %></strong>
+    </spam>
     <%= link_to "Visualizar", admin_complaint_path(complaint), :class => "item-footer-btn btn-view" %>
     <% generate_status_change_actions(complaint, :complaint, :comment_list).each do |action| %>
         <strong><%= link_to action[:label], action[:path], :remote => true,

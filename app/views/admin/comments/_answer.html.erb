@@ -20,6 +20,9 @@
     <spam class="item-footer item-footer-id">
       <strong>ID: <%= answer.id %></strong>
     </spam>
+    <spam class="item-footer item-footer-id">
+      <strong>Status: <%= t answer.status, :scope => :status %></strong>
+    </spam>
     <%= link_to "Visualizar", admin_comment_path(answer), :class => "item-footer-btn btn-view" %>
     <% unless answer.children.empty? %>
       <%= link_to "Ver Respostas", answers_admin_comment_path(answer, item_list_class(answer.id)),

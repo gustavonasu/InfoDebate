@@ -22,7 +22,8 @@ class Admin::ComplaintsController < Admin::AdminController
   end
   
   def complaints
-    @complaints = Complaint.search({:comment_id => params[:id]}, params[:page], LIGHTBOX_PER_PAGE)
+    @complaints = Complaint.search({:comment_id => params[:id], :status => :all},
+                                   params[:page], LIGHTBOX_PER_PAGE)
     respond_to do |format|
       format.js
     end
