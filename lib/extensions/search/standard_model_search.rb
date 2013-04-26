@@ -73,8 +73,10 @@ module Search
           query_params.merge! qp
         end
         
-        query.append_query "(#{table_name}.status = :status)"
-        query_params.merge!({:status => find_status_for_search(options)})
+        if options[:status] != :all
+          query.append_query "(#{table_name}.status = :status)"
+          query_params.merge!({:status => find_status_for_search(options)})
+        end
         
         if(self.respond_to?(:extended_search))
           q, qp = create_extended_search(options)

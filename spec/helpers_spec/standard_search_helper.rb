@@ -53,5 +53,12 @@ module StandardSearchHelper
       results = type.search({:status => status})
       results.should include(subject)
     end
+    
+    it "should return all status" do
+      status = subject.target_status.find {|s| s != type.default_status_for_search}
+      subject.send("#{subject.find_action(status)}!")
+      results = type.search({:status => :all}, 1, type.count)
+      results.should include(subject)
+    end
   end
 end
