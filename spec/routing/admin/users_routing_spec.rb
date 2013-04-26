@@ -45,5 +45,10 @@ describe Admin::UsersController do
       get("/admin/users/1/show_modal/user_list").should route_to("admin/users#show_modal", :id => "1",
                                                                  :call_from => "user_list")
     end
+    
+    it "routes to #complaints" do
+      get("/admin/users/1/complaints").should_not route_to("admin/users#complaints", :id => "1")
+    end
+    
   end
 end

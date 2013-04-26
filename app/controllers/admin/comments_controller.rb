@@ -3,7 +3,7 @@
 class Admin::CommentsController < Admin::AdminController
 
   MASS_ATTR_EXCEPTIONS = [:thread_id, :user_id, :parent_id]
-
+  
   before_filter :init_obj_for_change_status, :only => [:change_status]
   
   # GET /admin/comments
@@ -21,7 +21,7 @@ class Admin::CommentsController < Admin::AdminController
   end
   
   def answers
-    @answers = Comment.search({:parent_id => params[:id]}, params[:page], 10)
+    @answers = Comment.search({:parent_id => params[:id]}, params[:page], LIGHTBOX_PER_PAGE)
     respond_to do |format|
       format.js
     end

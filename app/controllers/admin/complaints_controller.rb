@@ -20,6 +20,13 @@ class Admin::ComplaintsController < Admin::AdminController
       format.js
     end
   end
+  
+  def complaints
+    @complaints = Complaint.search({:comment_id => params[:id]}, params[:page], LIGHTBOX_PER_PAGE)
+    respond_to do |format|
+      format.js
+    end
+  end
 
   # GET /admin/complaints/1
   # GET /admin/complaints/1.js

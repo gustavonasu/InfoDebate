@@ -1,3 +1,9 @@
-<ul class="item-list">
-  <%= render :partial => 'answer', :collection => @answers %>
-</ul>
+<%= render :partial => 'answer', :collection => @answers %>
+<% if @answers.total_pages > @answers.current_page %>
+  <li>
+    <b><%= link_to "Ver Mais", answers_admin_comment_path(params[:id], item_list_class(params[:id]), 
+                                                          :page => @answers.current_page + 1),
+                               :class => "btn-read-more", :remote => true,
+                               :onclick => "javascript:$(this).parent().parent().remove();" %></b>
+  </li>
+<% end %>

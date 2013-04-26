@@ -1,0 +1,30 @@
+<li class="item" id="complaint_<%= complaint.id %>">
+  <div class="item-body">
+    <h4 class="item-heading">
+      <%= link_to complaint.thread.name, admin_forum_thread_path(complaint.thread) %>
+    </h4>
+    <spam class="item-heading">
+      Usuário: <%= link_to complaint.user.name, admin_user_path(complaint.user) %>
+    </spam>
+    <span class="item-heading username">
+      <b><%= complaint.user.username %></b>
+    </span>
+    <span class="item-heading time">
+      <b><%= time_ago_in_words(complaint.created_at) %></b>
+    </span>
+    <div class="item-text">
+      <%= simple_format complaint.body %>
+    </div>
+  </div>
+  <div class="item-body-footer">
+    <spam class="item-footer item-footer-id">
+      <strong>ID: <%= complaint.id %></strong>
+    </spam>
+    <%= link_to "Visualizar", admin_complaint_path(complaint), :class => "item-footer-btn btn-view" %>
+    <% generate_status_change_actions(complaint, :complaint, :comment_list).each do |action| %>
+        <strong><%= link_to action[:label], action[:path], :remote => true,
+                    :data => {:confirm => action[:confirmation_msg], :method => action[:method], :dismiss => "modal"},
+                    :class => "item-footer-btn btn-#{action[:type]}" %></strong>
+      <% end %>
+  </div>
+</li>

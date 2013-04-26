@@ -1,0 +1,9 @@
+<%= render :partial => 'comment_complaint', :collection => @complaints, :as => :complaint %>
+<% if @complaints.total_pages > @complaints.current_page %>
+  <li>
+    <b><%= link_to "Ver Mais", complaints_admin_complaint_path(params[:id], item_list_class(params[:id]), 
+                                                          :page => @complaints.current_page + 1),
+                               :class => "btn-read-more", :remote => true,
+                               :onclick => "javascript:$(this).parent().parent().remove();" %></b>
+  </li>
+<% end %>

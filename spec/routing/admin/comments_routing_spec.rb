@@ -50,5 +50,9 @@ describe Admin::CommentsController do
       get("/admin/comments/1/answers").should route_to("admin/comments#answers", :id => "1")
       get("/admin/comments/1/answers/divclass").should route_to("admin/comments#answers", :id => "1", :div_class => "divclass")
     end
+    
+    it "routes to #complaints" do
+      get("/admin/comments/1/complaints").should_not route_to("admin/comments#complaints", :id => "1")
+    end
   end
 end

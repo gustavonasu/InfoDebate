@@ -202,4 +202,24 @@ describe Admin::ComplaintsController do
       subject { @complaint }
     end
   end
+  
+  describe "GET complaints" do
+    before do
+      @total = LIGHTBOX_PER_PAGE + 5
+      @comment = FactoryGirl.create(:full_comment)
+      @complaints = FactoryGirl.create_list(:full_complaint, @total, :comment => @comment)
+    end
+    
+    it "assigns complaints searching by comment" do
+      get :complaints, {:id => @comment.id, :format => 'js'}
+      assigns(:complaints).length.should be LIGHTBOX_PER_PAGE
+      (assigns(:complaints) & @complaints).should =~ assigns(:complaints)
+    end
+    
+    it "assigns complaints searching by comment with page param" do
+      get :complaints, {:id => @comment.id, :format => 'js', :page => 2}
+      assigns(:complaints).length.should be @total - LIGHTBOX_PER_PAGE
+      (assigns(:complaints) & @complaints).should =~ assigns(:complaints)
+    end
+  end
 end

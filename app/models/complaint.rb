@@ -52,6 +52,8 @@ class Complaint < ActiveRecord::Base
              :params => {:thread_id => options[:thread_id]}} unless options[:thread_id].blank?
     list << {:query => "forum_threads.forum_id = :forum_id",
              :params => {:forum_id => options[:forum_id]}} unless options[:forum_id].blank?
+    list << {:query => "#{table_name}.comment_id = :comment_id",
+             :params => {:comment_id => options[:comment_id]}} unless options[:comment_id].blank?
     list
   end
   

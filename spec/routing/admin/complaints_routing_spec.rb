@@ -49,5 +49,11 @@ describe Admin::ComplaintsController do
     it "routes to #answers" do
       get("/admin/complaints/1/answers").should_not route_to("admin/complaints#answers", :id => "1")
     end
+    
+    it "routes to #complaints" do
+      get("/admin/comments/1/complaints").should route_to("admin/complaints#complaints", :id => "1")
+      get("/admin/comments/1/complaints/divclass").should route_to("admin/complaints#complaints",
+                                                                    :id => "1", :div_class => "divclass")
+    end
   end
 end

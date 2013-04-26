@@ -56,7 +56,7 @@ div.controls {
 }
 
 .btn-status {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 
@@ -77,6 +77,7 @@ div.controls {
   @extend .media;
   border-bottom: 1px solid gray;
   margin-top: 0px;
+  &:hover { background-color: #EEEBEB; }
 }
 
 .item_changed {
@@ -91,11 +92,6 @@ div.controls {
   @extend .media-body;
   padding: 10px 10px 0px 10px;
 }
-
-.item {
-  &:hover { background-color: #EEEBEB; }
-}
-
 
 .item-heading {
   @extend .media-heading;
@@ -149,12 +145,24 @@ div.controls {
   float: right;
 }
 
-.item-answers {
-  margin-left: 30px;
+.item-answer {
+  @extend .media-list;
+  border-bottom: 0px;
+  margin: {
+    left: 40px;
+    bottom: -1px;
+  }
 }
 
-.item-answers .item-list .item {
-  margin-bottom: -1px;
+.btn-read-more {
+  background-color: darkgrey;
+  display: block;
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  padding-top: 10px;
+  color: black;
+  font: bold;
 }
 
 // Modal 

@@ -10,6 +10,7 @@ if defined?(Bundler)
 end
 
 PER_PAGE = 20
+LIGHTBOX_PER_PAGE = 10
 
 module InfoDebate
   

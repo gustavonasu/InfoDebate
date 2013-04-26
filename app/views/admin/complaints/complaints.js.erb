@@ -1,0 +1,16 @@
+<% if params[:div_class].nil? %>
+  <% complaints = "<ul class=\"item-list #{item_list_class(params[:id])}\">#{render :partial => 'comment_complaints'}</ul>" %>
+  $(".modal-body-content").html("<%= raw escape_javascript complaints %>");
+  $(".modal-title").html("Pré-visualização de Reclamações");
+<% else %>
+  $(".<%= params[:div_class] %>").append("<%= escape_javascript render :partial => 'comment_complaints' %>");
+<% end %>
+$(".modal-footer > .extra-buttons").empty();
+$(function () {
+    $('div.item-text').expander({
+        slicePoint: 1000,
+        expandSpeed: 100,
+        expandText: 'Veja Mais',
+        userCollapse: false
+    });
+});

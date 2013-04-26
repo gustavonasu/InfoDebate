@@ -231,12 +231,20 @@ describe Admin::CommentsController do
   
   describe "GET answers" do
     before do
+      @total = LIGHTBOX_PER_PAGE + 5
       @parent = FactoryGirl.create(:full_comment)
-      @comments = FactoryGirl.create_list(:full_comment, 15, :parent_id => @parent.id, :thread => @parent.thread)
+      @comments = FactoryGirl.create_list(:full_comment, @total, :parent_id => @parent.id, :thread => @parent.thread)
     end
     
     it "assigns comments searching by thread_id" do
       get :answers, {:id => @parent.id, :format => 'js'}
+      assigns(:answers).length.should be LIGHTBOX_PER_PAGE
+      (assigns(:answers) & @comments).should =~ assigns(:answers)
+    end
+    
+    it "assigns comments searching by thread_id with page param" do
+      get :answers, {:id => @parent.id, :format => 'js', :page => 2}
+      assigns(:answers).length.should be @total - LIGHTBOX_PER_PAGE
       (assigns(:answers) & @comments).should =~ assigns(:answers)
     end
   end

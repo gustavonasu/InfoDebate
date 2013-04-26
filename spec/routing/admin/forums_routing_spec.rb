@@ -45,5 +45,9 @@ describe Admin::ForumsController do
       get("/admin/forums/1/show_modal/forum_list").should route_to("admin/forums#show_modal", :id => "1",
                                                                    :call_from => 'forum_list')
     end
+    
+    it "routes to #complaints" do
+      get("/admin/forums/1/complaints").should_not route_to("admin/forums#complaints", :id => "1")
+    end
   end
 end
