@@ -1,8 +1,6 @@
 function reloadPage() {
-  var form = $('.searchForm');
-  var action = form.attr('action');
-  if(action !== undefined) {
-    var formdata = form.serialize();
-    $.get(action + '.js', formdata);
+  var action = $('div.pagination li.active a').first().attr('href');
+  if(action != undefined) {
+    $.get(action.replace("?", ".js?"));
   }
 }
