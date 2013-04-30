@@ -35,7 +35,7 @@
            data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>
     <% unless comment.complaints.empty? %>
-      <%= link_to "Reclamações", complaints_admin_complaint_path(comment), :remote => true, 
+      <%= link_to "Reclamações", complaints_admin_comment_path(comment), :remote => true, 
            :class => "item-footer-btn btn-complaints", data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>
     <spam class="item-footer-right">
