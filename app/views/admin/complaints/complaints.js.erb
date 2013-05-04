@@ -6,11 +6,3 @@
   $(".<%= params[:div_class] %>").append("<%= escape_javascript render :partial => 'comment_complaints' %>");
 <% end %>
 $(".modal-footer > .extra-buttons").empty();
-$(function () {
-    $('div.item-text').expander({
-        slicePoint: 1000,
-        expandSpeed: 100,
-        expandText: 'Veja Mais',
-        userCollapse: false
-    });
-});

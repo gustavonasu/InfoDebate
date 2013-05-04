@@ -15,3 +15,4 @@
 //= require bootstrap
 //= require select2
 //= require jquery.expander
+//= require admin
