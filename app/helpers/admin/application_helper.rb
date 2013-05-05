@@ -2,10 +2,11 @@ module Admin::ApplicationHelper
   
   def status_url(status)
     url = request.fullpath.dup
-    url.sub!(/status=[^&]*/, "")
-    url.sub!(/\?&/, "?")
-    url.sub!(/&&/, "&")
-    url += "&" if url.include?("?") && !url.ends_with?("&")
+    url.gsub!(/status=[^&]*/, "")
+    url.gsub!(/page=[^&]*/, "")
+    url.gsub!(/\?&/, "?")
+    url.gsub!(/&&/, "&")
+    url += "&" if url.include?("?") && !url.ends_with?("&", "?")
     url += "?" if !url.include?("?")
     url += "status=#{status}"
   end

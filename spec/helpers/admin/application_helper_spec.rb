@@ -7,11 +7,17 @@ describe Admin::ApplicationHelper do
       @status = "active"
       @basepath = "/admin/forum_threads"
       @param = "teste=1"
+      @page_param = "page=2"
       @another_status_param = "status=another"
     end
     
     it "should add status to path without query string" do
       set_request_path(@basepath)
+      helper.status_url(@status).should be_valid_status_path(@status)
+    end
+    
+    it "should change status to path with status param" do
+      set_request_path("#{@basepath}?#{@another_status_param}")
       helper.status_url(@status).should be_valid_status_path(@status)
     end
     
@@ -36,6 +42,14 @@ describe Admin::ApplicationHelper do
       new_path.should be_valid_status_path(@status)
       new_path.should include(@param)
       new_path.should_not include(@another_status_param)
+    end
+    
+    it "should not include page param" do
+      set_request_path("#{@basepath}?#{@param}&#{@page_param}&#{@another_status_param}")
+      new_path = helper.status_url(@status)
+      new_path.should be_valid_status_path(@status)
+      new_path.should include(@param)
+      new_path.should_not include(@page_param)
     end
     
     def set_request_path(path)
