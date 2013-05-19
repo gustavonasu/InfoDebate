@@ -11,18 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130219014547) do
+ActiveRecord::Schema.define(:version => 20130517021610) do
 
   create_table "comments", :force => true do |t|
     t.string   "body",       :limit => 4000
-    t.integer  "thread_id",                                :null => false
-    t.integer  "user_id",                                  :null => false
-    t.integer  "status",                                   :null => false
-    t.integer  "dislike",                   :default => 0
-    t.integer  "like",                      :default => 0
+    t.integer  "thread_id",                                 :null => false
+    t.integer  "user_id",                                   :null => false
+    t.integer  "status",                                    :null => false
+    t.integer  "dislike",                    :default => 0
+    t.integer  "like",                       :default => 0
     t.integer  "parent_id"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
   add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(:version => 20130219014547) do
   add_index "complaints", ["user_id"], :name => "index_complaints_on_user_id"
 
   create_table "forum_threads", :force => true do |t|
-    t.string   "name",        :limit => 100, :null => false
+    t.string   "name",                       :null => false
     t.string   "description"
     t.string   "url",         :limit => 500
     t.integer  "status",                     :null => false

@@ -23,7 +23,7 @@ class ForumThread < ActiveRecord::Base
   has_many :comments, :foreign_key => :thread_id, :autosave => true
   has_many :complaints, :through => :comments
   
-  validates :name, :presence => true, :length => { :maximum => 100 }
+  validates :name, :presence => true, :length => { :maximum => 255 }
   validates :description, :length => { :maximum => 255 }
   validates :status, :presence => true
   validates :url, :length => { :maximum => 500 }

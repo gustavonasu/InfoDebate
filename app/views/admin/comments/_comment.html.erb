@@ -1,18 +1,20 @@
 <li class="item" id="comment_<%= comment.id %>">
   <div class="item-body">
-    <h4 class="item-heading">
-      <%= link_to comment.thread.name, show_modal_admin_forum_thread_path(comment.thread, :call_from => 'comment_list'),
-          :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
-    </h4>
+    <span class="item-heading time">
+      <b><%= time_ago_in_words(comment.created_at) %></b>
+    </span>
+    <div class="item-title">
+      <h4 class="item-heading">
+        <%= link_to comment.thread.name, show_modal_admin_forum_thread_path(comment.thread, :call_from => 'comment_list'),
+                    :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
+      </h4>
+    </div>
     <spam class="item-heading">
-      Usuário: <%= link_to comment.user.name, show_modal_admin_user_path(comment.user, :call_from => 'comment_list'),
+      <b>Usuário:</b> <%= link_to comment.user.name, show_modal_admin_user_path(comment.user, :call_from => 'comment_list'),
                    :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
     </spam>
     <span class="item-heading username">
       <b><%= comment.user.username %></b>
-    </span>
-    <span class="item-heading time">
-      <b><%= time_ago_in_words(comment.created_at) %></b>
     </span>
     <div class="item-text">
       <%= simple_format comment.body %>

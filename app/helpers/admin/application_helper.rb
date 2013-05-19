@@ -1,5 +1,9 @@
 module Admin::ApplicationHelper
   
+  def truncate_text(text, length = 100)
+    truncate(text, :length => length, :separator => ' ')
+  end
+  
   def status_url(status)
     url = request.fullpath.dup
     url.gsub!(/status=[^&]*/, "")

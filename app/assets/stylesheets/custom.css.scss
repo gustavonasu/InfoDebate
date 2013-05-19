@@ -52,7 +52,7 @@ div.controls {
 .control-label { font-weight:bold; }
 
 .controls .field_with_errors {
-	display: inline;
+  display: inline;
 }
 
 .btn-status {
@@ -99,8 +99,12 @@ div.controls {
   padding-right: 5px;
   a {
     color: black;
-    text-decoration: underline;
+    #text-decoration: underline;
   }
+}
+
+div.item-title {
+  width:90%
 }
 
 .item-heading.username {
