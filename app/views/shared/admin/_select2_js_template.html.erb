@@ -2,6 +2,7 @@
   $(document).ready(function() {
     $("#<%= field_name %>").select2({
       placeholder: "Selecione um <%= label %>",
+      allowClear: true,
       formatNoMatches: function() { return "<%= label %> não encontrado" },
       formatSearching: function() { return "Buscando ..." },
       ajax: {

@@ -200,3 +200,9 @@ div.item-title {
   @extend .alert-error;
   @extend .fixed-alert;
 }
+
+// Combo box
+.select2-container {
+  min-width: 150px;
+  max-width: 350px;
+}
