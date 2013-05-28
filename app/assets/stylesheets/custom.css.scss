@@ -34,19 +34,19 @@ div.controls {
 
 
 #logo {
-	text-indent: -9999px;
-	width: 277px;
-	height: 88px;
-	background: {
-		image: url(infodebate-logo.png);
-		position-x: 0px;
-		position-y: 0px;
-	}
-	float: left;
-	position: relative;
-	overflow: hidden;
-	margin: 1px 1px 1px 1px;
-	display: inline;
+  text-indent: -9999px;
+  width: 277px;
+  height: 88px;
+  background: {
+    image: url(infodebate-logo.png);
+    position-x: 0px;
+    position-y: 0px;
+  }
+  float: left;
+  position: relative;
+  overflow: hidden;
+  margin: 1px 1px 1px 1px;
+  display: inline;
 }
 
 .control-label { font-weight:bold; }
