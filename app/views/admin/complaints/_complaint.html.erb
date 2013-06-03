@@ -1,4 +1,5 @@
-<li class="item" id="complaint_<%= complaint.id %>">
+<% entity_id = "complaint_#{complaint.id}" %>
+<li class="item" id="<%= entity_id %>">
   <div class="item-body">
     <span class="item-heading time">
       <b><%= time_ago_in_words(complaint.created_at) %></b>
@@ -32,9 +33,11 @@
          :remote => true, :class => "item-footer-btn btn-parent",
          data: { toggle: "modal", target: "#admin-modal" } %>
     <spam class="item-footer-right">
-      <% generate_status_change_actions(complaint, :complaint, :complaint_list).each do |action| %>
-        <strong><%= link_to action[:label], action[:path], :remote => true, :"data-confirm" => action[:confirmation_msg],
-                    :"data-method" => action[:method], :class => "item-footer-btn btn-#{action[:type]}" %></strong>
+      <% generate_status_change_actions(complaint, :complaint).each do |action| %>
+        <strong><%= link_to action[:label], action[:path], :remote => true,
+                    :data => {:confirm => action[:confirmation_msg], :method => action[:method],
+                              :custom_reload => true, :reload_entityid => entity_id },
+                    :class => "item-footer-btn btn-#{action[:type]}" %></strong>
       <% end %>
     </spam>
   </div>

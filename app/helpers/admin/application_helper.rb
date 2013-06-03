@@ -26,40 +26,41 @@ module Admin::ApplicationHelper
     content_for(:head) { javascript_include_tag(*files) }
   end
   
-  ACTION_CONFIG_BY_STATUS = {:active => {:default_map => {:type => "info"}, 
+  ACTION_CONFIG_BY_STATUS = {:active => {:default_map => {:type => "info", :method => "put"}, 
                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
                                          :include_param_action => true},
-                             :inactive => {:default_map => {:type => "warning"},
+                             :inactive => {:default_map => {:type => "warning", :method => "put"},
                                            :path_pattern => 'change_status_admin_#{resource_name}_path',
                                            :include_param_action => true, :confirmation => true},
-                             :pending => {:default_map => {:type => "warning"},
+                             :pending => {:default_map => {:type => "warning", :method => "put"},
                                           :path_pattern => 'change_status_admin_#{resource_name}_path',
                                           :include_param_action => true, :confirmation => true},
-                             :ban => {:default_map => {:type => "danger"},
+                             :ban => {:default_map => {:type => "danger", :method => "put"},
                                       :path_pattern => 'change_status_admin_#{resource_name}_path',
                                       :include_param_action => true, :confirmation => true},
-                             :delete => {:default_map => {:type => "danger"}, 
+                             :delete => {:default_map => {:type => "danger", :method => "put"}, 
                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
                                          :include_param_action => true, :confirmation => true},
-                             :approve => {:default_map => {:type => "info"},
+                             :approve => {:default_map => {:type => "info", :method => "put"},
                                           :path_pattern => 'change_status_admin_#{resource_name}_path',
                                           :include_param_action => true},
-                             :reject => {:default_map => {:type => "danger"},
+                             :reject => {:default_map => {:type => "danger", :method => "put"},
                                          :path_pattern => 'change_status_admin_#{resource_name}_path',
                                          :include_param_action => true},
-                             :spam => {:default_map => {:type => "danger"},
+                             :spam => {:default_map => {:type => "danger", :method => "put"},
                                        :path_pattern => 'change_status_admin_#{resource_name}_path',
                                        :include_param_action => true} }
                              
   
-  def generate_status_change_actions(obj, resource_name, call_from = nil)
+  def generate_status_change_actions(obj, resource_name)
     actions = []
     obj.target_status_for(obj.status).each do |status|
       action = obj.find_action(status)
       action_config = ACTION_CONFIG_BY_STATUS[action]
       action_map = action_config[:default_map]
+      action_map.merge! :status_action => action
       action_map.merge! build_action_label(action)
-      action_map.merge! build_action_path(obj, action, resource_name, call_from)
+      action_map.merge! build_action_path(obj, action, resource_name)
       action_map.merge! build_action_confirmation() if action_config[:confirmation] == true
       actions << action_map
     end
@@ -73,12 +74,11 @@ module Admin::ApplicationHelper
       {:label => t(action, :scope => :status_action)}
     end
     
-    def build_action_path(obj, action, resource_name, call_from)
+    def build_action_path(obj, action, resource_name)
       path_pattern = ACTION_CONFIG_BY_STATUS[action][:path_pattern]
       path_name = Kernel.eval("\"" + path_pattern + "\"")
       params = {}
       params.merge!(:status_action => action) if ACTION_CONFIG_BY_STATUS[action][:include_param_action] == true
-      params.merge!(:call_from => call_from) unless call_from.nil?
       path = Rails.application.routes.url_helpers.send(path_name, obj, params)
       {:path => path}
     end

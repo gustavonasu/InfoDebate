@@ -24,7 +24,7 @@
       <strong>Status: <%= t complaint.status, :scope => :status %></strong>
     </spam>
     <%= link_to "Visualizar", admin_complaint_path(complaint), :class => "item-footer-btn btn-view" %>
-    <% generate_status_change_actions(complaint, :complaint, :comment_list).each do |action| %>
+    <% generate_status_change_actions(complaint, :complaint).each do |action| %>
         <strong><%= link_to action[:label], action[:path], :remote => true,
                     :data => {:confirm => action[:confirmation_msg], :method => action[:method], :dismiss => "modal"},
                     :class => "item-footer-btn btn-#{action[:type]}" %></strong>

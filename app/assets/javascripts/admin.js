@@ -1,5 +1,5 @@
 
-function active_expander() {
+function setup_expander() {
   $('div.item-text').expander({
                        slicePoint: 1000,
                        expandSpeed: 100,
@@ -8,8 +8,20 @@ function active_expander() {
                      });
 }
 
+function setup_reload_page() {
+  $("a[data-reload='true']").bind("ajax:complete", function(event) {
+     reloadPage()
+  });
+}
+
+$(function() {
+  setup_expander()
+  setup_reload_page()
+});
+
 $(document).ajaxSuccess(function() {
-  active_expander()
+  setup_expander()
+  setup_reload_page()
 });
 
 $(document).ajaxError(function(event, request, settings) {
@@ -21,8 +33,4 @@ $(document).ajaxError(function(event, request, settings) {
   $(".fixed-error-alert > .message").html(error_msg)
   $(".fixed-error-alert").show()
   $(".fixed-error-alert").fadeOut(5000);
-});
-
-$(function() {
-  active_expander()
 });

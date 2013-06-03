@@ -1,7 +1,7 @@
 InfoDebate::Application.routes.draw do
 
-  change_status_get = lambda do
-    get 'change_status/:status_action(/:call_from)', :action => 'change_status', :as => 'change_status'
+  change_status_actions = lambda do
+    put 'change_status/:status_action', :action => 'change_status', :as => 'change_status'
   end
 
   show_modal_get = lambda do
@@ -11,14 +11,14 @@ InfoDebate::Application.routes.draw do
   namespace :admin do
     resources :users, :forums, :forum_threads do
       member do
-        change_status_get.call
+        change_status_actions.call
         show_modal_get.call
       end
     end
     
     resources :comments do
       member do
-        change_status_get.call
+        change_status_actions.call
         show_modal_get.call
         get 'answers(/:div_class)', :action => 'answers', :as => 'answers'
         get 'complaints(/:div_class)', :controller => 'complaints', :action => 'complaints', :as => 'complaints'
@@ -27,7 +27,7 @@ InfoDebate::Application.routes.draw do
     
     resources :complaints do
       member do
-        change_status_get.call
+        change_status_actions.call
         show_modal_get.call
       end
     end

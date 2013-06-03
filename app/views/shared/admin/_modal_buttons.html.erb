@@ -5,10 +5,11 @@ $(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', show
 <% show_path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>
 $(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visualizar', show_path,
                                                                         :class => 'btn btn-info reloadlink') %>");
-<% generate_status_change_actions(obj, resource_name, params[:call_from]).each do |action| %>
+<% generate_status_change_actions(obj, resource_name).each do |action| %>
   <% data_map = { :confirm => action[:confirmation_msg],
-                  :method => action[:method] }
-     if action[:method] != "delete"
+                  :method => action[:method],
+                  :reload => true, :status_action => action[:status_action] }
+     if action[:status_action] != :delete
        data_map.merge! :modal => "reload"
      end
   %>
@@ -17,6 +18,6 @@ $(".modal-footer > .extra-buttons").append("<%= escape_javascript link_to('Visua
                                                                  :remote => true,
                                                                  :data => data_map ) %>");
 <% end %>
-$('a[data-modal=reload]').bind('ajax:success', function(evt, data, status, xhr){
+$('a[data-modal=reload]').bind('ajax:success', function(evt, data, status, xhr) {
   $('a.reloadlink').click()
 });

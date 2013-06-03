@@ -1,4 +1,5 @@
-<li class="item" id="comment_<%= comment.id %>">
+<% entity_id = "comment_#{comment.id}" %>
+<li class="item" id="<%= entity_id %>">
   <div class="item-body">
     <span class="item-heading time">
       <b><%= time_ago_in_words(comment.created_at) %></b>
@@ -6,7 +7,8 @@
     <div class="item-title">
       <h4 class="item-heading">
         <%= link_to comment.thread.name, show_modal_admin_forum_thread_path(comment.thread, :call_from => 'comment_list'),
-                    :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
+                    :remote => true, data: { toggle: "modal", target: "#admin-modal" },
+                    :id => comment.thread.id %>
       </h4>
     </div>
     <spam class="item-heading">
@@ -41,9 +43,10 @@
            :class => "item-footer-btn btn-complaints", data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>
     <spam class="item-footer-right">
-      <% generate_status_change_actions(comment, :comment, :comment_list).each do |action| %>
+      <% generate_status_change_actions(comment, :comment).each do |action| %>
         <strong><%= link_to action[:label], action[:path], :remote => true,
-                    :data => {:confirm => action[:confirmation_msg], :method => action[:method]},
+                    :data => {:confirm => action[:confirmation_msg], :method => action[:method],
+                              :custom_reload => true, :reload_entityid => entity_id },
                     :class => "item-footer-btn btn-#{action[:type]}" %></strong>
       <% end %>
     </spam>

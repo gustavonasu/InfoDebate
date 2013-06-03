@@ -63,14 +63,19 @@ describe Admin::ApplicationHelper do
     context "Forum model" do
       before do
         @forum = FactoryGirl.create(:forum)
-        @delete_map = {:label => t(:delete, :scope => :status_action),
+        
+        @delete_map = {:label => t(:delete, :scope => :status_action), :method => "put", :status_action => :delete,
                        :path => change_status_admin_forum_path(@forum, :status_action => "delete"),
                        :type => "danger", :confirmation_msg => t(:confirmation_msg)}
-        @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
+                       
+        @inactive_map = {:label => t(:inactive, :scope => :status_action), :method => "put", :status_action => :inactive,
                          :path => change_status_admin_forum_path(@forum, :status_action => "inactive"), 
-                         :confirmation_msg => t(:confirmation_msg)}
-        @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
-                       :path => change_status_admin_forum_path(@forum, :status_action => "active")}
+                         :type => "warning", :confirmation_msg => t(:confirmation_msg)}
+                         
+        @active_map = {:label => t(:active, :scope => :status_action), :method => "put", :status_action => :active,
+                       :path => change_status_admin_forum_path(@forum, :status_action => "active"),
+                       :type => "info"}
+                       
         @status_maps = {:delete => @delete_map, :inactive => @inactive_map, :active => @active_map}
       end
     
@@ -89,17 +94,22 @@ describe Admin::ApplicationHelper do
     context "User model" do
       before do
         @user = FactoryGirl.create(:user)
-        @delete_map = {:label => t(:delete, :scope => :status_action), 
+        @delete_map = {:label => t(:delete, :scope => :status_action), :method => "put", :status_action => :delete,
                        :path => change_status_admin_user_path(@user, :status_action => "delete"),
                        :type => "danger", :confirmation_msg => t(:confirmation_msg)}
-        @inactive_map = {:label => t(:inactive, :scope => :status_action), :type => "warning",
+                       
+        @inactive_map = {:label => t(:inactive, :scope => :status_action), :method => "put", :status_action => :inactive,
                          :path => change_status_admin_user_path(@user, :status_action => "inactive"),
-                         :confirmation_msg => t(:confirmation_msg)}
-        @ban_map = {:label => t(:ban, :scope => :status_action), :type => "danger",
+                         :type => "warning", :confirmation_msg => t(:confirmation_msg)}
+                          
+        @ban_map = {:label => t(:ban, :scope => :status_action), :method => "put", :status_action => :ban,
                     :path => change_status_admin_user_path(@user, :status_action => "ban"),
-                    :confirmation_msg => t(:confirmation_msg)}
-        @active_map = {:label => t(:active, :scope => :status_action), :type => "info",
-                       :path => change_status_admin_user_path(@user, :status_action => "active")}
+                    :type => "danger", :confirmation_msg => t(:confirmation_msg)}
+                    
+        @active_map = {:label => t(:active, :scope => :status_action), :method => "put", :status_action => :active,
+                       :path => change_status_admin_user_path(@user, :status_action => "active"),
+                       :type => "info"}
+                       
         @status_maps = {:delete => @delete_map, :inactive => @inactive_map, :active => @active_map,
                         :ban => @ban_map}
       end
@@ -119,23 +129,6 @@ describe Admin::ApplicationHelper do
         @user.send("write_attribute", "status", @user.find_status_value(:pending))
         actions = helper.generate_status_change_actions(@user, "user")
         assert_generated_status_change_actions @status_maps, actions, :pending
-      end
-    end
-    
-    context "Comment model with call_from param" do
-      before do
-        @call_from = "comment_list"
-        @comment = FactoryGirl.create(:comment, :with_user, :with_thread)
-        @approved_map = {:label => t(:approve, :scope => :status_action), :type => "info",
-                         :path => change_status_admin_comment_path(@comment, :status_action => "approve",
-                         :call_from => @call_from)}
-        @status_maps = {:active => @approved_map}
-      end
-      
-      it "with comment reject" do
-        @comment.reject!
-        actions = helper.generate_status_change_actions(@comment, "comment", @call_from)
-        assert_generated_status_change_actions @status_maps, actions, :inactive
       end
     end
     
