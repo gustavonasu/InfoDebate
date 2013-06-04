@@ -37,8 +37,7 @@ describe Admin::UsersController do
     end
     
     it "routes to #show_modal" do
-      get("/admin/users/1/show_modal/user_list").should route_to("admin/users#show_modal", :id => "1",
-                                                                 :call_from => "user_list")
+      get("/admin/users/1/show_modal").should route_to("admin/users#show_modal", :id => "1")
     end
     
     it "routes to #complaints" do

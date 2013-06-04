@@ -1,5 +1,4 @@
-<% show_modal_path = Rails.application.routes.url_helpers.send("show_modal_admin_#{resource_name}_path", obj,
-                                                               :call_from => params[:call_from]) %>
+<% show_modal_path = Rails.application.routes.url_helpers.send("show_modal_admin_#{resource_name}_path", obj) %>
 $(".modal-footer > .extra-buttons").html("<%= escape_javascript link_to('', show_modal_path, :remote => true,
                                                                         :class => 'hidden reloadlink') %>");
 <% show_path = Rails.application.routes.url_helpers.send("admin_#{resource_name}_path", obj) %>

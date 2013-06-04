@@ -37,8 +37,7 @@ describe Admin::ComplaintsController do
     end
     
     it "routes to #show_modal" do
-      get("/admin/complaints/1/show_modal/complaint_list").should route_to("admin/complaints#show_modal", :id => "1",
-                                                                            :call_from => "complaint_list")
+      get("/admin/complaints/1/show_modal").should route_to("admin/complaints#show_modal", :id => "1")
     end
     
     it "routes to #answers" do

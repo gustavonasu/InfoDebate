@@ -6,13 +6,13 @@
     </span>
     <div class="item-title">
       <h4 class="item-heading">
-        <%= link_to comment.thread.name, show_modal_admin_forum_thread_path(comment.thread, :call_from => 'comment_list'),
+        <%= link_to comment.thread.name, show_modal_admin_forum_thread_path(comment.thread),
                     :remote => true, data: { toggle: "modal", target: "#admin-modal" },
                     :id => comment.thread.id %>
       </h4>
     </div>
     <spam class="item-heading">
-      <b>Usuário:</b> <%= link_to comment.user.name, show_modal_admin_user_path(comment.user, :call_from => 'comment_list'),
+      <b>Usuário:</b> <%= link_to comment.user.name, show_modal_admin_user_path(comment.user),
                    :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
     </spam>
     <span class="item-heading username">
@@ -27,10 +27,10 @@
       <strong>ID: <%= comment.id %></strong>
     </spam>
     <%= link_to "Visualizar", admin_comment_path(comment), :class => "item-footer-btn btn-view" %>
-    <%= link_to "Pré-visualizar", show_modal_admin_comment_path(comment, :call_from => 'comment_list'), :remote => true, 
+    <%= link_to "Pré-visualizar", show_modal_admin_comment_path(comment), :remote => true, 
          :class => "item-footer-btn btn-preview", data: { toggle: "modal", target: "#admin-modal" } %>
     <% unless comment.parent.nil? %>
-      <%= link_to "Resposta a", show_modal_admin_comment_path(comment.parent, :call_from => 'comment_list'), 
+      <%= link_to "Resposta a", show_modal_admin_comment_path(comment.parent),
            :remote => true, :class => "item-footer-btn btn-parent",
            data: { toggle: "modal", target: "#admin-modal" } %>
     <% end %>

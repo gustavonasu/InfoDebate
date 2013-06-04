@@ -37,8 +37,7 @@ describe Admin::CommentsController do
     end
     
     it "routes to #show_modal" do
-      get("/admin/comments/1/show_modal/comment_list").should route_to("admin/comments#show_modal", :id => "1",
-                                                                    :call_from => "comment_list")
+      get("/admin/comments/1/show_modal").should route_to("admin/comments#show_modal", :id => "1")
     end
     
     it "routes to #answers" do

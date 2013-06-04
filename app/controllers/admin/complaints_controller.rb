@@ -39,8 +39,8 @@ class Admin::ComplaintsController < Admin::AdminController
     end
   end
   
-  # GET /admin/complaint/1/show_modal/call_from
-  # GET /admin/complaint/1/show_modal/call_from.js
+  # GET /admin/complaint/1/show_modal
+  # GET /admin/complaint/1/show_modal.js
   def show_modal
     @complaint = Complaint.find(params[:id])
     respond_to do |format|

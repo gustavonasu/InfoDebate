@@ -37,8 +37,7 @@ describe Admin::ForumsController do
     end
     
     it "routes to #show_modal" do
-      get("/admin/forums/1/show_modal/forum_list").should route_to("admin/forums#show_modal", :id => "1",
-                                                                   :call_from => 'forum_list')
+      get("/admin/forums/1/show_modal").should route_to("admin/forums#show_modal", :id => "1")
     end
     
     it "routes to #complaints" do

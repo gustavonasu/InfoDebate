@@ -1,18 +1,15 @@
 <% opened_from_modal ||= false %>
 
-<% call_from = params[:call_from] %>
-<% call_from ||= 'complaint_show' %>
-
 <div class="form-horizontal">
   <%= render 'shared/field_show', :label => "Id", :value => @complaint.id %>
   <%= render 'shared/field_show', :label => "Status", :value => t(@complaint.status, :scope => :status_label) %>
   <%= render 'shared/field_show', :label => "Id do Comentário",
                                   :link => link_to("#{@complaint.comment.id} - #{@complaint.comment.body}", 
-                                                    show_modal_admin_comment_path(@complaint.comment, :call_from => call_from),
+                                                    show_modal_admin_comment_path(@complaint.comment),
                                                     :remote => true, data: modal_data_map(opened_from_modal)) %>
   <%= render 'shared/field_show', :label => "Usuário",
                                   :link => link_to("#{@complaint.user.name} (Id: #{@complaint.user.id})", 
-                                                    show_modal_admin_user_path(@complaint.user, :call_from => call_from),
+                                                    show_modal_admin_user_path(@complaint.user),
                                                     :remote => true, data: modal_data_map(opened_from_modal)) %>
   <%= render 'shared/field_show', :label => "Texto", :value => @complaint.body %>
   <%= render 'shared/field_show', :label => "Criado em", :value => l(@complaint.created_at) %>

@@ -38,8 +38,8 @@ class Admin::CommentsController < Admin::AdminController
     end
   end
 
-  # GET /admin/comments/1/show_modal/call_from
-  # GET /admin/comments/1/show_modal/call_from.js
+  # GET /admin/comments/1/show_modal
+  # GET /admin/comments/1/show_modal.js
   def show_modal
     @comment = Comment.find(params[:id])
     respond_to do |format|

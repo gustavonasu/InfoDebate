@@ -6,13 +6,12 @@
     </span>
     <div class="item-title">
       <h4 class="item-heading">
-        <%= link_to complaint.comment.thread.name, show_modal_admin_forum_thread_path(complaint.comment.thread, 
-                                                                                      :call_from => 'complaint_list'),
+        <%= link_to complaint.comment.thread.name, show_modal_admin_forum_thread_path(complaint.comment.thread),
             :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
       </h4>
     </div>
     <spam class="item-heading">
-      Usuário: <%= link_to complaint.user.name, show_modal_admin_user_path(complaint.user, :call_from => 'complaint_list'),
+      Usuário: <%= link_to complaint.user.name, show_modal_admin_user_path(complaint.user),
                    :remote => true, data: { toggle: "modal", target: "#admin-modal" } %>
     </spam>
     <span class="item-heading username">
@@ -27,9 +26,9 @@
       <strong>ID: <%= complaint.id %></strong>
     </spam>
     <%= link_to "Visualizar", admin_complaint_path(complaint), :class => "item-footer-btn btn-view" %>
-    <%= link_to "Pré-visualizar", show_modal_admin_complaint_path(complaint, :call_from => 'complaint_list'), :remote => true, 
+    <%= link_to "Pré-visualizar", show_modal_admin_complaint_path(complaint), :remote => true, 
          :class => "item-footer-btn btn-preview", data: { toggle: "modal", target: "#admin-modal" } %>
-    <%= link_to "Comentário", show_modal_admin_comment_path(complaint.comment, :call_from => 'complaint_list'),
+    <%= link_to "Comentário", show_modal_admin_comment_path(complaint.comment),
          :remote => true, :class => "item-footer-btn btn-parent",
          data: { toggle: "modal", target: "#admin-modal" } %>
     <spam class="item-footer-right">

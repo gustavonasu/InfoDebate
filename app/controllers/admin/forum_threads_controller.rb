@@ -29,8 +29,8 @@ class Admin::ForumThreadsController < Admin::AdminController
     end
   end
   
-  # GET /admin/forum_threads/1/show_modal/call_from
-  # GET /admin/forum_threads/1/show_modal/call_from.js
+  # GET /admin/forum_threads/1/show_modal
+  # GET /admin/forum_threads/1/show_modal.js
   def show_modal
     @forum_thread = ForumThread.find(params[:id])
     respond_to do |format|

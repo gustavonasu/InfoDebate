@@ -5,7 +5,7 @@ InfoDebate::Application.routes.draw do
   end
 
   show_modal_get = lambda do
-    get 'show_modal/:call_from', :action => 'show_modal', :as => 'show_modal'
+    get 'show_modal', :action => 'show_modal', :as => 'show_modal'
   end
 
   namespace :admin do
