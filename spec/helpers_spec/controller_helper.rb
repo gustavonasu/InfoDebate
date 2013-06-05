@@ -65,8 +65,13 @@ module ControllerHelper
   def execute_and_validate_status_change(obj, s)
     status = obj.target_status.find {|s| s != obj.status}
     obj.send(obj.find_action(status))
-    get :change_status, {:id => obj.id, :status_action => obj.find_action(s)}
-    obj.should redirect_to(:action => :show)
+    # TODO if you call get/delete/post method the test continue to work. Maybe some configuration is missing.
+    put :change_status, {:id => obj.id, :status_action => obj.find_action(s)}
+    if obj.find_action(s) != :delete
+      response.should redirect_to(:action => :show)
+    else
+      response.should redirect_to(:action => :index)
+    end
   end
   
   shared_examples_for "show_modal validation" do

@@ -34,7 +34,11 @@ class Admin::AdminController < ApplicationController
       format.html do
         flash[:notice] = notice
         flash[:error] = error
-        redirect_to [:admin, @obj]
+        if @obj.deleted?
+          redirect_to :action => :index
+        else
+          redirect_to [:admin, @obj]
+        end
       end
       format.js do
         request[:notice] = notice
